@@ -6,8 +6,12 @@ const config = {
       host: '',
       database: '',
       password: '',
-      port: 1234,
+      port: 5432,
     },
+    ttn: {
+      appId: '',
+      accessKey: '',
+    }
   },
   production: {
   }
