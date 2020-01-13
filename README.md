@@ -1,6 +1,8 @@
 # S.L.A.P. Application
 
-Go to config.js to setup postgres connection
+Setup PostgreSQL locally (with PgAdmin)
+Setup config.js, DB and The Things Network config values
+
 
 # simple-react-full-stack
 

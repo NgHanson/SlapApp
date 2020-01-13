@@ -1,7 +1,7 @@
 const express = require('express');
 const os = require('os');
 
-const ttnConfig = require('../../../config')['development']['ttn'];
+const ttnConfig = require('../../config')['development']['ttn'];
 const ttn = require("ttn");
 const APP_ID = ttnConfig.APP_ID;
 const ACCESS_KEY = ttnConfig.ACCESS_KEY;
@@ -27,7 +27,7 @@ ttn.data(APP_ID, ACCESS_KEY)
   })
   .catch(function (error) {
     console.error("Error", error)
-    process.exit(1)
+    //process.exit(1)
   })
 
 // Do we want the front end to listen to device uplinks?
