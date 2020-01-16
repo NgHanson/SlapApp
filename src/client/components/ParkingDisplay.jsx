@@ -7,10 +7,11 @@ export default class ParkingDisplay extends Component {
   }
 
   render() {
-    const { lotName } = this.props;
+    const { lotName, lotAddress } = this.props;
     return(
       <div className="parking-display">
-        <div className='parking-display-title'>Lot: {lotName}</div>
+        <div className='parking-lot-name'>Lot: {lotName}</div>
+        <div className='parking-lot-address'>Address: {lotAddress}</div>
       </div>
     );
   }
@@ -18,4 +19,5 @@ export default class ParkingDisplay extends Component {
 
 ParkingDisplay.defaultProps = {
   lotName: 'Test Lot 1',
+  lotAddress: '200 University Ave W, Waterloo, ON N2L 3G1',
 }

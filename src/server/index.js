@@ -1,5 +1,4 @@
 const express = require('express');
-const os = require('os');
 
 const ttnConfig = require('../../config')['development']['ttn'];
 const ttn = require("ttn");
@@ -11,8 +10,6 @@ const eventRouter = require('./routes/eventRouter');
 
 app.use(express.static('dist'));
 app.use('/api/event', eventRouter);
-
-app.get('/api/getUsername', (req, res) => res.send({ username: os.userInfo().username }));
 
 // The Things Network
 // https://www.thethingsnetwork.org/docs/applications/nodejs/quick-start.html

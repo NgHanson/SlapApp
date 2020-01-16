@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './analyticsdashboard.css';
 
 export default class AnalyticsDashboard extends Component {
   constructor(props) {
@@ -7,8 +8,10 @@ export default class AnalyticsDashboard extends Component {
 
   render() {
     return(
-      <div>
-        
+      <div className='analytics-dashboard'>
+        <div>
+          
+        </div>
       </div>
     );
   }
