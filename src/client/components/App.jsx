@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './app.css';
+import NavBar from './NavBar';
+import ParkingDisplay from './ParkingDisplay';
 
 export default class App extends Component {
   constructor(props) {
@@ -25,12 +27,14 @@ export default class App extends Component {
     const { username, events } = this.state;
     return (
       <div>
-      <div>
-        {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
-      </div>
-      <div>
-        {events ? <h1>SUCCESS</h1>: <h1>FAILED</h1> }
-      </div>
+        <NavBar></NavBar>
+        <div>
+          {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
+        </div>
+        <div>
+          {events ? <h1>SUCCESS</h1>: <h1>FAILED</h1> }
+        </div>
+        <ParkingDisplay></ParkingDisplay>
       </div>
     );
   }
