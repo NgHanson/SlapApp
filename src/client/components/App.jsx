@@ -3,6 +3,7 @@ import './app.css';
 import NavBar from './NavBar';
 import ParkingDisplay from './ParkingDisplay';
 import AnalyticsDashboard from './AnalyticsDashboard';
+import GoogleMapWrapper from './GoogleMapWrapper';
 
 export default class App extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ export default class App extends Component {
         <NavBar></NavBar>
         <ParkingDisplay></ParkingDisplay>
         <AnalyticsDashboard></AnalyticsDashboard>
+        <GoogleMapWrapper></GoogleMapWrapper>
         <div>
           {events ? <h1>DB SUCCESS</h1>: <h1>DB FAILED</h1> }
         </div>

@@ -17,11 +17,16 @@ exports.listEvent = function(req, res) {
   console.log('EXECUTE LIST EVENT');
   pool.query('SELECT * FROM event', (error, results) => {
     if (error) {
-      console.log('ERROR');
+      console.log('ERROR', error);
+    } else {
+
+      if (results && results.rows) {
+        var list = results.rows;
+        console.log(list);
+        res.send({events: list});
+      }
     }
-    var list = results.rows;
-    console.log(list);
-    res.send({events: list});
+
   });
 };
 
