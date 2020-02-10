@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import './app.css';
-import NavBar from './NavBar';
-import ParkingDisplay from './ParkingDisplay';
-import AnalyticsDashboard from './AnalyticsDashboard';
 import GoogleMapWrapper from './GoogleMapWrapper';
+import SideBar from "./SideBar";
 
 export default class App extends Component {
   constructor(props) {
@@ -24,10 +22,8 @@ export default class App extends Component {
   render() {
     const { username, events } = this.state;
     return (
-      <div>
-        <NavBar></NavBar>
-        <ParkingDisplay></ParkingDisplay>
-        <AnalyticsDashboard></AnalyticsDashboard>
+      <div id="App">
+        <SideBar pageWrapId={"page-wrap"} outerContainerId={"App"} />
         <GoogleMapWrapper></GoogleMapWrapper>
         <div>
           {events ? <h1>DB SUCCESS</h1>: <h1>DB FAILED</h1> }

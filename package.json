@@ -20,6 +20,7 @@
     "node-fetch": "^2.6.0",
     "pg": "^7.17.0",
     "react": "^16.5.2",
+    "react-burger-menu": "^2.6.13",
     "react-dom": "^16.5.2",
     "styled-components": "^5.0.1",
     "ttn": "^2.3.3"
