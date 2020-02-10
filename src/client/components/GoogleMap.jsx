@@ -13,6 +13,7 @@ const GoogleMap = ({ children, ...props }) => (
     <GoogleMapReact
       bootstrapURLKeys={{
         key: require('../../../config')['development']['reactMapKey'],
+        libraries: ['places', 'geometry'],
       }}
       {...props}
     >

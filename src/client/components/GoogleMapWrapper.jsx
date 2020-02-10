@@ -7,6 +7,8 @@ import Marker from './Marker.jsx';
 // examples:
 import GoogleMap from './GoogleMap.jsx';
 
+import SearchBox from './SearchBox.jsx';
+
 // consts
 const LOS_ANGELES_CENTER = [34.0522, -118.2437];
 
@@ -33,23 +35,49 @@ const bindResizeListener = (map, maps, bounds) => {
 };
 
 // Fit map to its bounds after the api is loaded
-const apiIsLoaded = (map, maps, places) => {
-  // Get bounds by our places
-  const bounds = getMapBounds(map, maps, places);
-  // Fit map to bounds
-  map.fitBounds(bounds);
-  // Bind the resize listener
-  bindResizeListener(map, maps, bounds);
-};
+// const apiIsLoaded = (map, maps, places) => {
+//   // Get bounds by our places
+//   const bounds = getMapBounds(map, maps, places);
+//   // Fit map to bounds
+//   map.fitBounds(bounds);
+//   // Bind the resize listener
+//   bindResizeListener(map, maps, bounds);
+
+//   // Other Stuff....
+//   this.setState({
+//       mapApiLoaded: true,
+//       mapInstance: map,
+//       mapApi: maps,
+//     });
+// };
 
 class Main extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      mapApiLoaded: false,
+      mapInstance: null,
+      mapApi: null,
       places: [],
     };
   }
+
+  apiIsLoaded = (map, maps, places) => {
+  // Get bounds by our places
+  const bounds = getMapBounds(map, maps, places);
+  // Fit map to bounds
+  map.fitBounds(bounds);
+  // Bind the resize listener
+  bindResizeListener(map, maps, bounds);
+
+  // Other Stuff....
+  this.setState({
+      mapApiLoaded: true,
+      mapInstance: map,
+      mapApi: maps,
+  });
+  };
 
   componentDidMount() {
     fetch('/public/places.json')
@@ -57,16 +85,24 @@ class Main extends Component {
       .then(data => this.setState({ places: data.results }));
   }
 
+  addPlace = (place) => {
+    console.log("addPlace", place);
+    this.setState({ places: place });
+  };
+
   render() {
-    const { places } = this.state;
+    const {
+      places, mapApiLoaded, mapInstance, mapApi,
+    } = this.state;
     return (
       <Fragment>
+        {mapApiLoaded && <SearchBox map={mapInstance} mapApi={mapApi} addplace={this.addPlace} />}
         {!isEmpty(places) && (
           <GoogleMap
             defaultZoom={10}
             defaultCenter={LOS_ANGELES_CENTER}
             yesIWantToUseGoogleMapApiInternals
-            onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, places)}
+            onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps, places)}
           >
             {places.map(place => (
               <Marker
