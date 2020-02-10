@@ -1,7 +1,41 @@
 # S.L.A.P. Application
 
-Setup PostgreSQL locally (with PgAdmin)
-Setup config.js, DB and The Things Network config values
+## Setup Instructions:
+1. Setup PostgreSQL locally (with PgAdmin)
+2. Set up google cloud developer account, create an api key.  You need to enable the javascript maps api, and the maps places api
+3. Setup config.js, DB and The Things Network config values
+Config.js Example:
+```
+const config = {
+  development: {
+    //postgres connection settings
+    database: {
+      user: 'PG_USER_NAME
+      host: 'localhost',
+      database: 'PG_DB_NAME
+      password: 'PG_USER_PW
+      port: 5432,
+    },
+    ttn: {
+      // Things network connection credentials
+      appId: 'APP_NAME'
+      accessKey: 'TTN_ACCESS_KEY',
+    },
+    // Google Maps API Key
+    reactMapKey: 'MAP_KEY'
+  },
+  production: {
+  }
+};
+
+module.exports = config;
+```
+4. Possibly install react-developer-tools: https://reactjs.org/blog/2015/09/02/new-react-developer-tools.html#installation
+
+
+## Sources:
+- Google Maps Stuff taken from: https://github.com/google-map-react/google-map-react-examples
+- Hamberger Menu (will be) taken from: https://alligator.io/react/react-burger-menu-sidebar/
 
 
 # simple-react-full-stack
