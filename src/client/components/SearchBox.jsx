@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 20px;
+  padding: 0px;
 `;
 
 class SearchBox extends Component {

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './app.css';
 import GoogleMapWrapper from './GoogleMapWrapper';
-import SideBar from "./SideBar";
+// Import styles for react-bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 export default class App extends Component {
   constructor(props) {
@@ -22,8 +24,7 @@ export default class App extends Component {
   render() {
     const { username, events } = this.state;
     return (
-      <div id="App">
-        <SideBar pageWrapId={"page-wrap"} outerContainerId={"App"} />
+      <div id="App" className="fill-window">
         <GoogleMapWrapper></GoogleMapWrapper>
         <div>
           {events ? <h1>DB SUCCESS</h1>: <h1>DB FAILED</h1> }

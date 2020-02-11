@@ -8,6 +8,7 @@ import Marker from './Marker.jsx';
 import GoogleMap from './GoogleMap.jsx';
 
 import SearchBox from './SearchBox.jsx';
+import SideBar from "./SideBar";
 
 // consts
 const LOS_ANGELES_CENTER = [34.0522, -118.2437];
@@ -19,7 +20,7 @@ const getMapBounds = (map, maps, places) => {
   places.forEach((place) => {
     bounds.extend(new maps.LatLng(
       place.geometry.location.lat,
-      place.geometry.location.lng,
+      place.geometry.location.lng
     ));
   });
   return bounds;
@@ -34,27 +35,10 @@ const bindResizeListener = (map, maps, bounds) => {
   });
 };
 
-// Fit map to its bounds after the api is loaded
-// const apiIsLoaded = (map, maps, places) => {
-//   // Get bounds by our places
-//   const bounds = getMapBounds(map, maps, places);
-//   // Fit map to bounds
-//   map.fitBounds(bounds);
-//   // Bind the resize listener
-//   bindResizeListener(map, maps, bounds);
-
-//   // Other Stuff....
-//   this.setState({
-//       mapApiLoaded: true,
-//       mapInstance: map,
-//       mapApi: maps,
-//     });
-// };
 
 class Main extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       mapApiLoaded: false,
       mapInstance: null,
@@ -64,19 +48,19 @@ class Main extends Component {
   }
 
   apiIsLoaded = (map, maps, places) => {
-  // Get bounds by our places
-  const bounds = getMapBounds(map, maps, places);
-  // Fit map to bounds
-  map.fitBounds(bounds);
-  // Bind the resize listener
-  bindResizeListener(map, maps, bounds);
+    // Get bounds by our places
+    const bounds = getMapBounds(map, maps, places);
+    // Fit map to bounds
+    map.fitBounds(bounds);
+    // Bind the resize listener
+    bindResizeListener(map, maps, bounds);
 
-  // Other Stuff....
-  this.setState({
-      mapApiLoaded: true,
-      mapInstance: map,
-      mapApi: maps,
-  });
+    // Other Stuff....
+    this.setState({
+        mapApiLoaded: true,
+        mapInstance: map,
+        mapApi: maps,
+    });
   };
 
   componentDidMount() {
@@ -95,8 +79,8 @@ class Main extends Component {
       places, mapApiLoaded, mapInstance, mapApi,
     } = this.state;
     return (
-      <Fragment>
-        {mapApiLoaded && <SearchBox map={mapInstance} mapApi={mapApi} addplace={this.addPlace} />}
+      <div id="MapsWrapper" className="fill-window">
+        <SideBar pageWrapId={"page-wrap"} mapApiLoaded={mapApiLoaded} map={mapInstance} mapApi={mapApi} addplace={this.addPlace} outerContainerId={"MapsWrapper"} />
         {!isEmpty(places) && (
           <GoogleMap
             defaultZoom={10}
@@ -114,7 +98,7 @@ class Main extends Component {
             ))}
           </GoogleMap>
         )}
-      </Fragment>
+      </div>
     );
   }
 }
