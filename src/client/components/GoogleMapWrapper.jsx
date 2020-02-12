@@ -44,6 +44,7 @@ class Main extends Component {
       mapInstance: null,
       mapApi: null,
       places: [],
+      placeMarkerOnClick: false
     };
   }
 
@@ -74,9 +75,21 @@ class Main extends Component {
     this.setState({ places: place });
   };
 
+  // https://github.com/google-map-react/google-map-react/blob/master/API.md#onclick-func
+  _onClick = ({x, y, lat, lng, event}) => {
+    console.log(x, y, lat, lng, event);
+    this.setState({
+      clickX: x,
+      clickY: y,
+      clickLat: lat,
+      clickLng: lng,
+      placeMarkerOnClick: true
+    });
+  };
+
   render() {
     const {
-      places, mapApiLoaded, mapInstance, mapApi,
+      places, mapApiLoaded, mapInstance, mapApi, placeMarkerOnClick
     } = this.state;
     return (
       <div id="MapsWrapper" className="fill-window">
@@ -87,7 +100,9 @@ class Main extends Component {
             defaultCenter={LOS_ANGELES_CENTER}
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps, places)}
+            onClick={this._onClick}
           >
+            {/* Place Components on the map from json file */}
             {places.map(place => (
               <Marker
                 key={place.id}
@@ -96,6 +111,7 @@ class Main extends Component {
                 lng={place.geometry.location.lng}
               />
             ))}
+            {placeMarkerOnClick && <Marker key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>}
           </GoogleMap>
         )}
       </div>
