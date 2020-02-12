@@ -6,13 +6,15 @@ const Wrapper = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 18px;
-  height: 18px;
-  background-color: #000;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  background-color: #99ccff;
   border: 2px solid #fff;
   border-radius: 100%;
   user-select: none;
   transform: translate(-50%, -50%);
+  text-align: center;
   cursor: ${props => (props.onClick ? 'pointer' : 'default')};
   &:hover {
     z-index: 1;
@@ -23,7 +25,7 @@ const Marker = props => (
   <Wrapper
     alt={props.text}
     {...props.onClick ? { onClick: props.onClick } : {}}
-  />
+  >{props.text}</Wrapper>
 );
 
 Marker.defaultProps = {

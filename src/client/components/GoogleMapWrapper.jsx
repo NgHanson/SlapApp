@@ -93,7 +93,7 @@ class Main extends Component {
     } = this.state;
     return (
       <div id="MapsWrapper" className="fill-window">
-        <SideBar pageWrapId={"page-wrap"} mapApiLoaded={mapApiLoaded} map={mapInstance} mapApi={mapApi} addplace={this.addPlace} outerContainerId={"MapsWrapper"} />
+        <SideBar isOpen={true} pageWrapId={"page-wrap"} mapApiLoaded={mapApiLoaded} map={mapInstance} mapApi={mapApi} addplace={this.addPlace} outerContainerId={"MapsWrapper"} />
         {!isEmpty(places) && (
           <GoogleMap
             defaultZoom={10}
