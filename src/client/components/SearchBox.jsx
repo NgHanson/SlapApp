@@ -16,6 +16,7 @@ class SearchBox extends Component {
   }
 
   componentDidMount({ map, mapApi } = this.props) {
+    console.log("componentDidMount");
     console.log(mapApi);
     console.log(mapApi.places);
     this.searchBox = new mapApi.places.SearchBox(this.searchInput);
@@ -28,6 +29,7 @@ class SearchBox extends Component {
   }
 
   onPlacesChanged = ({ map, addplace } = this.props) => {
+    console.log("onPlacesChanged")
     const selected = this.searchBox.getPlaces();
     const { 0: place } = selected;
     if (!place.geometry) return;

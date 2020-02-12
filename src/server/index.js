@@ -7,9 +7,11 @@ const ACCESS_KEY = ttnConfig['accessKey'];
 
 const app = express();
 const eventRouter = require('./routes/eventRouter');
+const parkingAreaRouter = require('./routes/parkingAreaRouter');
 
 app.use(express.static('dist'));
 app.use('/api/event', eventRouter);
+app.use('/api/parking', parkingAreaRouter)
 
 // The Things Network
 // https://www.thethingsnetwork.org/docs/applications/nodejs/quick-start.html

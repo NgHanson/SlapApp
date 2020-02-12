@@ -24,7 +24,7 @@ class SideBar extends Component {
             Find Parking Near...
           </Row>
           <Row>
-            {mapApiLoaded && <SearchBox map={map} mapApi={mapApi} addplace={addplace} />}
+            {mapApiLoaded && <SearchBox map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}
           </Row>
           <NavBar></NavBar>
           <ParkingDisplay></ParkingDisplay>

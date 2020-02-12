@@ -71,7 +71,7 @@ class Main extends Component {
   }
 
   addPlace = (place) => {
-    console.log("addPlace", place);
+    console.log("googlemapwrapper addPlace", place);
     this.setState({ places: place });
   };
 
@@ -93,7 +93,10 @@ class Main extends Component {
     } = this.state;
     return (
       <div id="MapsWrapper" className="fill-window">
+        {/* Hamburger Menu Sidebar */}
         <SideBar isOpen={true} pageWrapId={"page-wrap"} mapApiLoaded={mapApiLoaded} map={mapInstance} mapApi={mapApi} addplace={this.addPlace} outerContainerId={"MapsWrapper"} />
+        
+        {/* Google Map */}
         {!isEmpty(places) && (
           <GoogleMap
             defaultZoom={10}
@@ -111,6 +114,8 @@ class Main extends Component {
                 lng={place.geometry.location.lng}
               />
             ))}
+
+            {/* Place Component on map click */}
             {placeMarkerOnClick && <Marker key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>}
           </GoogleMap>
         )}

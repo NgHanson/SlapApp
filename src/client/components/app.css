@@ -78,3 +78,8 @@
   display: none;
   background: rgba(0, 0, 0, 0.3);
 }
+
+/*To make sure the google maps dropdown shows up, even in the hamburger menu*/
+.pac-container {
+	z-index: 10000000 !important;
+}
