@@ -11,6 +11,17 @@ import Button from 'react-bootstrap/Button';
 class SideBar extends Component {
   constructor(props) {
     super(props);
+    this.state ={
+      parkingAreas: null
+    }
+  }
+  componentDidMount() {
+
+    console.log("Sidebar componentdidmount...");
+    fetch('/api/parking/all')
+      .then(res => res.json())
+      .then(res => this.setState({parkingAreas: res['parkingAreas']}));
+    console.log(this.state)
   }
   render() {
     const {
@@ -26,8 +37,8 @@ class SideBar extends Component {
           <Row>
             {mapApiLoaded && <SearchBox map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}
           </Row>
-          <NavBar></NavBar>
-          <ParkingDisplay></ParkingDisplay>
+          {/*<NavBar></NavBar>*/}
+          {this.state.parkingAreas && <ParkingDisplay parkingareas={this.state.parkingAreas}></ParkingDisplay>}
           <AnalyticsDashboard></AnalyticsDashboard>
           <Button variant="primary">Back</Button>
         </Container>

@@ -28,6 +28,7 @@ exports.getParkingAreas = function(req, res) {
       if (results && results.rows) {
         var list = results.rows;
         console.log(list);
+        res.send({parkingAreas: list});
       }
     }
   });

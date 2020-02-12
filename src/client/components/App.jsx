@@ -18,9 +18,6 @@ export default class App extends Component {
     fetch('/api/event/all')
       .then(res => res.json())
       .then(res => this.setState({ events: res}));
-    fetch('/api/parking/all')
-      .then(res => res.json())
-      .then(res => this.setState({parkingAreas: res}));
   }
 
   //TEST IF THE SIMPLE DB CALL WORKS (SHOULD DISPLAY SUCCESS)
