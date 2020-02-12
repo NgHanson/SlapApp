@@ -4,3 +4,7 @@
     background-color: darkgrey;
     display: block;
 }
+
+.analytics-input {
+	width: 100%
+}

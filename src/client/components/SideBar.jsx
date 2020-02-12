@@ -31,16 +31,13 @@ class SideBar extends Component {
       // Pass on our props
       <Menu {...this.props}>
         <Container width="100%">
-          <Row>
-            Find Parking Near...
-          </Row>
-          <Row>
-            {mapApiLoaded && <SearchBox map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}
-          </Row>
+          <Row>Find Parking Near...</Row>
+          <Row>{mapApiLoaded && <SearchBox map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
+          <Row className="justify-content-xs-center"><Col/><Col xs="auto"><Button variant='primary'>Back</Button></Col><Col/></Row>
           {/*<NavBar></NavBar>*/}
           {this.state.parkingAreas && <ParkingDisplay parkingareas={this.state.parkingAreas}></ParkingDisplay>}
           <AnalyticsDashboard></AnalyticsDashboard>
-          <Button variant="primary">Back</Button>
+          
         </Container>
       </Menu>
     );

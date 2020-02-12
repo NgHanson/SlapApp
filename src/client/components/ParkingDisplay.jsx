@@ -24,7 +24,7 @@ export default class ParkingDisplay extends Component {
     let table = []
 
     // Outer loop to create parent
-    for (let x = 0; x < parkingareas.length; x++) {
+    for (let x=0; x < parkingareas.length; x++) {
       table.push(
         <Row key={x}>
           <Col xs={6} style={{fontSize: '11pt'}}>{parkingareas[x]['name']}</Col>
