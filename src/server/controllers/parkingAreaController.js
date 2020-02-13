@@ -33,3 +33,8 @@ exports.getParkingAreas = function(req, res) {
     }
   });
 };
+
+// Get Nearby Parking Lots
+exports.getNearbyParking = function(req, res) {
+	console.log(req.body);
+}

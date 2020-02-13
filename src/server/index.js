@@ -1,4 +1,5 @@
 const express = require('express');
+var bodyParser = require('body-parser')
 
 const ttnConfig = require('../../config')['development']['ttn'];
 const ttn = require("ttn");
@@ -9,6 +10,11 @@ const app = express();
 const eventRouter = require('./routes/eventRouter');
 const parkingAreaRouter = require('./routes/parkingAreaRouter');
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 app.use(express.static('dist'));
 app.use('/api/event', eventRouter);
 app.use('/api/parking', parkingAreaRouter)

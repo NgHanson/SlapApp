@@ -39,9 +39,17 @@ class SearchBox extends Component {
       map.setCenter(place.geometry.location);
       map.setZoom(17);
     }
-
-    addplace(selected);
     this.searchInput.blur();
+    var data = new FormData();
+    var payload = JSON.stringify({lat: place.geometry.location.lat(), lng: place.geometry.location.lng()})
+    data.append("myjsonkey", payload);
+    fetch('/api/parking/nearby', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },  
+      body: payload,
+    });
   };
 
   clearSearchBox() {
