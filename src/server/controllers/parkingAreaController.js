@@ -37,4 +37,20 @@ exports.getParkingAreas = function(req, res) {
 // Get Nearby Parking Lots
 exports.getNearbyParking = function(req, res) {
 	console.log(req.body);
+	console.log(req.body.lat);
+	minLat = Math.min(req.body.lat-1, req.body.lat+1);
+	maxLat = Math.max(req.body.lat-1, req.body.lat+1);
+	minLng = Math.min(req.body.lng-1, req.body.lng+1);
+	maxLng = Math.max(req.body.lng-1, req.body.lng+1);
+	const q_nearbyLots = 'SELECT * FROM parkingarea WHERE lat >'+minLat+' AND lat < '+maxLat+' AND lng >'+minLng+' AND lng < '+maxLng+' ORDER BY id ASC';
+	pool.query(q_nearbyLots, (error, results) => {
+		if (error) {
+			console.log("ERROR in getNearbyParking", error);
+		} else {
+			if (results && results.rows) {
+				console.log(results.rows)
+				res.send({nearbyParking: results.rows});
+			}
+		}
+	});
 }

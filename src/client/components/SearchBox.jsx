@@ -49,7 +49,23 @@ class SearchBox extends Component {
         'Content-Type': 'application/json',
       },  
       body: payload,
-    });
+    }).then(res => res.json())
+      .then(function(res) {
+        let placelist = res.nearbyParking;
+        let locationsToMark = []
+        for (let i = 0; i < placelist.length; i++) {
+          locationsToMark.push({id: placelist[i].id,
+                                name: placelist[i].name,
+                                geometry: {
+                                  location: {
+                                    lat: placelist[i].lat,
+                                    lng: placelist[i].lng
+                                  }
+                                }
+                              });
+        }
+        addplace(locationsToMark);
+      });
   };
 
   clearSearchBox() {
