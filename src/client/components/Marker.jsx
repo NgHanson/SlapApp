@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from 'react-bootstrap/Button';
 
 // MOVE THESE INTO A CSS
 const temp = {
@@ -35,7 +36,7 @@ export default class Marker extends Component {
     };
   }
 
-  closeModal() {
+  closeModal = () => {
     this.setState({modalOpen: false});
   }
 
@@ -44,10 +45,15 @@ export default class Marker extends Component {
   }
 
   render() {
+    const {
+      changeViewType,
+      userType,
+      viewType,
+    } = this.props;
+
     return (
       <div>
-        {this.state.modalOpen && <div style={temp2} onClick={() => this.closeModal()}></div>}
-        {/*this.state.modalOpen && <MarkerModal testing={this.closeModal}/>*/}
+        {this.state.modalOpen && <MarkerModal closeModal={this.closeModal} userType={userType} changeViewType={changeViewType} viewType={viewType}/>}
         <div style={temp} onClick={()=>this.toggleModal()}>
           {this.props.text}
         </div>
@@ -58,8 +64,21 @@ export default class Marker extends Component {
 
 class MarkerModal extends Component {
   render() {
+    const {
+      closeModal,
+      changeViewType,
+      userType,
+      viewType,
+    } = this.props;
+
+    let moreDetailsViewType = userType == 1 ? 2 : 3;
+  
     return (
-      <div style={temp2} onClick={() => this.props.testing}></div>
+      <div style={temp2} onClick={() => closeModal()}>
+        <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => changeViewType(moreDetailsViewType)} >
+          {`More Details - Current View ${viewType}`}
+        </Button>
+      </div>
     );
   }
 }

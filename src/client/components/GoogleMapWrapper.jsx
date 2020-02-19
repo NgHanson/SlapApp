@@ -1,17 +1,24 @@
 import React, { Component, Fragment } from 'react';
 import isEmpty from 'lodash.isempty';
 
-// components:
 import Marker from './Marker.jsx';
-
-// examples:
 import GoogleMap from './GoogleMap.jsx';
-
-import SearchBox from './SearchBox.jsx';
 import SideBar from "./SideBar";
 
 // consts
 const WATERLOO_CENTER = [43.472393361375325, -80.53837152380368];
+
+//Make enums....
+/*
+User Type
+1 - User
+2 - Owner
+
+View Type
+1 - General
+2 - Lot
+3 - Analytics
+*/
 
 // Return map bounds based on list of places
 const getMapBounds = (map, maps, places) => {
@@ -44,8 +51,18 @@ class Main extends Component {
       mapInstance: null,
       mapApi: null,
       places: [],
-      placeMarkerOnClick: false
+      placeMarkerOnClick: false,
+      userType: 1,
+      viewType: 1,
     };
+  }
+
+  toggleUserType = () => {
+    this.setState((prevState) => ({ userType: prevState.userType == 2 ? 1 : 2}));
+  }
+
+  changeViewType = (type) => {
+    this.setState({viewType: type});
   }
 
   apiIsLoaded = (map, maps, places) => {
@@ -88,12 +105,22 @@ class Main extends Component {
 
   render() {
     const {
-      places, mapApiLoaded, mapInstance, mapApi, placeMarkerOnClick
+      places, mapApiLoaded, mapInstance, mapApi, placeMarkerOnClick, userType, viewType
     } = this.state;
     return (
       <div id="MapsWrapper" className="fill-window">
         {/* Hamburger Menu Sidebar */}
-        <SideBar isOpen={true} pageWrapId={"page-wrap"} mapApiLoaded={mapApiLoaded} map={mapInstance} mapApi={mapApi} addplace={this.addPlace} outerContainerId={"MapsWrapper"} />
+        <SideBar 
+          isOpen={true}
+          pageWrapId={"page-wrap"}
+          mapApiLoaded={mapApiLoaded}
+          map={mapInstance}
+          mapApi={mapApi}
+          addplace={this.addPlace}
+          outerContainerId={"MapsWrapper"}
+          userTypeToggle={this.toggleUserType}
+          userType={userType}
+        />
         
         {/* Google Map */}
           <GoogleMap
@@ -110,6 +137,9 @@ class Main extends Component {
                 text={place.name}
                 lat={place.geometry.location.lat}
                 lng={place.geometry.location.lng}
+                changeViewType={this.changeViewType}
+                userType={userType}
+                viewType={viewType}
               />
             ))}
 
