@@ -11,7 +11,7 @@ import SearchBox from './SearchBox.jsx';
 import SideBar from "./SideBar";
 
 // consts
-const LOS_ANGELES_CENTER = [34.0522, -118.2437];
+const WATERLOO_CENTER = [43.472393361375325, -80.53837152380368];
 
 // Return map bounds based on list of places
 const getMapBounds = (map, maps, places) => {
@@ -49,13 +49,14 @@ class Main extends Component {
   }
 
   apiIsLoaded = (map, maps, places) => {
-    // Get bounds by our places
-    const bounds = getMapBounds(map, maps, places);
-    // Fit map to bounds
-    map.fitBounds(bounds);
-    // Bind the resize listener
-    bindResizeListener(map, maps, bounds);
-
+    if (!isEmpty(places)){
+      // Get bounds by our places
+      const bounds = getMapBounds(map, maps, places);
+      // Fit map to bounds
+      map.fitBounds(bounds);
+      // Bind the resize listener
+      bindResizeListener(map, maps, bounds);
+    }
     // Other Stuff....
     this.setState({
         mapApiLoaded: true,
@@ -65,9 +66,7 @@ class Main extends Component {
   };
 
   componentDidMount() {
-    fetch('/public/places.json')
-      .then(response => response.json())
-      .then(data => this.setState({ places: data.results }));
+    this.setState({places: []});
   }
 
   addPlace = (place) => {
@@ -97,10 +96,9 @@ class Main extends Component {
         <SideBar isOpen={true} pageWrapId={"page-wrap"} mapApiLoaded={mapApiLoaded} map={mapInstance} mapApi={mapApi} addplace={this.addPlace} outerContainerId={"MapsWrapper"} />
         
         {/* Google Map */}
-        {!isEmpty(places) && (
           <GoogleMap
             defaultZoom={10}
-            defaultCenter={LOS_ANGELES_CENTER}
+            defaultCenter={WATERLOO_CENTER}
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps, places)}
             onClick={this._onClick}
@@ -116,9 +114,8 @@ class Main extends Component {
             ))}
 
             {/* Place Component on map click */}
-            {placeMarkerOnClick && <Marker key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>}
+            {/*placeMarkerOnClick && <Marker key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
           </GoogleMap>
-        )}
       </div>
     );
   }

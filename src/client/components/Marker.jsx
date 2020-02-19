@@ -1,40 +1,65 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React, { Component } from 'react';
 
-const Wrapper = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
-  background-color: #99ccff;
-  border: 2px solid #fff;
-  border-radius: 100%;
-  user-select: none;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  cursor: ${props => (props.onClick ? 'pointer' : 'default')};
-  &:hover {
-    z-index: 1;
+// MOVE THESE INTO A CSS
+const temp = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  width: '50px',
+  height: '50px',
+  lineHeight: '50px',
+  backgroundColor: '#99ccff',
+  border:' 2px solid #fff',
+  borderRadius: '100%',
+  transform: 'translate(-50%, -50%)',
+  textAlign: 'center',
+  cursor: 'pointer',
+};
+
+const temp2 = {
+  position: 'absolute',
+  width: '160px',
+  height: '240px',
+  lineHeight: '50px',
+  backgroundColor: '#fff',
+  border:' 2px solid #fff',
+  textAlign: 'center',
+  cursor: 'pointer',
+};
+
+export default class Marker extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalOpen: false,
+    };
   }
-`;
 
-const Marker = props => (
-  <Wrapper
-    alt={props.text}
-    {...props.onClick ? { onClick: props.onClick } : {}}
-  >{props.text}</Wrapper>
-);
+  closeModal() {
+    this.setState({modalOpen: false});
+  }
 
-Marker.defaultProps = {
-  onClick: null,
-};
+  toggleModal() {
+    this.setState((prevState) => ({ modalOpen: !prevState.modalOpen}));
+  }
 
-Marker.propTypes = {
-  onClick: PropTypes.func,
-  text: PropTypes.string.isRequired,
-};
+  render() {
+    return (
+      <div>
+        {this.state.modalOpen && <div style={temp2} onClick={() => this.closeModal()}></div>}
+        {/*this.state.modalOpen && <MarkerModal testing={this.closeModal}/>*/}
+        <div style={temp} onClick={()=>this.toggleModal()}>
+          {this.props.text}
+        </div>
+      </div>
+    );
+  }
+}
 
-export default Marker;
+class MarkerModal extends Component {
+  render() {
+    return (
+      <div style={temp2} onClick={() => this.props.testing}></div>
+    );
+  }
+}

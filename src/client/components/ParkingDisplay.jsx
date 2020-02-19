@@ -36,18 +36,19 @@ export default class ParkingDisplay extends Component {
   }
 
   render() {
-    const { lotName, lotAddress } = this.props;
+    const { title } = this.props;
     return(
-      <Fragment>
-        <Row>My Lots</Row>
+      <div style={{marginBottom:'20px'}}>
+        <Row>{title}</Row>
         <Row>{this.showParkingLots()}</Row>
         <Row className="justify-content-xs-center"><Col/><Col xs="auto"><Button variant='primary'>Add Lot</Button></Col><Col/></Row>
-      </Fragment>
+      </div>
     );
   }
 }
 
 ParkingDisplay.defaultProps = {
+  title: 'Lots',
   lotName: 'Test Lot 1',
   lotAddress: '200 University Ave W, Waterloo, ON N2L 3G1',
 }

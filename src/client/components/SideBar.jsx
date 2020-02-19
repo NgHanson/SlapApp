@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { slide as Menu } from "react-burger-menu";
-import NavBar from './NavBar';
 import ParkingDisplay from './ParkingDisplay';
 import AnalyticsDashboard from './AnalyticsDashboard';
 import SearchBox from './SearchBox';
@@ -12,9 +11,11 @@ class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state ={
-      parkingAreas: null
+      parkingAreas: null,
+      timeRangeOpen: false,
     }
   }
+
   componentDidMount() {
 
     console.log("Sidebar componentdidmount...");
@@ -31,13 +32,13 @@ class SideBar extends Component {
       // Pass on our props
       <Menu {...this.props}>
         <Container width="100%">
-          <Row>Find Parking Near...</Row>
-          <Row>{mapApiLoaded && <SearchBox map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
-          <Row className="justify-content-xs-center"><Col/><Col xs="auto"><Button variant='primary'>Back</Button></Col><Col/></Row>
-          {/*<NavBar></NavBar>*/}
-          {this.state.parkingAreas && <ParkingDisplay parkingareas={this.state.parkingAreas}></ParkingDisplay>}
-          <AnalyticsDashboard></AnalyticsDashboard>
-          
+          <div style={{marginBottom:'100px'}}>
+            <Row>Find Parking Near...</Row>
+            <Row>{mapApiLoaded && <SearchBox map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
+          </div>
+          {this.state.parkingAreas && <ParkingDisplay title='Saved Lots' parkingareas={this.state.parkingAreas}></ParkingDisplay>}
+          {this.state.parkingAreas && <ParkingDisplay title='Managed Lots' parkingareas={this.state.parkingAreas}></ParkingDisplay>}
+          {/*<AnalyticsDashboard></AnalyticsDashboard>*/}
         </Container>
       </Menu>
     );
