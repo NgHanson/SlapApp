@@ -119,7 +119,9 @@ class Main extends Component {
           addplace={this.addPlace}
           outerContainerId={"MapsWrapper"}
           userTypeToggle={this.toggleUserType}
+          changeViewType={this.changeViewType}
           userType={userType}
+          viewType={viewType}
         />
         
         {/* Google Map */}

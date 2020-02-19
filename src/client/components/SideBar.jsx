@@ -27,26 +27,41 @@ class SideBar extends Component {
 
   render() {
     const {
-       mapApiLoaded, map, mapApi, addplace, userType, userTypeToggle
+       mapApiLoaded, map, mapApi, addplace, userType, userTypeToggle, viewType, changeViewType
     } = this.props;
 
-    return (
-      // Pass on our props
-      <Menu {...this.props}>
-        <Container width="100%">
-          <div style={{marginBottom:'20px'}}>
-            <Row>Find Parking Near...</Row>
-            <Row>{mapApiLoaded && <SearchBox map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
-          </div>
-          {this.state.parkingAreas && <ParkingDisplay title='Saved Lots' parkingareas={this.state.parkingAreas}></ParkingDisplay>}
-          {this.state.parkingAreas && (userType==2) && <ParkingDisplay title='Managed Lots' parkingareas={this.state.parkingAreas}></ParkingDisplay>}
-          {/*<AnalyticsDashboard></AnalyticsDashboard>*/}
-        </Container>
-        <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => userTypeToggle()} >
-          {userType == 1 ? 'User Type: Standard User' : 'User Type: Owner'}
-        </Button>
-      </Menu>
-    );
+    if (viewType == 1) { //General View
+      return (
+        // Pass on our props
+        <Menu {...this.props}>
+          <Container width="100%">
+            <div style={{marginBottom:'20px'}}>
+              <Row>Find Parking Near...</Row>
+              <Row>{mapApiLoaded && <SearchBox map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
+            </div>
+            {this.state.parkingAreas && <ParkingDisplay title='Saved Lots' parkingareas={this.state.parkingAreas}></ParkingDisplay>}
+            {this.state.parkingAreas && (userType==2) && <ParkingDisplay title='Managed Lots' parkingareas={this.state.parkingAreas}></ParkingDisplay>}
+            <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => userTypeToggle()} >
+              {userType == 1 ? 'User Type: Standard User' : 'User Type: Owner'}
+            </Button>
+          </Container>
+        </Menu>
+      );
+    } else {
+
+      return (
+        <Menu {...this.props}>
+          <Container width="100%">
+            <AnalyticsDashboard></AnalyticsDashboard>
+            <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => changeViewType(1)} >
+              {'Back'}
+            </Button>
+          </Container>
+        </Menu>
+      );
+
+    }
+
   }
 }
 

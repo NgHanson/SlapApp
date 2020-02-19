@@ -90,8 +90,6 @@ export default class AnalyticsDashboard extends Component {
             <input className="analytics-input" type="text" placeholder="MM"></input>
           </Col>
         </Row>
-
-        <Row className="justify-content-xs-center"><Col/><Col xs="auto"><Button variant='primary'>Back</Button></Col><Col/></Row>
       </div>
     );
   }
