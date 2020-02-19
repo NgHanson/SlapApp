@@ -21,7 +21,7 @@ exports.createParkingArea = function(req, res) {
 // Get Parking Lots
 exports.getParkingAreas = function(req, res) {
   console.log("GET PARKING LOTS");
-  pool.query('SELECT * FROM parkingarea', (error, results) => {
+  pool.query('SELECT * FROM lots', (error, results) => {
     if (error) {
       console.log("ERROR", error);
     } else {
@@ -42,7 +42,7 @@ exports.getNearbyParking = function(req, res) {
 	maxLat = Math.max(req.body.lat-1, req.body.lat+1);
 	minLng = Math.min(req.body.lng-1, req.body.lng+1);
 	maxLng = Math.max(req.body.lng-1, req.body.lng+1);
-	const q_nearbyLots = 'SELECT * FROM parkingarea WHERE lat >'+minLat+' AND lat < '+maxLat+' AND lng >'+minLng+' AND lng < '+maxLng+' ORDER BY id ASC';
+	const q_nearbyLots = 'SELECT * FROM lots  WHERE lat >'+minLat+' AND lat < '+maxLat+' AND lng >'+minLng+' AND lng < '+maxLng+' ORDER BY id ASC';
 	pool.query(q_nearbyLots, (error, results) => {
 		if (error) {
 			console.log("ERROR in getNearbyParking", error);

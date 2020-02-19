@@ -25,6 +25,8 @@
     "react-bootstrap": "^1.0.0-beta.16",
     "react-burger-menu": "^2.6.13",
     "react-dom": "^16.5.2",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
     "styled-components": "^5.0.1",
     "ttn": "^2.3.3"
   },
