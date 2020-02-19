@@ -47,8 +47,19 @@ class SideBar extends Component {
           </Container>
         </Menu>
       );
-    } else {
+    } else if (viewType == 2) { // Lot
 
+      return (
+        <Menu {...this.props}>
+          <Container width="100%">
+            <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => changeViewType(1)} >
+              {'Back'}
+            </Button>
+          </Container>
+        </Menu>
+      );
+
+    } else { // Analytics
       return (
         <Menu {...this.props}>
           <Container width="100%">
@@ -59,7 +70,6 @@ class SideBar extends Component {
           </Container>
         </Menu>
       );
-
     }
 
   }

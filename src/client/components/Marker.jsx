@@ -70,12 +70,11 @@ class MarkerModal extends Component {
       userType,
       viewType,
     } = this.props;
-
-    let moreDetailsViewType = userType == 1 ? 2 : 3;
   
+    // More Details button brings you to the lot view
     return (
       <div style={temp2} onClick={() => closeModal()}>
-        <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => changeViewType(moreDetailsViewType)} >
+        <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => changeViewType(2)} >
           {`More Details - Current View ${viewType}`}
         </Button>
       </div>
