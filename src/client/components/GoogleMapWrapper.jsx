@@ -116,7 +116,7 @@ class Main extends Component {
             ))}
 
             {/* Place Component on map click */}
-            {placeMarkerOnClick && <Marker key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>}
+            {/*placeMarkerOnClick && <Marker key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
           </GoogleMap>
         )}
       </div>
