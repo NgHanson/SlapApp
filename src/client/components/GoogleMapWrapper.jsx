@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import isEmpty from 'lodash.isempty';
 
 import Marker from './Marker.jsx';
+import ParkingSpace from './ParkingSpace.jsx'
 import GoogleMap from './GoogleMap.jsx';
 import SideBar from "./SideBar";
 
@@ -146,7 +147,7 @@ class Main extends Component {
             ))}
 
             {/* Place Component on map click */}
-            {/*placeMarkerOnClick && <Marker key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
+            {placeMarkerOnClick && <ParkingSpace key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>}
           </GoogleMap>
       </div>
     );
