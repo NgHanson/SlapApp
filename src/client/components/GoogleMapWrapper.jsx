@@ -138,20 +138,28 @@ class Main extends Component {
             onClick={this._onClick}
           >
             {/* Place Components on the map from json file */}
-            {places.map(place => (
-              <Marker
-                key={place.id}
-                text={place.name}
-                lat={place.geometry.location.lat}
-                lng={place.geometry.location.lng}
-                changeViewType={this.changeViewType}
-                userType={userType}
-                viewType={viewType}
-              />
-            ))}
+            {/*mapApiLoaded && !isEmpty(places) && <Fragment>{this.showMapMarkers()}</Fragment>*/}
+            {places.map((place) => {
+              if (viewType === 1) {
+                return <Marker
+                  key={place.id}
+                  lot_id={place.id}
+                  text={place.name}
+                  lat={place.geometry.location.lat}
+                  lng={place.geometry.location.lng}
+                  changeViewType={this.changeViewType}
+                  userType={userType}
+                  viewType={viewType}
+                  addPlace={this.addPlace}
+                ></Marker>                
+              } else if (viewType == 2) {
+                return <ParkingSpace key={place.id} place={place} lat={place.geometry.location.lat} lng={place.geometry.location.lng}/>
+              }
+            })}
+
 
             {/* Place Component on map click */}
-            {placeMarkerOnClick && <ParkingSpace key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>}
+            {/*placeMarkerOnClick && <ParkingSpace key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
           </GoogleMap>
       </div>
     );

@@ -54,7 +54,7 @@ class SearchBox extends Component {
         let placelist = res.nearbyParking;
         let locationsToMark = []
         for (let i = 0; i < placelist.length; i++) {
-          locationsToMark.push({id: placelist[i].id,
+          locationsToMark.push({id: placelist[i].lot_id,
                                 name: placelist[i].name,
                                 geometry: {
                                   location: {
