@@ -43,7 +43,6 @@ const bindResizeListener = (map, maps, bounds) => {
   });
 };
 
-
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -89,7 +88,12 @@ class Main extends Component {
 
   addPlace = (place) => {
     console.log("googlemapwrapper addPlace", place);
+    const map = this.state.mapInstance;
+    const maps = this.state.mapApi
     this.setState({ places: place });
+    const bounds = getMapBounds(map, maps, this.state.places);
+    map.fitBounds(bounds);
+    bindResizeListener(map, maps, bounds);
   };
 
   // https://github.com/google-map-react/google-map-react/blob/master/API.md#onclick-func
