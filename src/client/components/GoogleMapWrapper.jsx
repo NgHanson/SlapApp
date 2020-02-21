@@ -6,6 +6,9 @@ import ParkingSpace from './ParkingSpace.jsx'
 import GoogleMap from './GoogleMap.jsx';
 import SideBar from "./SideBar";
 
+import { searchForNearbyParking, getDevicesInLot } from './clientCalls.js';
+import { parkingLotJSONToMapsFormat, parkingSpaceJSONToMapsFormat } from './formatConverter.js';
+
 // consts
 const WATERLOO_CENTER = [43.472393361375325, -80.53837152380368];
 
@@ -86,14 +89,56 @@ class Main extends Component {
     this.setState({places: []});
   }
 
-  addPlace = (place) => {
-    console.log("googlemapwrapper addPlace", place);
+  componentDidUpdate(prevProps, prevState) {
+    console.log("googlemapswrapper component did update")
+    console.log(prevState.viewType)
+    console.log(this.state.viewType)
+    const self =this;
+    if (prevState.mapLat !== this.state.mapLat || prevState.mapLng !== this.state.mapLng) {
+      console.log("map center changed")
+      searchForNearbyParking(this.state.mapLat, this.state.mapLng)
+      .then(function(res) {
+        const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
+        self.addPlace(placelist);
+      }).then(function(res) {self.fitMapToBounds();});
+    }
+    if (prevState.viewType !== this.state.viewType) {
+      if (this.state.viewType == 1) {
+        console.log("changed to viewType 1")
+        self.addPlace([]);
+        searchForNearbyParking(this.state.mapLat, this.state.mapLng)
+        .then(function(res) {
+          const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
+          self.addPlace(placelist);
+        }).then(function(res) {self.fitMapToBounds();});
+      } else if (this.state.viewType == 2) {
+          self.addPlace([]);
+          console.log("changed to viewType 2");
+          getDevicesInLot(this.state.currentLotID).then(function(res) {
+            return parkingSpaceJSONToMapsFormat(res.devices);
+          }).then(function(locationsToMark){self.addPlace(locationsToMark)
+          }).then(function(res) { self.fitMapToBounds();});
+      }
+    }
+  }
+  changeCurrentLot = (lot_id) => {
+    this.setState({currentLotID: lot_id});
+  };
+
+  updateMapCenter =(lat, lng) => {
+    this.setState({mapLat: lat, mapLng: lng});
+  };
+
+  fitMapToBounds = () => {
     const map = this.state.mapInstance;
-    const maps = this.state.mapApi
-    this.setState({ places: place });
+    const maps = this.state.mapApi    
     const bounds = getMapBounds(map, maps, this.state.places);
     map.fitBounds(bounds);
     bindResizeListener(map, maps, bounds);
+  };
+
+  addPlace = (place) => {
+    this.setState({ places: place });
   };
 
   // https://github.com/google-map-react/google-map-react/blob/master/API.md#onclick-func
@@ -125,6 +170,7 @@ class Main extends Component {
           outerContainerId={"MapsWrapper"}
           userTypeToggle={this.toggleUserType}
           changeViewType={this.changeViewType}
+          updateMapCenter={this.updateMapCenter}
           userType={userType}
           viewType={viewType}
         />
@@ -150,7 +196,7 @@ class Main extends Component {
                   changeViewType={this.changeViewType}
                   userType={userType}
                   viewType={viewType}
-                  addPlace={this.addPlace}
+                  changeCurrentLot={this.changeCurrentLot}
                 ></Marker>                
               } else if (viewType == 2) {
                 return <ParkingSpace key={place.id} place={place} lat={place.geometry.location.lat} lng={place.geometry.location.lng}/>
