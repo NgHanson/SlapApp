@@ -41,10 +41,12 @@ class SideBar extends Component {
             </div>
             {this.state.parkingAreas && <ParkingDisplay title='Saved Lots' parkingareas={this.state.parkingAreas}></ParkingDisplay>}
             {this.state.parkingAreas && (userType==2) && <ParkingDisplay title='Managed Lots' parkingareas={this.state.parkingAreas}></ParkingDisplay>}
+          </Container>
+          <div>
             <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => userTypeToggle()} >
               {userType == 1 ? 'User Type: Standard User' : 'User Type: Owner'}
             </Button>
-          </Container>
+          </div>
         </Menu>
       );
     } else if (viewType == 2) { // Lot
