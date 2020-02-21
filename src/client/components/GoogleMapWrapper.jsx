@@ -206,7 +206,7 @@ class Main extends Component {
 
 
             {/* Place Component on map click */}
-            {/*placeMarkerOnClick && <ParkingSpace key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
+            {/*placeMarkerOnClick && <ParkingSpace place={{geometry: {rotation: 63.23308549}}} key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
           </GoogleMap>
       </div>
     );
