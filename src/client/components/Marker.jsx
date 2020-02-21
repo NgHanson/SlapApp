@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
-import { getDevicesInLot } from './clientCalls.js';
 
 // MOVE THESE INTO A CSS
 const temp = {

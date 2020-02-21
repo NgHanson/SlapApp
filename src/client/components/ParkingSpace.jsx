@@ -10,17 +10,6 @@ const temp = {
   border:'1px solid #d3d3d3',
 };
 
-const temp2 = {
-  position: 'absolute',
-  width: '160px',
-  height: '240px',
-  lineHeight: '50px',
-  backgroundColor: '#fff',
-  border:' 2px solid #fff',
-  textAlign: 'center',
-  cursor: 'pointer',
-};
-
 export default class ParkingSpace extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +18,7 @@ export default class ParkingSpace extends Component {
     console.log(this.props);
   }
   componentDidMount() {
-    const angle = this.props.place.geometry.rotation;//this.props.place.geometry.rotation;//-26.76691451;//this.props;
+    const angle = this.props.place.geometry.rotation;
     if (angle !== -26.76691451) {
       console.log(this.props.place)
       console.error("feiafoeiajiofoijfaejio")

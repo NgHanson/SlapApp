@@ -17,11 +17,6 @@ class SideBar extends Component {
     }
   }
 
-  returnToLotView = () => {
-    console.log("returntolotview")
-    this.props.changeViewType(1)
-  }
-
   componentDidMount() {
     fetch('/api/parking/all')
       .then(res => res.json())
@@ -57,7 +52,7 @@ class SideBar extends Component {
       return (
         <Menu {...this.props}>
           <Container width="100%">
-            <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => this.returnToLotView()} >
+            <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => changeViewType(1)} >
               {'Back'}
             </Button>
           </Container>

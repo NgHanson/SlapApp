@@ -46,6 +46,7 @@ const bindResizeListener = (map, maps, bounds) => {
   });
 };
 
+
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -131,7 +132,7 @@ class Main extends Component {
 
   fitMapToBounds = () => {
     const map = this.state.mapInstance;
-    const maps = this.state.mapApi    
+    const maps = this.state.mapApi;
     const bounds = getMapBounds(map, maps, this.state.places);
     map.fitBounds(bounds);
     bindResizeListener(map, maps, bounds);
@@ -184,7 +185,6 @@ class Main extends Component {
             onClick={this._onClick}
           >
             {/* Place Components on the map from json file */}
-            {/*mapApiLoaded && !isEmpty(places) && <Fragment>{this.showMapMarkers()}</Fragment>*/}
             {places.map((place) => {
               if (viewType === 1) {
                 return <Marker
