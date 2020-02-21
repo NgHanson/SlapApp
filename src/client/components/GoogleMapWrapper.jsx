@@ -186,6 +186,7 @@ class Main extends Component {
           >
             {/* Place Components on the map from json file */}
             {places.map((place) => {
+              // Note: https://stackoverflow.com/questions/41070083/wrong-location-of-marker-when-rendered-in-component
               if (viewType === 1) {
                 return <Marker
                   key={place.id}

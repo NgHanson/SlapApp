@@ -16,9 +16,6 @@ class SearchBox extends Component {
   }
 
   componentDidMount({ map, mapApi } = this.props) {
-    // console.log("componentDidMount");
-    // console.log(mapApi);
-    // console.log(mapApi.places);
     this.searchBox = new mapApi.places.SearchBox(this.searchInput);
     this.searchBox.addListener('places_changed', this.onPlacesChanged);
     this.searchBox.bindTo('bounds', map);
@@ -33,11 +30,6 @@ class SearchBox extends Component {
     const { 0: place } = selected;
     this.searchInput.blur();
     updateMapCenter(place.geometry.location.lat(), place.geometry.location.lng());
-    // searchForNearbyParking(place.geometry.location.lat(), place.geometry.location.lng())
-    //   .then(function(res) {
-    //     const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
-    //     addplace(placelist);
-    //   });
   };
 
   clearSearchBox() {

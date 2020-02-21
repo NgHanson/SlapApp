@@ -98,7 +98,7 @@ class MarkerModal extends Component {
   constructor(props) {
     super(props)
   }
-  _onClick = () => {
+  showDetails = () => {
       this.props.changeCurrentLot(this.props.lot_id);
       this.props.changeViewType(2);       
   }
@@ -109,6 +109,7 @@ class MarkerModal extends Component {
       userType,
       viewType,
     } = this.props;
+
     // More Details button brings you to the lot view
     /*
     Notes About lot ex. 2 hr max, paid parking, add a notes field to DB, if its marked as a 24hr lot maybe we wanna show diff
@@ -129,7 +130,7 @@ class MarkerModal extends Component {
           Note: Free Parking, 2 HR Max
         </div>
         <div style={{width: '70px', margin: '0 auto', paddingBottom: '5px'}}>
-          <Button variant={"info"} style={{fontSize: '11pt'}} onClick={() => this._onClick()} >
+          <Button variant={"info"} style={{fontSize: '11pt'}} onClick={() => this.showDetails()} >
             Details
           </Button>
         </div>
