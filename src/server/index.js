@@ -14,6 +14,7 @@ const io = socketIO(server);
 
 const eventRouter = require('./routes/eventRouter');
 const parkingAreaRouter = require('./routes/parkingAreaRouter');
+const deviceRouter = require('./routes/deviceRouter');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -23,6 +24,7 @@ app.use(bodyParser.json());
 app.use(express.static('dist'));
 app.use('/api/event', eventRouter);
 app.use('/api/parking', parkingAreaRouter);
+app.use('/api/devices', deviceRouter);
 
 app.get('/api/emit', function (req, res) {
   io.emit('DEVICE_DATA', {app_id: 'slap'});

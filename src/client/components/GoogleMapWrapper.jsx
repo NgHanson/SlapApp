@@ -2,8 +2,12 @@ import React, { Component, Fragment } from 'react';
 import isEmpty from 'lodash.isempty';
 
 import Marker from './Marker.jsx';
+import ParkingSpace from './ParkingSpace.jsx'
 import GoogleMap from './GoogleMap.jsx';
 import SideBar from "./SideBar";
+
+import { searchForNearbyParking, getDevicesInLot } from './clientCalls.js';
+import { parkingLotJSONToMapsFormat, parkingSpaceJSONToMapsFormat } from './formatConverter.js';
 
 // consts
 const WATERLOO_CENTER = [43.472393361375325, -80.53837152380368];
@@ -86,8 +90,55 @@ class Main extends Component {
     this.setState({places: []});
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log("googlemapswrapper component did update")
+    console.log(prevState.viewType)
+    console.log(this.state.viewType)
+    const self =this;
+    if (prevState.mapLat !== this.state.mapLat || prevState.mapLng !== this.state.mapLng) {
+      console.log("map center changed")
+      searchForNearbyParking(this.state.mapLat, this.state.mapLng)
+      .then(function(res) {
+        const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
+        self.addPlace(placelist);
+      }).then(function(res) {self.fitMapToBounds();});
+    }
+    if (prevState.viewType !== this.state.viewType) {
+      if (this.state.viewType == 1) {
+        console.log("changed to viewType 1")
+        self.addPlace([]);
+        searchForNearbyParking(this.state.mapLat, this.state.mapLng)
+        .then(function(res) {
+          const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
+          self.addPlace(placelist);
+        }).then(function(res) {self.fitMapToBounds();});
+      } else if (this.state.viewType == 2) {
+          self.addPlace([]);
+          console.log("changed to viewType 2");
+          getDevicesInLot(this.state.currentLotID).then(function(res) {
+            return parkingSpaceJSONToMapsFormat(res.devices);
+          }).then(function(locationsToMark){self.addPlace(locationsToMark)
+          }).then(function(res) { self.fitMapToBounds();});
+      }
+    }
+  }
+  changeCurrentLot = (lot_id) => {
+    this.setState({currentLotID: lot_id});
+  };
+
+  updateMapCenter =(lat, lng) => {
+    this.setState({mapLat: lat, mapLng: lng});
+  };
+
+  fitMapToBounds = () => {
+    const map = this.state.mapInstance;
+    const maps = this.state.mapApi;
+    const bounds = getMapBounds(map, maps, this.state.places);
+    map.fitBounds(bounds);
+    bindResizeListener(map, maps, bounds);
+  };
+
   addPlace = (place) => {
-    console.log("googlemapwrapper addPlace", place);
     this.setState({ places: place });
   };
 
@@ -120,6 +171,7 @@ class Main extends Component {
           outerContainerId={"MapsWrapper"}
           userTypeToggle={this.toggleUserType}
           changeViewType={this.changeViewType}
+          updateMapCenter={this.updateMapCenter}
           userType={userType}
           viewType={viewType}
         />
@@ -133,20 +185,28 @@ class Main extends Component {
             onClick={this._onClick}
           >
             {/* Place Components on the map from json file */}
-            {places.map(place => (
-              <Marker
-                key={place.id}
-                text={place.name}
-                lat={place.geometry.location.lat}
-                lng={place.geometry.location.lng}
-                changeViewType={this.changeViewType}
-                userType={userType}
-                viewType={viewType}
-              />
-            ))}
+            {places.map((place) => {
+              // Note: https://stackoverflow.com/questions/41070083/wrong-location-of-marker-when-rendered-in-component
+              if (viewType === 1) {
+                return <Marker
+                  key={place.id}
+                  lot_id={place.id}
+                  text={place.name}
+                  lat={place.geometry.location.lat}
+                  lng={place.geometry.location.lng}
+                  changeViewType={this.changeViewType}
+                  userType={userType}
+                  viewType={viewType}
+                  changeCurrentLot={this.changeCurrentLot}
+                ></Marker>                
+              } else if (viewType == 2) {
+                return <ParkingSpace key={place.id} place={place} lat={place.geometry.location.lat} lng={place.geometry.location.lng}/>
+              }
+            })}
+
 
             {/* Place Component on map click */}
-            {/*placeMarkerOnClick && <Marker key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
+            {/*placeMarkerOnClick && <ParkingSpace key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
           </GoogleMap>
       </div>
     );

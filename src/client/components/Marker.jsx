@@ -41,11 +41,13 @@ export default class Marker extends Component {
       changeViewType,
       userType,
       viewType,
+      lot_id,
+      changeCurrentLot
     } = this.props;
 
     return (
       <div>
-        {this.state.modalOpen && <MarkerModal closeModal={this.closeModal} userType={userType} changeViewType={changeViewType} viewType={viewType}/>}
+        {this.state.modalOpen && <MarkerModal changeCurrentLot={changeCurrentLot} lot_id={lot_id} closeModal={this.closeModal} userType={userType} changeViewType={changeViewType} viewType={viewType}/>}
         <div style={temp} onClick={()=>this.toggleModal()}>
           <div>
             <p style={{display: 'block', margin: 0}} >{this.props.text}</p>
@@ -93,6 +95,13 @@ const data = [
 ];
 
 class MarkerModal extends Component {
+  constructor(props) {
+    super(props)
+  }
+  showDetails = () => {
+      this.props.changeCurrentLot(this.props.lot_id);
+      this.props.changeViewType(2);       
+  }
   render() {
     const {
       closeModal,
@@ -100,7 +109,7 @@ class MarkerModal extends Component {
       userType,
       viewType,
     } = this.props;
-  
+
     // More Details button brings you to the lot view
     /*
     Notes About lot ex. 2 hr max, paid parking, add a notes field to DB, if its marked as a 24hr lot maybe we wanna show diff
@@ -121,7 +130,7 @@ class MarkerModal extends Component {
           Note: Free Parking, 2 HR Max
         </div>
         <div style={{width: '70px', margin: '0 auto', paddingBottom: '5px'}}>
-          <Button variant={"info"} style={{fontSize: '11pt'}} onClick={() => changeViewType(2)} >
+          <Button variant={"info"} style={{fontSize: '11pt'}} onClick={() => this.showDetails()} >
             Details
           </Button>
         </div>
