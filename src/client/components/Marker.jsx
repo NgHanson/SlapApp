@@ -1,31 +1,23 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
+import { Chart } from "react-google-charts";
 
 // MOVE THESE INTO A CSS
 const temp = {
   position: 'absolute',
-  top: '50%',
+  width: '75px',
+  height: '75px',
   left: '50%',
-  width: '50px',
-  height: '50px',
-  lineHeight: '50px',
-  backgroundColor: '#99ccff',
-  border:' 2px solid #fff',
+  top: '50%',
+  backgroundColor: 'white',
+  border:'2px solid #24305e',
   borderRadius: '100%',
   transform: 'translate(-50%, -50%)',
   textAlign: 'center',
   cursor: 'pointer',
-};
-
-const temp2 = {
-  position: 'absolute',
-  width: '160px',
-  height: '240px',
-  lineHeight: '50px',
-  backgroundColor: '#fff',
-  border:' 2px solid #fff',
-  textAlign: 'center',
-  cursor: 'pointer',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 };
 
 export default class Marker extends Component {
@@ -55,12 +47,50 @@ export default class Marker extends Component {
       <div>
         {this.state.modalOpen && <MarkerModal closeModal={this.closeModal} userType={userType} changeViewType={changeViewType} viewType={viewType}/>}
         <div style={temp} onClick={()=>this.toggleModal()}>
-          {this.props.text}
+          <div>
+            <p style={{display: 'block', margin: 0}} >{this.props.text}</p>
+            <p style={{display: 'block', margin: 0}} >10/100</p>
+          </div>
         </div>
       </div>
     );
   }
 }
+
+const options = {
+  title: "Occupancy",
+  legend: "none",
+  hAxis: { showTextEvery: 4 },
+  vAxis: { maxValue: 140 }, //this DN work?
+  isStacked: true,
+  series: {
+    0:{color:'#FF6B6B'},
+    1:{color:'#4ECDC4'},
+  }
+};
+
+const data = [
+  ["Time", "Current", "Avg"],
+  ["6am", 0, 10],
+  ["7am", 0, 20],
+  ["8am", 0, 40],
+  ["9am", 0, 80],
+  ["10am", 0, 100],
+  ["11am", 0, 120],
+  ["12pm", 0, 140],
+  ["1pm", 0, 130],
+  ["2pm", 0, 120],
+  ["3pm", 100, 20], //NEED TO DO MATH TO FIGURE THIS OUT
+  ["4pm", 0, 110],
+  ["5pm", 0, 90],
+  ["6pm", 0, 80],
+  ["7pm", 0, 80],
+  ["8pm", 0, 70],
+  ["9pm", 0, 70],
+  ["10pm", 0, 40],
+  ["11pm", 0, 20],
+  ["12am", 0, 20]
+];
 
 class MarkerModal extends Component {
   render() {
@@ -72,11 +102,29 @@ class MarkerModal extends Component {
     } = this.props;
   
     // More Details button brings you to the lot view
+    /*
+    Notes About lot ex. 2 hr max, paid parking, add a notes field to DB, if its marked as a 24hr lot maybe we wanna show diff
+    occupation times, for ex. generally 6am - 12am vs Fit4Less parking lot which is 24 hr
+    */
     return (
-      <div style={temp2} onClick={() => closeModal()}>
-        <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => changeViewType(2)} >
-          {`More Details - Current View ${viewType}`}
-        </Button>
+      <div style={{backgroundColor:'#fff', width:'fit-content', height: 'fit-content', border: '2px solid #24305e'}} onClick={() => closeModal()}>
+        <div className={"chart-container"}>
+          <Chart
+            chartType="ColumnChart"
+            width="360px"
+            height="160px"
+            data={data}
+            options={options}
+          />
+        </div>
+        <div style={{margin: '5px'}}>
+          Note: Free Parking, 2 HR Max
+        </div>
+        <div style={{width: '70px', margin: '0 auto', paddingBottom: '5px'}}>
+          <Button variant={"info"} style={{fontSize: '11pt'}} onClick={() => changeViewType(2)} >
+            Details
+          </Button>
+        </div>
       </div>
     );
   }

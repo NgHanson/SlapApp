@@ -28,7 +28,7 @@ export default class ParkingDisplay extends Component {
       table.push(
         <Row key={x}>
           <Col xs={6} style={{fontSize: '11pt'}}>{parkingareas[x]['name']}</Col>
-          <Col xs={3}style={{fontSize: '11pt'}}>{parkingareas[x]['occupied']}/{parkingareas[x]['capacity']}</Col>
+          <Col xs={3}style={{fontSize: '11pt'}}>{parkingareas[x]['occupancy']}/{parkingareas[x]['capacity']}</Col>
           <Col xs={3}><Button variant={"link"} style={{fontSize: '11pt'}}>View</Button></Col>
         </Row>);
     }
