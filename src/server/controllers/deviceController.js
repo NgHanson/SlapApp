@@ -13,7 +13,7 @@ const pool = new Pool({
 // Display list of all Events.
 exports.getDevicesForLot = function(req, res) {
   console.log(req.params.lot_id);
-  pool.query('SELECT * FROM devices ORDER BY device_id ASC', (error, results) => {
+  pool.query('SELECT * FROM devices WHERE lot_id = '+req.params.lot_id+' ORDER BY device_id ASC', (error, results) => {
     if (error) {
       console.log('ERROR', error);
     } else {
