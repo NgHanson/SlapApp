@@ -51,6 +51,14 @@ export default class ParkingSpace extends Component {
       ctx.fillStyle = '#90EE90';
     }
     ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
+    // Fill rectangle with text
+    ctx.font = "30 px monospace";
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "center";
+     /// text color
+    ctx.fillStyle = '#000';
+    /// draw text on top
+    ctx.fillText("yeet", 0, 0);
     
   }
   render() {
