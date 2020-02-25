@@ -136,6 +136,11 @@ class Main extends Component {
     const bounds = getMapBounds(map, maps, this.state.places);
     map.fitBounds(bounds);
     bindResizeListener(map, maps, bounds);
+    if (this.state.viewType == 2) {
+    map.setOptions({gestureHandling: "none"});
+  } else {
+    map.setOptions({gestureHandling: "auto"});
+  }
   };
 
   addPlace = (place) => {
