@@ -1,6 +1,7 @@
 // React Imports
 import React, { Component, Fragment } from 'react';
-
+// React-Icons Imports: https://react-icons.netlify.com/#/icons/fa
+import { FaMapMarkedAlt, FaTimes } from "react-icons/fa";
 // Bootstrap Imports
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -29,7 +30,8 @@ export default class ParkingDisplay extends Component {
         <Row key={x}>
           <Col xs={6} style={{fontSize: '11pt'}}>{parkingareas[x]['name']}</Col>
           <Col xs={3}style={{fontSize: '11pt'}}>{parkingareas[x]['occupancy']}/{parkingareas[x]['capacity']}</Col>
-          <Col xs={3}><Button variant={"link"} style={{fontSize: '11pt'}}>View</Button></Col>
+          {/*<Col xs={3}><Button variant={"link"} style={{fontSize: '11pt'}}>View</Button></Col>*/}
+          <Col xs={3}><FaMapMarkedAlt/><FaTimes/></Col>
         </Row>);
     }
     return table
