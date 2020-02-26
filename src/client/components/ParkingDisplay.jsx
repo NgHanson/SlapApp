@@ -1,7 +1,7 @@
 // React Imports
 import React, { Component, Fragment } from 'react';
 // React-Icons Imports: https://react-icons.netlify.com/#/icons/fa
-import { FaMapMarkedAlt, FaTimes } from "react-icons/fa";
+import { FaMapMarkedAlt, FaTimes, FaChartBar } from "react-icons/fa";
 // Bootstrap Imports
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -18,10 +18,13 @@ export default class ParkingDisplay extends Component {
     console.log(this.props.parkingareas);
   }
 
-  showParkingLots = () => {
+  showParkingLots = (parkingareas) => {
+    if (this.props.managedparkingareas !== null) {
+      console.log("erijfaoejfifjojeaoje")
+    }
     console.log("showParkingLots");
-    const parkingareas = this.props.parkingareas;
-    console.log(this.props.parkingareas)
+    // const parkingareas = ting
+    console.log(parkingareas)
     let table = []
 
     // Outer loop to create parent
@@ -33,7 +36,8 @@ export default class ParkingDisplay extends Component {
           <div className="mr-auto"><div style={{fontSize: '11pt'}}>{parkingareas[x]['occupancy']}/{parkingareas[x]['capacity']}</div></div>
           {/*<div className="p-2" xs={3}><Button variant={"link"} style={{fontSize: '11pt'}}>View</Button></div className="p-2">*/}
           <div className="p-2"><FaMapMarkedAlt className="display-icon" onClick={this.props.updateMapCenter.bind(this, parkingareas[x].lat, parkingareas[x].lng)}/></div>
-          <div className="p-2"><FaTimes/></div>
+          {this.props.parkingareas && <div className="p-2"><FaTimes className="display-icon"/></div>}
+          {this.props.managedparkingareas && <div className="p-2"><FaChartBar className="display-icon"/></div>}
         </Row>);
     }
     return table
@@ -44,7 +48,8 @@ export default class ParkingDisplay extends Component {
     return(
       <div style={{marginBottom:'20px'}}>
         <Row>{title}</Row>
-        <Fragment>{this.showParkingLots()}</Fragment>
+        {this.props.parkingareas && <Fragment>{this.showParkingLots(this.props.parkingareas)}</Fragment>}
+        {this.props.managedparkingareas && <Fragment>{this.showParkingLots(this.props.managedparkingareas)}</Fragment>}
         <Row className="justify-content-xs-center"><Col/><Col xs="auto"><Button variant='primary'>Add Lot</Button></Col><Col/></Row>
       </div>
     );

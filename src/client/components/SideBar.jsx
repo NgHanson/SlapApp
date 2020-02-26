@@ -39,8 +39,8 @@ class SideBar extends Component {
               <Row>Find Parking Near...</Row>
               <Row>{mapApiLoaded && <SearchBox updateMapCenter={updateMapCenter} map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
             </div>
-            {this.state.parkingAreas && <ParkingDisplay title='Saved Lots' updateMapCenter={updateMapCenter} parkingareas={this.state.parkingAreas}></ParkingDisplay>}
-            {this.state.parkingAreas && (userType==2) && <ParkingDisplay title='Managed Lots' parkingareas={this.state.parkingAreas}></ParkingDisplay>}
+            {this.state.parkingAreas && <ParkingDisplay title='Saved Lots' userType={userType} updateMapCenter={updateMapCenter} parkingareas={this.state.parkingAreas}></ParkingDisplay>}
+            {this.state.parkingAreas && (userType==2) && <ParkingDisplay title='Managed Lots' changeViewType={changeViewType} userType={userType} updateMapCenter={updateMapCenter} managedparkingareas={this.state.parkingAreas}></ParkingDisplay>}
           </Container>
           <div>
             <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => userTypeToggle()} >
