@@ -26,12 +26,14 @@ export default class ParkingDisplay extends Component {
 
     // Outer loop to create parent
     for (let x=0; x < parkingareas.length; x++) {
+      console.log(parkingareas[x])
       table.push(
-        <Row key={x}>
-          <Col xs={6} style={{fontSize: '11pt'}}>{parkingareas[x]['name']}</Col>
-          <Col xs={3}style={{fontSize: '11pt'}}>{parkingareas[x]['occupancy']}/{parkingareas[x]['capacity']}</Col>
-          {/*<Col xs={3}><Button variant={"link"} style={{fontSize: '11pt'}}>View</Button></Col>*/}
-          <Col xs={3}><FaMapMarkedAlt/><FaTimes/></Col>
+        <Row className="d-flex" key={x}>
+          <div className="mr-auto p-2"><div style={{fontSize: '11pt'}}>{parkingareas[x]['name']}</div></div>
+          <div className="mr-auto"><div style={{fontSize: '11pt'}}>{parkingareas[x]['occupancy']}/{parkingareas[x]['capacity']}</div></div>
+          {/*<div className="p-2" xs={3}><Button variant={"link"} style={{fontSize: '11pt'}}>View</Button></div className="p-2">*/}
+          <div className="p-2"><FaMapMarkedAlt className="display-icon" onClick={this.props.updateMapCenter.bind(this, parkingareas[x].lat, parkingareas[x].lng)}/></div>
+          <div className="p-2"><FaTimes/></div>
         </Row>);
     }
     return table
@@ -42,7 +44,7 @@ export default class ParkingDisplay extends Component {
     return(
       <div style={{marginBottom:'20px'}}>
         <Row>{title}</Row>
-        <Row>{this.showParkingLots()}</Row>
+        <Fragment>{this.showParkingLots()}</Fragment>
         <Row className="justify-content-xs-center"><Col/><Col xs="auto"><Button variant='primary'>Add Lot</Button></Col><Col/></Row>
       </div>
     );

@@ -4,3 +4,7 @@
     background-color: lightgrey;
     display: block;
 }
+
+.display-icon {
+	cursor: pointer;
+}
