@@ -119,6 +119,13 @@ class Main extends Component {
             return parkingSpaceJSONToMapsFormat(res.devices);
           }).then(function(locationsToMark){self.addPlace(locationsToMark)
           }).then(function(res) { self.fitMapToBounds();});
+      } else if (this.state.viewType == 3) {
+        self.addPlace([]);
+        console.log("Changed to viewType 3");
+          getDevicesInLot(this.state.currentLotID).then(function(res) {
+            return parkingSpaceJSONToMapsFormat(res.devices);
+          }).then(function(locationsToMark){self.addPlace(locationsToMark)
+          }).then(function(res) { self.fitMapToBounds();});
       }
     }
   }
@@ -179,6 +186,7 @@ class Main extends Component {
           updateMapCenter={this.updateMapCenter}
           userType={userType}
           viewType={viewType}
+          changeCurrentLot={this.changeCurrentLot}
         />
         
         {/* Google Map */}
@@ -204,7 +212,7 @@ class Main extends Component {
                   viewType={viewType}
                   changeCurrentLot={this.changeCurrentLot}
                 ></Marker>                
-              } else if (viewType == 2) {
+              } else if (viewType == 2 || viewType == 3) {
                 return <ParkingSpace key={place.id} place={place} lat={place.geometry.location.lat} lng={place.geometry.location.lng}/>
               }
             })}

@@ -27,7 +27,7 @@ class SideBar extends Component {
 
   render() {
     const {
-       mapApiLoaded, map, mapApi, addplace, userType, userTypeToggle, viewType, changeViewType, updateMapCenter
+       mapApiLoaded, map, mapApi, addplace, userType, userTypeToggle, viewType, changeViewType, updateMapCenter, changeCurrentLot
     } = this.props;
 
     if (viewType == 1) { //General View
@@ -40,7 +40,7 @@ class SideBar extends Component {
               <Row>{mapApiLoaded && <SearchBox updateMapCenter={updateMapCenter} map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
             </div>
             {this.state.parkingAreas && <ParkingDisplay title='Saved Lots' userType={userType} updateMapCenter={updateMapCenter} parkingareas={this.state.parkingAreas}></ParkingDisplay>}
-            {this.state.parkingAreas && (userType==2) && <ParkingDisplay title='Managed Lots' changeViewType={changeViewType} userType={userType} updateMapCenter={updateMapCenter} managedparkingareas={this.state.parkingAreas}></ParkingDisplay>}
+            {this.state.parkingAreas && (userType==2) && <ParkingDisplay title='Managed Lots' changeCurrentLot={changeCurrentLot} changeViewType={changeViewType} userType={userType} updateMapCenter={updateMapCenter} managedparkingareas={this.state.parkingAreas}></ParkingDisplay>}
           </Container>
           <div>
             <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => userTypeToggle()} >
