@@ -19,6 +19,8 @@ export function parkingSpaceJSONToMapsFormat(placelist) {
 	for (let i = 0; i < placelist.length; i++) {
 	locationsToMark.push({id: placelist[i].device_id,
 	                      active: placelist[i].active,
+                        occupied: placelist[i].occupied,
+                        updated_date: placelist[i].updated_date,
 	                      geometry: {
 	                        location: {
 	                          lat: placelist[i].lat,

@@ -45,8 +45,10 @@ export default class ParkingSpace extends Component {
     ctx.fillRect(rectX - (thickness), rectY - (thickness), rectWidth + (thickness * 2), rectHeight + (thickness * 2));
   }
   drawParkingSpaceBody(ctx, rectX, rectY, rectWidth, rectHeight) {
-    // Draw actual parking space
-    if (this.props.place.active) {
+    // If the space is not active (sensor is not on), draw as Grey
+    if (!this.props.place.active) {
+      ctx.fillStyle = "#C2C5CC";
+    } else if (this.props.place.occupied) {
       ctx.fillStyle = '#FFCCCB';
     } else {
       ctx.fillStyle = '#90EE90';
@@ -64,11 +66,13 @@ export default class ParkingSpace extends Component {
     ctx.fillText(textBody, textX, textY);    
   }
   componentDidMount() {
+    console.log("componentDidMount");
+    console.log(this.props)
     const {rectWidth, rectHeight, rectX, rectY, thickness} = this.getParkingSpaceDimensions();
     const {canvas, ctx} = this.setupCanvas();
     this.drawSpaceBorder(ctx, rectX, rectY, rectWidth, rectHeight, thickness);
     this.drawParkingSpaceBody(ctx, rectX, rectY, rectWidth, rectHeight);
-    this.fillSpaceText(ctx, "yeet", 0, 0);
+    this.fillSpaceText(ctx, this.props.place.updated_date, 0, 0);
   }
   render() {
     return(
