@@ -19,7 +19,7 @@ exports.getDevicesForLot = function(req, res) {
     } else {
       if (results && results.rows) {
         var list = results.rows;
-        console.log(list);
+        console.log(list[0]);
         res.send({devices: list});
       }
     }

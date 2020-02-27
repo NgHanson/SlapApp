@@ -56,14 +56,21 @@ export default class ParkingSpace extends Component {
     ctx.fillRect(rectX, rectY, rectWidth, rectHeight);    
   }
   fillSpaceText(ctx, textBody, textX, textY) {
+    const last_updated = new Date(textBody);
+    const curr_time = new Date();
+    const time_diff = new Date(curr_time - last_updated);
+    const time_string = "Last Update:\n" + time_diff.getHours() + "h " + time_diff.getMinutes() + "m " + time_diff.getSeconds() + "s";
     // Fill rectangle with text
     ctx.font = "30 px monospace";
     ctx.textBaseline = "middle";
     ctx.textAlign = "center";
      /// text color
     ctx.fillStyle = '#000';
-    /// draw text on top
-    ctx.fillText(textBody, textX, textY);    
+    var lineheight = 15;
+    var lines = time_string.split('\n');
+
+    for (var i = 0; i<lines.length; i++)
+      ctx.fillText(lines[i], textX, textY + (i*lineheight) );
   }
   componentDidMount() {
     console.log("componentDidMount");
