@@ -34,19 +34,19 @@ class SideBar extends Component {
       return (
         // Pass on our props
         <Menu {...this.props}>
-          <Container width="100%">
-            <div style={{marginBottom:'20px'}}>
+          <Container className="flex-column" style={{width: "100%", height: "90%"}}>
               <Row>Find Parking Near...</Row>
               <Row>{mapApiLoaded && <SearchBox updateMapCenter={updateMapCenter} map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
-            </div>
-            {this.state.parkingAreas && <ParkingDisplay title='Saved Lots' userType={userType} updateMapCenter={updateMapCenter} parkingareas={this.state.parkingAreas}></ParkingDisplay>}
-            {this.state.parkingAreas && (userType==2) && <ParkingDisplay title='Managed Lots' changeCurrentLot={changeCurrentLot} changeViewType={changeViewType} userType={userType} updateMapCenter={updateMapCenter} managedparkingareas={this.state.parkingAreas}></ParkingDisplay>}
+            <Row>
+              {this.state.parkingAreas && <ParkingDisplay title='Saved Lots' userType={userType} updateMapCenter={updateMapCenter} parkingareas={this.state.parkingAreas}></ParkingDisplay>}
+              {this.state.parkingAreas && (userType==2) && <ParkingDisplay title='Managed Lots' changeCurrentLot={changeCurrentLot} changeViewType={changeViewType} userType={userType} updateMapCenter={updateMapCenter} managedparkingareas={this.state.parkingAreas}></ParkingDisplay>}
+            </Row>
+            <Row style={{bottom: "20px", position: "absolute"}}>
+              <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => userTypeToggle()} >
+                {userType == 1 ? 'User Type: Standard User' : 'User Type: Owner'}
+              </Button>
+            </Row>
           </Container>
-          <div>
-            <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => userTypeToggle()} >
-              {userType == 1 ? 'User Type: Standard User' : 'User Type: Owner'}
-            </Button>
-          </div>
         </Menu>
       );
     } else if (viewType == 2) { // Lot

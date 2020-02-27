@@ -53,12 +53,12 @@ export default class ParkingDisplay extends Component {
   render() {
     const { title } = this.props;
     return(
-      <div style={{marginBottom:'20px'}}>
+      <Container style={{marginBottom:'20px'}}>
         <Row>{title}</Row>
         {this.props.parkingareas && <Fragment>{this.showParkingLots(this.props.parkingareas)}</Fragment>}
         {this.props.managedparkingareas && <Fragment>{this.showParkingLots(this.props.managedparkingareas)}</Fragment>}
         <Row className="justify-content-xs-center"><Col/><Col xs="auto"><Button variant='primary'>Add Lot</Button></Col><Col/></Row>
-      </div>
+      </Container>
     );
   }
 }
