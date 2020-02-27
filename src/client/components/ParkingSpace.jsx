@@ -17,40 +17,43 @@ export default class ParkingSpace extends Component {
     console.log("ParkingSpaceConstructor")
     console.log(this.props);
   }
-  componentDidMount() {
+  setupCanvas() {
     const angle = this.props.place.geometry.rotation;
-    if (angle !== -26.76691451) {
-      console.log(this.props.place)
-      console.error("feiafoeiajiofoijfaejio")
-
-    }
     const canvas = this.canvasRef.current;
     const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
+    ctx.save();
+    ctx.beginPath();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Center the rectangle in the canvas
+    ctx.translate(canvas.width/2, canvas.height/2);
+    // CW radians
+    ctx.rotate((angle * Math.PI) / 180);
+    return {canvas, ctx};
+  }
+  getParkingSpaceDimensions() {
     const rectWidth = 50;
     // Normal aspect ratio for a parking space
     const rectHeight = rectWidth*6.7/2.6;
     const rectX = -rectWidth / 2;
     const rectY = -rectHeight / 2;
     const thickness = 3;
-    ctx.save();
-    ctx.beginPath();
-    ctx.clearRect(0, 0, width, height);
-    // Center the rectangle in the canvas
-    ctx.translate(width/2, height/2);
-    // CW radians
-    ctx.rotate((angle * Math.PI) / 180);
+    return {rectWidth, rectHeight, rectX, rectY, thickness};
+  }
+  drawSpaceBorder(ctx, rectX, rectY, rectWidth, rectHeight, thickness) {
     // Draw border rectangle
     ctx.fillStyle='#000';
     ctx.fillRect(rectX - (thickness), rectY - (thickness), rectWidth + (thickness * 2), rectHeight + (thickness * 2));
+  }
+  drawParkingSpaceBody(ctx, rectX, rectY, rectWidth, rectHeight) {
     // Draw actual parking space
     if (this.props.place.active) {
       ctx.fillStyle = '#FFCCCB';
     } else {
       ctx.fillStyle = '#90EE90';
     }
-    ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
+    ctx.fillRect(rectX, rectY, rectWidth, rectHeight);    
+  }
+  fillSpaceText(ctx, textBody, textX, textY) {
     // Fill rectangle with text
     ctx.font = "30 px monospace";
     ctx.textBaseline = "middle";
@@ -58,8 +61,14 @@ export default class ParkingSpace extends Component {
      /// text color
     ctx.fillStyle = '#000';
     /// draw text on top
-    ctx.fillText("yeet", 0, 0);
-    
+    ctx.fillText(textBody, textX, textY);    
+  }
+  componentDidMount() {
+    const {rectWidth, rectHeight, rectX, rectY, thickness} = this.getParkingSpaceDimensions();
+    const {canvas, ctx} = this.setupCanvas();
+    this.drawSpaceBorder(ctx, rectX, rectY, rectWidth, rectHeight, thickness);
+    this.drawParkingSpaceBody(ctx, rectX, rectY, rectWidth, rectHeight);
+    this.fillSpaceText(ctx, "yeet", 0, 0);
   }
   render() {
     return(
