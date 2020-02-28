@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { slide as Menu } from "react-burger-menu";
 import ParkingDisplay from './ParkingDisplay';
-import AnalyticsDashboard from './AnalyticsDashboard';
+import AnalyticsSelector from './AnalyticsSelector';
 import SearchBox from './SearchBox';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import * as Colour from './colour_consts';
 
 class SideBar extends Component {
   constructor(props) {
@@ -27,13 +27,22 @@ class SideBar extends Component {
 
   render() {
     const {
-       mapApiLoaded, map, mapApi, addplace, userType, userTypeToggle, viewType, changeViewType, updateMapCenter, changeCurrentLot
+       mapApiLoaded,
+       map,
+       mapApi,
+       addplace,
+       userType,
+       userTypeToggle,
+       viewType,
+       changeViewType,
+       updateMapCenter,
+       changeCurrentLot
     } = this.props;
 
     if (viewType == 1) { //General View
       return (
         // Pass on our props
-        <Menu {...this.props}>
+        <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
           <Container className="flex-column" style={{width: "100%", height: "90%"}}>
               <Row>Find Parking Near...</Row>
               <Row>{mapApiLoaded && <SearchBox updateMapCenter={updateMapCenter} map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
@@ -52,7 +61,7 @@ class SideBar extends Component {
     } else if (viewType == 2) { // Lot
 
       return (
-        <Menu {...this.props}>
+        <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
           <Container width="100%">
             <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => changeViewType(1)} >
               {'Back'}
@@ -63,9 +72,9 @@ class SideBar extends Component {
 
     } else { // Analytics
       return (
-        <Menu {...this.props}>
+        <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
           <Container width="100%">
-            <AnalyticsDashboard></AnalyticsDashboard>
+            <AnalyticsSelector></AnalyticsSelector>
             <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => changeViewType(1)} >
               {'Back'}
             </Button>

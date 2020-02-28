@@ -5,7 +5,7 @@ import GoogleMapReact from 'google-map-react';
 
 const Wrapper = styled.main`
   width: 100%;
-  height: 100%;
+  height: 90%;
 `;
 
 const GoogleMap = ({ children, ...props }) => (
