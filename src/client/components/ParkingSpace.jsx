@@ -59,7 +59,7 @@ export default class ParkingSpace extends Component {
     const last_updated = new Date(textBody);
     const curr_time = new Date();
     const time_diff = new Date(curr_time - last_updated);
-    const time_string = "Last Update:\n" + time_diff.getHours() + "h " + time_diff.getMinutes() + "m " + time_diff.getSeconds() + "s";
+    const time_string = this.props.place.id + "\nLast Update:\n" + time_diff.getHours() + "h " + time_diff.getMinutes() + "m " + time_diff.getSeconds() + "s";
     // Fill rectangle with text
     ctx.font = "30 px monospace";
     ctx.textBaseline = "middle";
