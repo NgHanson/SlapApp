@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Chart } from "react-google-charts";
 import { lotOccupancyGraph } from './examples.js';
+import * as Colour from './colour_consts';
 
 // MOVE THESE INTO A CSS
 const temp = {
@@ -67,8 +68,8 @@ const options = {
   vAxis: { maxValue: 140 }, //this DN work?
   isStacked: true,
   series: {
-    0:{color:'#FF6B6B'},
-    1:{color:'#4ECDC4'},
+    0:{color: Colour.LIGHT_RED},
+    1:{color: Colour.LIGHT_BLUE},
   }
 };
 
