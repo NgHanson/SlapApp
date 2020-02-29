@@ -172,8 +172,6 @@ class Main extends Component {
       places, mapApiLoaded, mapInstance, mapApi, placeMarkerOnClick, userType, viewType
     } = this.state;
 
-    var googleMapStyle = {width: '100%', height: (viewType == 3 ? '90%' : '100%')};
-
     return (
       <div id="MapsWrapper" className="fill-window">
         {/* Hamburger Menu Sidebar */}
@@ -193,38 +191,39 @@ class Main extends Component {
           changeCurrentLot={this.changeCurrentLot}
         />
         
-        <GoogleMap
-          defaultZoom={10}
-          defaultCenter={WATERLOO_CENTER}
-          yesIWantToUseGoogleMapApiInternals
-          onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps, places)}
-          onClick={this._onClick}
-          wrapperStyle={googleMapStyle}
-        >
-          {/* Place Components on the map from json file */}
-          {places.map((place) => {
-            // Note: https://stackoverflow.com/questions/41070083/wrong-location-of-marker-when-rendered-in-component
-            if (viewType === 1) {
-              return <Marker
-                key={place.id}
-                lot_id={place.id}
-                text={place.name}
-                lat={place.geometry.location.lat}
-                lng={place.geometry.location.lng}
-                changeViewType={this.changeViewType}
-                userType={userType}
-                viewType={viewType}
-                changeCurrentLot={this.changeCurrentLot}
-              ></Marker>                
-            } else if (viewType == 2 || viewType == 3) {
-              return <ParkingSpace key={place.id} place={place} lat={place.geometry.location.lat} lng={place.geometry.location.lng}/>
-            }
-          })}
+        <div style={{width: '100%', height: (viewType == 3 ? '90%' : '100%')}}>
+          <GoogleMap
+            defaultZoom={10}
+            defaultCenter={WATERLOO_CENTER}
+            yesIWantToUseGoogleMapApiInternals
+            onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps, places)}
+            onClick={this._onClick}
+          >
+            {/* Place Components on the map from json file */}
+            {places.map((place) => {
+              // Note: https://stackoverflow.com/questions/41070083/wrong-location-of-marker-when-rendered-in-component
+              if (viewType === 1) {
+                return <Marker
+                  key={place.id}
+                  lot_id={place.id}
+                  text={place.name}
+                  lat={place.geometry.location.lat}
+                  lng={place.geometry.location.lng}
+                  changeViewType={this.changeViewType}
+                  userType={userType}
+                  viewType={viewType}
+                  changeCurrentLot={this.changeCurrentLot}
+                ></Marker>                
+              } else if (viewType == 2 || viewType == 3) {
+                return <ParkingSpace key={place.id} place={place} lat={place.geometry.location.lat} lng={place.geometry.location.lng}/>
+              }
+            })}
 
 
-          {/* Place Component on map click */}
-          {/*placeMarkerOnClick && <ParkingSpace place={{geometry: {rotation: 63.23308549}}} key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
-        </GoogleMap>
+            {/* Place Component on map click */}
+            {/*placeMarkerOnClick && <ParkingSpace place={{geometry: {rotation: 63.23308549}}} key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
+          </GoogleMap>
+        </div>
         {viewType == 3 && <AnalyticsDashboard/>}
       </div>
     );
