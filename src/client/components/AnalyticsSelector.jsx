@@ -119,40 +119,40 @@ export default class AnalyticsSelector extends Component {
           <Col xs={4}>
             <Row>Year</Row>
             <Row>
-              <input type="number" name={'fromYear'} placeholder={'Any'} onChange={(event) => this.handleChange(event)}/>
+              <input type="number" value={this.state.fromYear} name={'fromYear'} onChange={(event) => this.handleChange(event)}/>
             </Row>
           </Col>
           <Col xs={4}>
             <Row>Month</Row>
             <Row>
-              <input type="number" name={'fromMonth'} placeholder={'Any'} onChange={(event) => this.handleChange(event)}/>
+              <input type="number" value={this.state.fromMonth} name={'fromMonth'} onChange={(event) => this.handleChange(event)}/>
             </Row>
             </Col>
           <Col xs={4}>
             <Row>Day</Row>
             <Row>
-              <input type="number" name={'fromDay'} placeholder={'Any'} onChange={(event) => this.handleChange(event)}/>
+              <input type="number" value={this.state.fromDay} name={'fromDay'} onChange={(event) => this.handleChange(event)}/>
             </Row>
           </Col>
         </Row>
         <Row>Start Time</Row>
         <Row>
           <Col xs={5}>
-            <input type="number" name={'fromStartHour'} placeholder={'HH'} defaultValue={this.state.fromStartHour} onChange={(event) => this.handleChange(event)}/>
+            <input type="number" value={this.state.fromStartHour} name={'fromStartHour'} onChange={(event) => this.handleChange(event)}/>
           </Col>
           <Col xs={2}>:</Col>
           <Col xs={5}>
-            <input type="number" name={'fromStartMin'} placeholder={'MM'} onChange={(event) => this.handleChange(event)}/>
+            <input type="number" value={this.state.fromStartMin} name={'fromStartMin'} onChange={(event) => this.handleChange(event)}/>
           </Col>
         </Row>
         <Row>End Time</Row>
         <Row>
           <Col xs={5}>
-          <input type="number" name={'fromEndHour'} placeholder={'HH'} onChange={(event) => this.handleChange(event)}/>
+          <input type="number" value={this.state.fromEndHour} name={'fromEndHour'} onChange={(event) => this.handleChange(event)}/>
           </Col>
           <Col xs={2}>:</Col>
           <Col xs={5}>
-          <input type="number" name={'fromEndMin'} placeholder={'MM'} onChange={(event) => this.handleChange(event)}/>
+          <input type="number" value={this.state.fromEndMin} name={'fromEndMin'} onChange={(event) => this.handleChange(event)}/>
           </Col>
         </Row>
         <Row>
@@ -162,40 +162,40 @@ export default class AnalyticsSelector extends Component {
           <Col xs={4}>
             <Row>Year</Row>
             <Row>
-              <input type="number" name={'toYear'} placeholder={'Any'} onChange={(event) => this.handleChange(event)}/>
+              <input type="number" value={this.state.toYear} name={'toYear'} onChange={(event) => this.handleChange(event)}/>
             </Row>
           </Col>
           <Col xs={4}>
             <Row>Month</Row>
             <Row>
-              <input type="number" name={'toMonth'} placeholder={'Any'} onChange={(event) => this.handleChange(event)}/>
+              <input type="number" value={this.state.toMonth} name={'toMonth'} onChange={(event) => this.handleChange(event)}/>
             </Row>
             </Col>
           <Col xs={4}>
             <Row>Day</Row>
             <Row>
-              <input type="number" name={'toDay'} placeholder={'Any'} onChange={(event) => this.handleChange(event)}/>
+              <input type="number" value={this.state.toDay} name={'toDay'} onChange={(event) => this.handleChange(event)}/>
             </Row>
           </Col>
         </Row>
         <Row>Start Time</Row>
         <Row>
           <Col xs={5}>
-            <input type="number" name={'toStartHour'} placeholder={'HH'} onChange={(event) => this.handleChange(event)}/>
+            <input type="number" value={this.state.toStartHour} name={'toStartHour'} onChange={(event) => this.handleChange(event)}/>
           </Col>
           <Col xs={2}>:</Col>
           <Col xs={5}>
-            <input type="number" name={'toStartMin'} placeholder={'MM'} onChange={(event) => this.handleChange(event)}/>
+            <input type="number" value={this.state.toStartMin} name={'toStartMin'} onChange={(event) => this.handleChange(event)}/>
           </Col>
         </Row>
         <Row>End Time</Row>
         <Row>
           <Col xs={5}>
-            <input type="number" name={'toEndHour'} placeholder={'HH'} onChange={(event) => this.handleChange(event)}/>
+            <input type="number" value={this.state.toEndHour} name={'toEndHour'} onChange={(event) => this.handleChange(event)}/>
           </Col>
           <Col xs={2}>:</Col>
           <Col xs={5}>
-            <input type="number" name={'toEndMin'} placeholder={'MM'} onChange={(event) => this.handleChange(event)}/>
+            <input type="number" value={this.state.toEndMin} name={'toEndMin'} onChange={(event) => this.handleChange(event)}/>
           </Col>
         </Row>
         <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => this.onSubmit()} >
