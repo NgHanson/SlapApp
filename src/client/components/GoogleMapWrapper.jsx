@@ -59,6 +59,7 @@ class Main extends Component {
       placeMarkerOnClick: false,
       userType: 1,
       viewType: 1,
+      analyticsSelections: {},
     };
   }
 
@@ -68,6 +69,11 @@ class Main extends Component {
 
   changeViewType = (type) => {
     this.setState({viewType: type});
+  }
+
+  setAnalyticsSelections = (selections) => {
+    console.log("set selections", selections);
+    this.setState({analyticsSelections: selections});
   }
 
   apiIsLoaded = (map, maps, places) => {
@@ -189,6 +195,7 @@ class Main extends Component {
           userType={userType}
           viewType={viewType}
           changeCurrentLot={this.changeCurrentLot}
+          setAnalyticsSelections={this.setAnalyticsSelections}
         />
         
         <div style={{width: '100%', height: (viewType == 3 ? '90%' : '100%')}}>
