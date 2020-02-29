@@ -130,6 +130,7 @@ class Main extends Component {
       }
     }
   }
+
   changeCurrentLot = (lot_id) => {
     this.setState({currentLotID: lot_id});
   };
@@ -144,11 +145,11 @@ class Main extends Component {
     const bounds = getMapBounds(map, maps, this.state.places);
     map.fitBounds(bounds);
     bindResizeListener(map, maps, bounds);
-    if (this.state.viewType == 2) {
-    map.setOptions({gestureHandling: "none"});
-  } else {
-    map.setOptions({gestureHandling: "auto"});
-  }
+    if (this.state.viewType == 2 || this.state.viewType == 3) {
+      map.setOptions({gestureHandling: "none"});
+    } else {
+      map.setOptions({gestureHandling: "auto"});
+    }
   };
 
   addPlace = (place) => {
@@ -173,7 +174,7 @@ class Main extends Component {
     } = this.state;
 
     return (
-      <div id="MapsWrapper" className="fill-window">
+      <div id="MapsWrapper" className="fill-window" style={{overflowY: (viewType == 3 ? 'scroll' : '')}}>
         {/* Hamburger Menu Sidebar */}
         <SideBar 
           isOpen={true}
