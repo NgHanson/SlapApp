@@ -7,7 +7,7 @@ import GoogleMap from './GoogleMap.jsx';
 import SideBar from "./SideBar";
 import AnalyticsDashboard from "./AnalyticsDashboard";
 
-import { searchForNearbyParking, getDevicesInLot } from './clientCalls.js';
+import { searchForNearbyParking, getDevicesInLot, getAnalyticsSelections } from './clientCalls.js';
 import { parkingLotJSONToMapsFormat, parkingSpaceJSONToMapsFormat } from './formatConverter.js';
 
 // consts
@@ -135,6 +135,10 @@ class Main extends Component {
           }).then(function(res) { self.fitMapToBounds();});
       }
     }
+      // console.log(this.state.analyticsSelections)
+      if (this.state.analyticsSelections !== prevState.analyticsSelections) {
+        console.log(getAnalyticsSelections(this.state.currentLotID, this.state.analyticsSelections))
+      }
   }
   changeCurrentLot = (lot_id) => {
     this.setState({currentLotID: lot_id});
@@ -196,6 +200,7 @@ class Main extends Component {
           viewType={viewType}
           changeCurrentLot={this.changeCurrentLot}
           setAnalyticsSelections={this.setAnalyticsSelections}
+          currentLotID={this.state.currentLotID}
         />
         
         <div style={{width: '100%', height: (viewType == 3 ? '90%' : '100%')}}>

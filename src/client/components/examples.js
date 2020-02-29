@@ -25,8 +25,8 @@ export const lotOccupancyGraph = [
 // Example: Higher Traffic 9-5
 export const exHigherTraffic9To5 = {
 	first: {
-		year: "any",
-		month: "any",
+		year: "",
+		month: "",
 		day: 13,
 		startH: 9,
 		startM: 0,
@@ -34,8 +34,8 @@ export const exHigherTraffic9To5 = {
 		endM: 0,
 	},
 	second: {
-		year: "any",
-		month: "any",
+		year: "",
+		month: "",
 		day: 13,
 		startH: 17,
 		startM: 0,
