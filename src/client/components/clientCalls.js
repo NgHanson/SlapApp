@@ -16,3 +16,14 @@ export function getDevicesInLot(lot_id) {
   const query_string = '/api/devices/fromlot/'+lot_id;
   return fetch(query_string).then(function(res) {return res.json();});
 }
+
+export function getAnalyticsSelections(currentLotID, analyticsSelections) {
+ var payload = JSON.stringify({lot_id: currentLotID, analyticsSelections: analyticsSelections});
+ return fetch('/api/parking/analytics', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: payload,
+ }).then(function(res) {return res.json();});
+}

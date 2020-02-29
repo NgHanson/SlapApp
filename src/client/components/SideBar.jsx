@@ -36,7 +36,9 @@ class SideBar extends Component {
        viewType,
        changeViewType,
        updateMapCenter,
-       changeCurrentLot
+       changeCurrentLot,
+       setAnalyticsSelections,
+       currentLotID,
     } = this.props;
 
     if (viewType == 1) { //General View
@@ -74,7 +76,7 @@ class SideBar extends Component {
       return (
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
           <Container width="100%">
-            <AnalyticsSelector></AnalyticsSelector>
+            <AnalyticsSelector currentLotID={currentLotID} setAnalyticsSelections={setAnalyticsSelections}></AnalyticsSelector>
             <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => changeViewType(1)} >
               {'Back'}
             </Button>
