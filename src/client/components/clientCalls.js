@@ -19,7 +19,7 @@ export function getDevicesInLot(lot_id) {
 
 export function getAnalyticsSelections(currentLotID, analyticsSelections) {
  var payload = JSON.stringify({lot_id: currentLotID, analyticsSelections: analyticsSelections});
- return fetch('/api/parking/analytics', {
+ return fetch('/api/parking/analyticsrange', {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',

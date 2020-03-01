@@ -1,3 +1,5 @@
+var { exHigherTraffic9To5, exBusierOnWeekdays, exMoralsNearDinner, exBusierOnValentines } = require('../../client/components/examples.js');
+
 const Pool = require('pg').Pool
 
 const dbConfig = require('../../../config')['development']['database'];
@@ -53,4 +55,52 @@ exports.getNearbyParking = function(req, res) {
 			}
 		}
 	});
+}
+
+
+const exBody9to5 = {
+     fromYear: '',
+     fromMonth: '',
+     fromDay: 13,
+     fromStartHour: 9,
+     fromStartMin: 0,
+     fromEndHour: 17,
+     fromEndMin: 0,
+     toYear: '',
+     toMonth: '',
+     toDay: 13,
+     toStartHour: 17,
+     toStartMin: 0,
+     toEndHour: 9,
+     toEndMin: 0
+   };
+
+exports.getParkingAnalyticsForTimeRange = function(req, res) {
+
+	console.log("analytics for time range")
+	console.log(req.body)
+	const body = req.body;
+	// Example lot
+	if (body.lot_id === "1") {
+		if (String(req.body.analyticsSelections) == String(exBody9to5)) {
+			console.log("9 to 5 example");
+			console.log(exHigherTraffic9To5.lotValues)
+			const q_lot = 'SELECT * FROM devices WHERE lot_id = ' + body.lot_id + ' ORDER BY device_id ASC';
+			pool.query(q_lot, (error, results) => {
+				if (error) {
+					console.log("ERROR in getParkingAnalyticsForTimeRange", error);
+				} else {
+					if (results && results.rows) {
+						var curr_response = results.rows;
+						// console.log(results.rows);
+						for (var i = 0; i < results.rows.length; i++) {
+							curr_response[i]['analytics_percentage'] = exHigherTraffic9To5.lotValues[results.rows[i].device_id];
+						}
+						res.send({devices: curr_response});
+						console.log("done")
+					}
+				}
+			})
+		}
+	}
 }

@@ -72,14 +72,19 @@ export default class ParkingSpace extends Component {
     for (var i = 0; i<lines.length; i++)
       ctx.fillText(lines[i], textX, textY + (i*lineheight) );
   }
-  componentDidMount() {
+  componentDidUpdate(prevProps, prevState) {
     console.log("componentDidMount");
     console.log(this.props)
     const {rectWidth, rectHeight, rectX, rectY, thickness} = this.getParkingSpaceDimensions();
     const {canvas, ctx} = this.setupCanvas();
     this.drawSpaceBorder(ctx, rectX, rectY, rectWidth, rectHeight, thickness);
     this.drawParkingSpaceBody(ctx, rectX, rectY, rectWidth, rectHeight);
-    this.fillSpaceText(ctx, this.props.place.updated_date, 0, 0);
+    if (this.props.viewType == 2) {
+      this.fillSpaceText(ctx, this.props.place.updated_date, 0, 0);  
+    } else if (this.props.viewType == 3) {
+      this.fillSpaceText(ctx, this.props.place.analytics_percentage, 0, 0);
+    }
+    
   }
   render() {
     return(

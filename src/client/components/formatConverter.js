@@ -27,6 +27,7 @@ export function parkingSpaceJSONToMapsFormat(placelist) {
 	                          lng: placelist[i].lng
 	                        },
 	                        rotation: placelist[i].rotation_degrees,
+                          analytics_percentage: placelist[i].analytics_percentage,
 	                      }
 	                    });
 	}

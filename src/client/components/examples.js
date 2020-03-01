@@ -1,5 +1,5 @@
 // Constants for Lot 1 Demos
-export const lotOccupancyGraph = [
+const lotOccupancyGraph = [
   ["Time", "Current", "Avg"],
   ["6am", 0, 10],
   ["7am", 0, 20],
@@ -23,7 +23,7 @@ export const lotOccupancyGraph = [
 ];
 
 // Example: Higher Traffic 9-5
-export const exHigherTraffic9To5 = {
+const exHigherTraffic9To5 = {
 	first: {
 		year: "",
 		month: "",
@@ -99,7 +99,7 @@ export const exHigherTraffic9To5 = {
 };
 
 // Example: Busier on Weekdays
-export const exBusierOnWeekdays = {
+const exBusierOnWeekdays = {
 	first: {
 		year: "any",
 		month: "any",
@@ -173,7 +173,7 @@ export const exBusierOnWeekdays = {
 };
 
 // Example: Busier near Morals village around dinner time
-export const exMoralsNearDinner = {
+const exMoralsNearDinner = {
 	first: {
 		year: "any",
 		month: "any",
@@ -247,7 +247,7 @@ export const exMoralsNearDinner = {
 };
 
 // Entire parking lot was busier on valentines day
-export const exBusierOnValentines = {
+const exBusierOnValentines = {
 	first: {
 		year: "any",
 		month: "any",
@@ -318,4 +318,12 @@ export const exBusierOnValentines = {
 		"49": 49,
 		"50": 50,
 	}
+};
+
+module.exports = {
+	lotOccupancyGraph,
+	exHigherTraffic9To5,
+	exBusierOnWeekdays,
+	exMoralsNearDinner,
+	exBusierOnValentines,
 };
