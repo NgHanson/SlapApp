@@ -137,7 +137,11 @@ class Main extends Component {
     }
       // console.log(this.state.analyticsSelections)
       if (this.state.analyticsSelections !== prevState.analyticsSelections) {
-        console.log(getAnalyticsSelections(this.state.currentLotID, this.state.analyticsSelections))
+        getAnalyticsSelections(this.state.currentLotID, this.state.analyticsSelections).then(function(res) {
+          return parkingSpaceJSONToMapsFormat(res.devices);
+        }).then(function(locationsToMark){self.addPlace(locationsToMark)
+        }).then(function(res) {self.fitMapToBounds();
+        }).then(function(res) {console.log("done")});
       }
   }
   changeCurrentLot = (lot_id) => {
@@ -227,7 +231,7 @@ class Main extends Component {
                   changeCurrentLot={this.changeCurrentLot}
                 ></Marker>                
               } else if (viewType == 2 || viewType == 3) {
-                return <ParkingSpace key={place.id} place={place} lat={place.geometry.location.lat} lng={place.geometry.location.lng}/>
+                return <ParkingSpace viewType={viewType} key={place.id} place={place} lat={place.geometry.location.lat} lng={place.geometry.location.lng}/>
               }
             })}
 
