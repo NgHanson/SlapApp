@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 
 // StyleSheets
 import './parkingdisplay.css';
+import * as Colour from './colour_consts';
 
 export default class ParkingDisplay extends Component {
   constructor(props) {
@@ -57,7 +58,7 @@ export default class ParkingDisplay extends Component {
         <Row>{title}</Row>
         {this.props.parkingareas && <Fragment>{this.showParkingLots(this.props.parkingareas)}</Fragment>}
         {this.props.managedparkingareas && <Fragment>{this.showParkingLots(this.props.managedparkingareas)}</Fragment>}
-        <Row className="justify-content-xs-center"><Col/><Col xs="auto"><Button variant='primary'>Add Lot</Button></Col><Col/></Row>
+        <Row className="justify-content-xs-center"><Col/><Col xs="auto"><Button variant='primary' style={{backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE}}>Add Lot</Button></Col><Col/></Row>
       </Container>
     );
   }

@@ -95,8 +95,8 @@ class MarkerModal extends Component {
     occupation times, for ex. generally 6am - 12am vs Fit4Less parking lot which is 24 hr
     */
     return (
-      <div style={{backgroundColor:'#fff', width:'fit-content', height: 'fit-content', border: '2px solid #24305e'}} onClick={() => closeModal()}>
-        <div className={"chart-container"}>
+      <div style={{backgroundColor: Colour.BLUE_GREY, width:'fit-content', height: 'fit-content', border: `2px solid ${Colour.DARK_BLUE_GREY}`}} onClick={() => closeModal()}>
+        <div className={"chart-container"} style={{padding: '30px'}}>
           <Chart
             chartType="ColumnChart"
             width="360px"
@@ -105,11 +105,12 @@ class MarkerModal extends Component {
             options={options}
           />
         </div>
-        <div style={{margin: '5px'}}>
-          Note: Free Parking, 2 HR Max
+        <div style={{margin: '0 30px 20px 30px', color: 'white'}}>
+          <p>{`Address: `}</p>
+          <p>Notes: Free Parking, 2 HR Max</p>
         </div>
         <div style={{width: '70px', margin: '0 auto', paddingBottom: '5px'}}>
-          <Button variant={"info"} style={{fontSize: '11pt'}} onClick={() => this.showDetails()} >
+          <Button variant={"info"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE}} onClick={() => this.showDetails()} >
             Details
           </Button>
         </div>
