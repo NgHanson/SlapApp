@@ -36,7 +36,7 @@ module.exports = config;
 ## Sources:
 - Google Maps Stuff taken from: https://github.com/google-map-react/google-map-react-examples
 - Hamberger Menu (will be) taken from: https://alligator.io/react/react-burger-menu-sidebar/
-
+- Charts are from Google Charts: https://www.npmjs.com/package/react-google-charts
 
 # simple-react-full-stack
 

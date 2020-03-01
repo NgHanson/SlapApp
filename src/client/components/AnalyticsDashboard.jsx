@@ -74,6 +74,54 @@ const options3 = {
   legend: "none",
 };
 
+//WEIGHTS SHOULD ADD UP TO MAIN OPERATION TIME
+//ex. 9-5 main hours of op = 8*60 = 480 minutes
+const pieData = [
+  ["% Occupancy", "Weight"],
+  ["100", 200],
+  ["90-100", 80],
+  ["75-90", 80],
+  ["50-75", 60],
+  ["0-50", 40],
+];
+
+const pieOptions = {
+  title: "Occupancy % Distribution During Main Operation Hours",
+  pieHole: 0.4,
+  slices: [
+    {
+      color: "#2BB673"
+    },
+    {
+      color: "#d91e48"
+    },
+    {
+      color: "#007fad"
+    },
+    {
+      color: "#e9a227"
+    }
+  ],
+  legend: {
+    position: "bottom",
+    alignment: "center",
+    textStyle: {
+      color: "233238",
+      fontSize: 14
+    }
+  },
+  tooltip: {
+    showColorCode: true
+  },
+  chartArea: {
+    left: 0,
+    top: 0,
+    width: "100%",
+    height: "80%"
+  },
+  fontName: "Roboto"
+};
+
 export default class AnalyticsDashboard extends Component {
   constructor(props) {
     super(props);
@@ -94,37 +142,52 @@ export default class AnalyticsDashboard extends Component {
         </div>
         <div style={{display: 'flex'}}>
           <div className={"left-chart-container"} style={{flex: 1}}>
-              <Chart
-                chartType="LineChart"
-                width="100%"
-                height="300px"
-                data={data1}
-                options={options1}
-              />
-              <div className={"metrics-box"} style={{display: 'flex'}}>
-                <div style={{background: Colour.LIGHT_RED, flex: 1, margin: '0 20px 0 20px', padding: '20px'}}>
-                  {`Number of People Exceeding Time Limit Today ${lotTimeViolaters}`}
-                </div>
-                <div style={{background: Colour.LIGHT_GREEN, flex: 1, margin: '0 20px 0 20px', padding: '20px'}}>
-                  {`Average Time Limit ${10}`}
-                </div>
+            <Chart
+              chartType="LineChart"
+              width="100%"
+              height="300px"
+              data={data1}
+              options={options1}
+            />
+            <div className={"metrics-box"} style={{display: 'flex', height: '150px'}}>
+              <div style={{background: Colour.YELLOW, flex: 1, margin: '0 20px 20px 20px', padding: '20px'}}>
+                {`Current Lot Utilization ${95}%`}
               </div>
+              <div style={{background: Colour.LIGHT_GREEN, flex: 1, margin: '0 20px 20px 20px', padding: '20px'}}>
+                {`Avg Spot Free Time b/w Parking Events (During Main Hours): ${5} minutes`}
+              </div>
+            </div>
+            <div className={"metrics-box"} style={{display: 'flex', height: '150px'}}>
+              <div style={{background: Colour.LIGHT_RED, flex: 1, margin: '0 20px 20px 20px', padding: '20px'}}>
+                {`Number of People Exceeding Time Limit Today ${lotTimeViolaters}`}
+              </div>
+              <div style={{background: Colour.LIGHT_GREEN, flex: 1, margin: '0 20px 20px 20px', padding: '20px'}}>
+                {`Pods Requiring Servicing ${0}`}
+              </div>
+            </div>
+            <Chart
+              chartType="ColumnChart"
+              width="100%"
+              height="300px"
+              data={data3}
+              options={options3}
+            />
           </div>
           <div className={"right-chart-container"} style={{flex: 1}}>
-              <Chart
-                chartType="ColumnChart"
-                width="100%"
-                height="300px"
-                data={data2}
-                options={options2}
-              />
-              <Chart
-                chartType="ColumnChart"
-                width="100%"
-                height="300px"
-                data={data3}
-                options={options3}
-              />
+            <Chart
+              chartType="ColumnChart"
+              width="100%"
+              height="300px"
+              data={data2}
+              options={options2}
+            />
+            <Chart
+              chartType="PieChart"
+              data={pieData}
+              options={pieOptions}
+              width={"100%"}
+              height={"300px"}
+            />
           </div>
         </div>
       </div>
