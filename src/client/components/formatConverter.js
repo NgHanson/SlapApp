@@ -21,13 +21,13 @@ export function parkingSpaceJSONToMapsFormat(placelist) {
 	                      active: placelist[i].active,
                         occupied: placelist[i].occupied,
                         updated_date: placelist[i].updated_date,
+                        analytics_percentage: placelist[i].analytics_percentage ? placelist[i].analytics_percentage : 0,
 	                      geometry: {
 	                        location: {
 	                          lat: placelist[i].lat,
 	                          lng: placelist[i].lng
 	                        },
 	                        rotation: placelist[i].rotation_degrees,
-                          analytics_percentage: placelist[i].analytics_percentage,
 	                      }
 	                    });
 	}

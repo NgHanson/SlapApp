@@ -18,17 +18,17 @@ export default class ParkingSpace extends Component {
     console.log(this.props);
   }
   setupCanvas() {
-    const angle = this.props.place.geometry.rotation;
-    const canvas = this.canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    ctx.save();
-    ctx.beginPath();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    this.angle = this.props.place.geometry.rotation;
+    this.canvas = this.canvasRef.current;
+    this.ctx = this.canvas.getContext('2d');
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     // Center the rectangle in the canvas
-    ctx.translate(canvas.width/2, canvas.height/2);
+    this.ctx.translate(this.canvas.width/2, this.canvas.height/2);
     // CW radians
-    ctx.rotate((angle * Math.PI) / 180);
-    return {canvas, ctx};
+    this.ctx.rotate((this.angle * Math.PI) / 180);
+    // return {canvas, ctx};
   }
   getParkingSpaceDimensions() {
     const rectWidth = 50;
@@ -39,52 +39,74 @@ export default class ParkingSpace extends Component {
     const thickness = 3;
     return {rectWidth, rectHeight, rectX, rectY, thickness};
   }
-  drawSpaceBorder(ctx, rectX, rectY, rectWidth, rectHeight, thickness) {
+  drawSpaceBorder(rectX, rectY, rectWidth, rectHeight, thickness) {
     // Draw border rectangle
-    ctx.fillStyle='#000';
-    ctx.fillRect(rectX - (thickness), rectY - (thickness), rectWidth + (thickness * 2), rectHeight + (thickness * 2));
+    this.ctx.fillStyle='#000';
+    this.ctx.fillRect(rectX - (thickness), rectY - (thickness), rectWidth + (thickness * 2), rectHeight + (thickness * 2));
   }
-  drawParkingSpaceBody(ctx, rectX, rectY, rectWidth, rectHeight) {
+  drawParkingSpaceBody(rectX, rectY, rectWidth, rectHeight) {
     // If the space is not active (sensor is not on), draw as Grey
-    if (!this.props.place.active) {
-      ctx.fillStyle = "#C2C5CC";
-    } else if (this.props.place.occupied) {
-      ctx.fillStyle = '#FFCCCB';
-    } else {
-      ctx.fillStyle = '#90EE90';
+    if (this.props.viewType == 2) {
+      if (!this.props.place.active) {
+        this.ctx.fillStyle = "#C2C5CC";
+      } else if (this.props.place.occupied) {
+        this.ctx.fillStyle = '#FFCCCB';
+      } else {
+        this.ctx.fillStyle = '#90EE90';
+      }      
+    } else if (this.props.viewType == 3) {
+      if (this.props.place.analytics_percentage > 0) {
+        this.ctx.fillStyle = '#90EE90';
+      } else if (this.props.place.analytics_percentage < 0) {
+        this.ctx.fillStyle = '#FFCCCB';
+      } else {
+        this.ctx.fillStyle = "#C2C5CC";
+      }
     }
-    ctx.fillRect(rectX, rectY, rectWidth, rectHeight);    
+
+    this.ctx.fillRect(rectX, rectY, rectWidth, rectHeight);    
   }
-  fillSpaceText(ctx, textBody, textX, textY) {
-    const last_updated = new Date(textBody);
+  getTimeUpdateString(last_updated_str) {
+    const last_updated = new Date(last_updated_str);
     const curr_time = new Date();
     const time_diff = new Date(curr_time - last_updated);
     const time_string = this.props.place.id + "\nLast Update:\n" + time_diff.getHours() + "h " + time_diff.getMinutes() + "m " + time_diff.getSeconds() + "s";
+    return time_string
+  }
+  getAnalyticsPercentageString(percentage) {
+    return percentage + "%"
+  }
+  fillSpaceText(textBody, textX, textY) {
     // Fill rectangle with text
-    ctx.font = "30 px monospace";
-    ctx.textBaseline = "middle";
-    ctx.textAlign = "center";
+    this.ctx.font = "30 px monospace";
+    this.ctx.textBaseline = "middle";
+    this.ctx.textAlign = "center";
      /// text color
-    ctx.fillStyle = '#000';
+    this.ctx.fillStyle = '#000';
     var lineheight = 15;
-    var lines = time_string.split('\n');
+    var lines = textBody.split('\n');
 
     for (var i = 0; i<lines.length; i++)
-      ctx.fillText(lines[i], textX, textY + (i*lineheight) );
+      this.ctx.fillText(lines[i], textX, textY + (i*lineheight) );
   }
   componentDidUpdate(prevProps, prevState) {
+    console.log("componentdidupdate canvas")
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    const {rectWidth, rectHeight, rectX, rectY, thickness} = this.getParkingSpaceDimensions();
+    this.drawSpaceBorder(rectX, rectY, rectWidth, rectHeight, thickness);
+    this.drawParkingSpaceBody(rectX, rectY, rectWidth, rectHeight);
+    if (this.props.viewType == 2) {
+      this.fillSpaceText(this.getTimeUpdateString(this.props.place.updated_date), 0, 0);  
+    } else if (this.props.viewType == 3) {
+      console.log("ehre ================================")
+      console.log(this.props.place.analytics_percentage)
+      this.fillSpaceText(this.getAnalyticsPercentageString(this.props.place.analytics_percentage), 0, 0);
+    }    
+  }
+  componentDidMount() {
     console.log("componentDidMount");
     console.log(this.props)
-    const {rectWidth, rectHeight, rectX, rectY, thickness} = this.getParkingSpaceDimensions();
-    const {canvas, ctx} = this.setupCanvas();
-    this.drawSpaceBorder(ctx, rectX, rectY, rectWidth, rectHeight, thickness);
-    this.drawParkingSpaceBody(ctx, rectX, rectY, rectWidth, rectHeight);
-    if (this.props.viewType == 2) {
-      this.fillSpaceText(ctx, this.props.place.updated_date, 0, 0);  
-    } else if (this.props.viewType == 3) {
-      this.fillSpaceText(ctx, this.props.place.analytics_percentage, 0, 0);
-    }
-    
+    this.setupCanvas();
   }
   render() {
     return(
