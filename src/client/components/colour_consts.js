@@ -13,3 +13,5 @@ export const LIGHT_GREEN = "#2ecc71";
 export const GREEN = "#27ae60";
 
 export const YELLOW = "#f1c40f";
+
+export const ORANGE = "#f39c12";

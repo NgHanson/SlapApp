@@ -44,7 +44,7 @@ class SideBar extends Component {
     if (viewType == 1) { //General View
       return (
         // Pass on our props
-        <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
+        <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY }}}>
           <Container className="flex-column" style={{width: "100%", height: "90%"}}>
               <Row>Find Parking Near...</Row>
               <Row>{mapApiLoaded && <SearchBox updateMapCenter={updateMapCenter} map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
@@ -65,7 +65,7 @@ class SideBar extends Component {
       return (
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
           <Container width="100%">
-            <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => changeViewType(1)} >
+            <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE}} onClick={() => changeViewType(1)} >
               {'Back'}
             </Button>
           </Container>
@@ -76,15 +76,11 @@ class SideBar extends Component {
       return (
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
           <Container width="100%">
-            <AnalyticsSelector currentLotID={currentLotID} setAnalyticsSelections={setAnalyticsSelections}></AnalyticsSelector>
-            <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => changeViewType(1)} >
-              {'Back'}
-            </Button>
+            <AnalyticsSelector currentLotID={currentLotID} setAnalyticsSelections={setAnalyticsSelections} changeViewType={changeViewType}/>
           </Container>
         </Menu>
       );
     }
-
   }
 }
 

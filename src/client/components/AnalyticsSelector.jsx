@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 
 // Bootstrap Imports
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 import { exHigherTraffic9To5, exBusierOnWeekdays, exMoralsNearDinner, exBusierOnValentines } from './examples.js';
 
+import * as Colour from './colour_consts';
 import './analyticsselector.css';
 
 export default class AnalyticsSelector extends Component {
@@ -61,25 +59,6 @@ export default class AnalyticsSelector extends Component {
     this.props.setAnalyticsSelections(selections);
   }
 
-  //LOAD THIS WITH YOUR VALUES
-  // onButtonOnePress() {
-  //   this.setState({
-  //     fromYear: 2020,
-  //     fromMonth: 1,
-  //     fromDay: 1,
-  //     fromStartHour: 0,
-  //     fromStartMin: 0,
-  //     fromEndHour: 0,
-  //     fromEndMin: 0,
-  //     toYear: 2020,
-  //     toMonth: 1,
-  //     toDay: 1,
-  //     toStartHour: 0,
-  //     toStartMin: 0,
-  //     toEndHour: 0,
-  //     toEndMin: 0
-  //   });
-  // }
   updateLotExample(exNumber)  {
     let currEx = null;
     if (exNumber == 1) {
@@ -91,6 +70,7 @@ export default class AnalyticsSelector extends Component {
     } else if (exNumber == 4) {
       currEx = exBusierOnValentines;
     }
+
     this.setState({
       fromYear: currEx.first.year,
       fromMonth: currEx.first.month,
@@ -109,102 +89,62 @@ export default class AnalyticsSelector extends Component {
     });
   }
 
+  inputField(state, name, label=null) {
+    return (
+      <div style={{flexGrow: 1, margin: '0 2px'}}>
+        {label && <div>{label}</div>}
+        <input type="number" style={{width: '100%'}} value={state} name={name} onChange={(event) => this.handleChange(event)}/>
+    </div>
+    );
+  }
+
   render() {
     return(
-      <div className='analytics-dashboard'>
-        <Row>
-          From:
-        </Row>
-        <Row>
-          <Col xs={4}>
-            <Row>Year</Row>
-            <Row>
-              <input type="number" value={this.state.fromYear} name={'fromYear'} onChange={(event) => this.handleChange(event)}/>
-            </Row>
-          </Col>
-          <Col xs={4}>
-            <Row>Month</Row>
-            <Row>
-              <input type="number" value={this.state.fromMonth} name={'fromMonth'} onChange={(event) => this.handleChange(event)}/>
-            </Row>
-            </Col>
-          <Col xs={4}>
-            <Row>Day</Row>
-            <Row>
-              <input type="number" value={this.state.fromDay} name={'fromDay'} onChange={(event) => this.handleChange(event)}/>
-            </Row>
-          </Col>
-        </Row>
-        <Row>Start Time</Row>
-        <Row>
-          <Col xs={5}>
-            <input type="number" value={this.state.fromStartHour} name={'fromStartHour'} onChange={(event) => this.handleChange(event)}/>
-          </Col>
-          <Col xs={2}>:</Col>
-          <Col xs={5}>
-            <input type="number" value={this.state.fromStartMin} name={'fromStartMin'} onChange={(event) => this.handleChange(event)}/>
-          </Col>
-        </Row>
-        <Row>End Time</Row>
-        <Row>
-          <Col xs={5}>
-          <input type="number" value={this.state.fromEndHour} name={'fromEndHour'} onChange={(event) => this.handleChange(event)}/>
-          </Col>
-          <Col xs={2}>:</Col>
-          <Col xs={5}>
-          <input type="number" value={this.state.fromEndMin} name={'fromEndMin'} onChange={(event) => this.handleChange(event)}/>
-          </Col>
-        </Row>
-        <Row>
-          To:
-        </Row>
-        <Row>
-          <Col xs={4}>
-            <Row>Year</Row>
-            <Row>
-              <input type="number" value={this.state.toYear} name={'toYear'} onChange={(event) => this.handleChange(event)}/>
-            </Row>
-          </Col>
-          <Col xs={4}>
-            <Row>Month</Row>
-            <Row>
-              <input type="number" value={this.state.toMonth} name={'toMonth'} onChange={(event) => this.handleChange(event)}/>
-            </Row>
-            </Col>
-          <Col xs={4}>
-            <Row>Day</Row>
-            <Row>
-              <input type="number" value={this.state.toDay} name={'toDay'} onChange={(event) => this.handleChange(event)}/>
-            </Row>
-          </Col>
-        </Row>
-        <Row>Start Time</Row>
-        <Row>
-          <Col xs={5}>
-            <input type="number" value={this.state.toStartHour} name={'toStartHour'} onChange={(event) => this.handleChange(event)}/>
-          </Col>
-          <Col xs={2}>:</Col>
-          <Col xs={5}>
-            <input type="number" value={this.state.toStartMin} name={'toStartMin'} onChange={(event) => this.handleChange(event)}/>
-          </Col>
-        </Row>
-        <Row>End Time</Row>
-        <Row>
-          <Col xs={5}>
-            <input type="number" value={this.state.toEndHour} name={'toEndHour'} onChange={(event) => this.handleChange(event)}/>
-          </Col>
-          <Col xs={2}>:</Col>
-          <Col xs={5}>
-            <input type="number" value={this.state.toEndMin} name={'toEndMin'} onChange={(event) => this.handleChange(event)}/>
-          </Col>
-        </Row>
-        <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => this.onSubmit()} >
-          Submit
-        </Button>
-        {(this.props.currentLotID == 1) && <Row><Button variant={"info"} style={{fontSize: '11pt'}} onClick={() => this.updateLotExample(1)} >9-5 Traffic Comparison</Button></Row>}
-        {(this.props.currentLotID == 1) && <Row><Button variant={"info"} style={{fontSize: '11pt'}} onClick={() => this.updateLotExample(2)} >Weekday Traffic Comparison</Button></Row>}
-        {(this.props.currentLotID == 1) && <Row><Button variant={"info"} style={{fontSize: '11pt'}} onClick={() => this.updateLotExample(3)} >Dinner Time Traffic Comparison</Button></Row>}
-        {(this.props.currentLotID == 1) && <Row><Button variant={"info"} style={{fontSize: '11pt'}} onClick={() => this.updateLotExample(4)} >Valentines Day Traffic Comparison</Button></Row>}
+      <div className='analytics-selector'>
+        <div>From:</div>
+        <div style={{display: 'flex'}}>
+          {this.inputField(this.state.fromYear, 'fromYear', 'Year')}
+          {this.inputField(this.state.fromMonth, 'fromMonth', 'Month')}
+          {this.inputField(this.state.fromDay, 'fromDay', 'Day')}
+        </div>
+        <div>Start Time</div>
+        <div style={{display: 'flex'}}>
+          {this.inputField(this.state.fromStartHour, 'fromStartHour')}
+          {this.inputField(this.state.fromStartMin, 'fromStartMin')}
+        </div>
+        <div>End Time</div>
+        <div style={{display: 'flex'}}>
+          {this.inputField(this.state.fromEndHour, 'fromEndHour')}
+          {this.inputField(this.state.fromEndMin, 'fromEndMin')}
+        </div>
+        <div>To:</div>
+        <div style={{display: 'flex'}}>
+          {this.inputField(this.state.toYear, 'toYear', 'Year')}
+          {this.inputField(this.state.toMonth, 'toMonth', 'Month')}
+          {this.inputField(this.state.toDay, 'toDay', 'Day')}
+        </div>
+        <div>Start Time</div>
+        <div style={{display: 'flex'}}>
+          {this.inputField(this.state.toStartHour, 'toStartHour')}
+          {this.inputField(this.state.toStartMin, 'toStartMin')}
+        </div>
+        <div>End Time</div>
+        <div style={{display: 'flex'}}>
+          {this.inputField(this.state.toEndHour, 'toEndHour')}
+          {this.inputField(this.state.toEndMin, 'toEndMin')}
+        </div>
+        {(this.props.currentLotID == 1) && <Button variant={"info"} style={{fontSize: '11pt', width: '100%', marginTop: '10px'}} onClick={() => this.updateLotExample(1)} >9-5 Traffic Comparison</Button>}
+        {(this.props.currentLotID == 1) && <Button variant={"info"} style={{fontSize: '11pt', width: '100%', marginTop: '10px'}} onClick={() => this.updateLotExample(2)} >Weekday Traffic Comparison</Button>}
+        {(this.props.currentLotID == 1) && <Button variant={"info"} style={{fontSize: '11pt', width: '100%', marginTop: '10px'}} onClick={() => this.updateLotExample(3)} >Dinner Time Traffic Comparison</Button>}
+        {(this.props.currentLotID == 1) && <Button variant={"info"} style={{fontSize: '11pt', width: '100%', marginTop: '10px'}} onClick={() => this.updateLotExample(4)} >Valentines Day Traffic Comparison</Button>}
+        <div style={{display: 'flex', margin: '10px 0'}}>
+          <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, flexGrow: 1, marginRight: '2px'}} onClick={() => this.onSubmit()} >
+            Submit
+          </Button>
+          <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, flexGrow: 1, marginLeft: '2px'}} onClick={() => this.props.changeViewType(1)} >
+            Back
+          </Button>
+        </div>
       </div>
     );
   }
