@@ -28,7 +28,6 @@ View Type
 // Return map bounds based on list of places
 const getMapBounds = (map, maps, places) => {
   const bounds = new maps.LatLngBounds();
-
   places.forEach((place) => {
     bounds.extend(new maps.LatLng(
       place.geometry.location.lat,
@@ -49,13 +48,7 @@ const bindResizeListener = (map, maps, bounds) => {
 };
 
 const moveMapCenterDueToSidebar = (map) => {
-  // var point = map.getCenter();
-  // var pixelpoint = map.projection.fromLatLngToPoint(point);
-  // pixelpoint.x = pixelpoint.x + 300;
-  // var newpoint = projection.fromPointToLatLng(pixelpoint);
-  // map.setCenter(newpoint);
-
-  // Move map center by 300px (width of hamburger menu)
+  // Move map center right 300px (width of hamburger menu)
   map.panBy(-300,0);
 };
 
@@ -88,6 +81,8 @@ class Main extends Component {
   }
 
   apiIsLoaded = (map, maps, places) => {
+    let self = this
+    // map.setOptions({disableDefaultUI: true});
     if (!isEmpty(places)){
       // Get bounds by our places
       const bounds = getMapBounds(map, maps, places);
@@ -96,6 +91,15 @@ class Main extends Component {
       // Bind the resize listener
       bindResizeListener(map, maps, bounds);
     }
+    // Add bounds change listener for when google maps zoom changes...
+    map.addListener('bounds_changed', function(event) {
+      if (self.state.viewType == 2 || self.state.viewType == 3) {
+          let curr_places = self.state.places
+          self.addPlace([])
+          self.addPlace(curr_places)
+      }
+    })
+
     // Other Stuff....
     this.setState({
         mapApiLoaded: true,
@@ -112,37 +116,41 @@ class Main extends Component {
     console.log("googlemapswrapper component did update")
     console.log(prevState.viewType)
     console.log(this.state.viewType)
+    if (this.state.mapInstance) {
+    console.log("Current Map Zoom: " + this.state.mapInstance.getZoom())  
+    }
+    
     const self =this;
     if (prevState.mapLat !== this.state.mapLat || prevState.mapLng !== this.state.mapLng) {
       console.log("map center changed")
       searchForNearbyParking(this.state.mapLat, this.state.mapLng)
       .then(function(res) {
         const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
+        self.addPlace([]);
         self.addPlace(placelist);
       }).then(function(res) {self.fitMapToBounds();});
     }
     if (prevState.viewType !== this.state.viewType) {
       if (this.state.viewType == 1) {
         console.log("changed to viewType 1")
-        self.addPlace([]);
         searchForNearbyParking(this.state.mapLat, this.state.mapLng)
         .then(function(res) {
           const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
+          self.addPlace([]);
           self.addPlace(placelist);
         }).then(function(res) {self.fitMapToBounds();});
-      } else if (this.state.viewType == 2) {
-          self.addPlace([]);
+      } else if (this.state.viewType == 2) {          
           console.log("changed to viewType 2");
           getDevicesInLot(this.state.currentLotID).then(function(res) {
             return parkingSpaceJSONToMapsFormat(res.devices);
-          }).then(function(locationsToMark){self.addPlace(locationsToMark)
+          }).then(function(locationsToMark){self.addPlace([]);self.addPlace(locationsToMark)
           }).then(function(res) { self.fitMapToBounds();});
       } else if (this.state.viewType == 3) {
-        self.addPlace([]);
+        // self.addPlace([]);
         console.log("Changed to viewType 3");
           getDevicesInLot(this.state.currentLotID).then(function(res) {
             return parkingSpaceJSONToMapsFormat(res.devices);
-          }).then(function(locationsToMark){self.addPlace(locationsToMark)
+          }).then(function(locationsToMark){self.addPlace([]); self.addPlace(locationsToMark);
           }).then(function(res) { self.fitMapToBounds();});
       }
     }
@@ -193,6 +201,9 @@ class Main extends Component {
       placeMarkerOnClick: true
     });
   };
+  onZoomChanged = () => {
+    console.log("zoom changed")
+  };
 
   render() {
     const {
@@ -227,6 +238,7 @@ class Main extends Component {
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps, places)}
             onClick={this._onClick}
+            onZoomChanged={this.onZoomChanged}
           >
             {/* Place Components on the map from json file */}
             {places.map((place) => {
@@ -244,7 +256,7 @@ class Main extends Component {
                   changeCurrentLot={this.changeCurrentLot}
                 ></Marker>                
               } else if (viewType == 2 || viewType == 3) {
-                return <ParkingSpace viewType={viewType} key={place.id} place={place} lat={place.geometry.location.lat} lng={place.geometry.location.lng}/>
+                return <ParkingSpace mapApi={mapApi} mapInstance={mapInstance} viewType={viewType} key={place.id} place={place} lat={place.geometry.location.lat} lng={place.geometry.location.lng}/>
               }
             })}
 

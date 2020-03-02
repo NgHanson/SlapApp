@@ -20,25 +20,26 @@ export default class ParkingDisplay extends Component {
   }
 
   goToAnalyticsView = (lot_id, lat, lng) => {
-    console.log(lot_id)
-    console.log("yeet")
-    this.props.updateMapCenter(lat, lng);
+    // console.log(lot_id)
+    // console.log("yeet")
+    // this.props.
+    this.props.updateMapCenter(lat, lng)
     this.props.changeCurrentLot(lot_id)
-    this.props.changeViewType(3);
+    this.props.changeViewType(3)
   }
 
   showParkingLots = (parkingareas) => {
     if (this.props.managedparkingareas !== null) {
       console.log("erijfaoejfifjojeaoje")
     }
-    console.log("showParkingLots");
+    // console.log("showParkingLots");
     // const parkingareas = ting
-    console.log(parkingareas)
+    // console.log(parkingareas)
     let table = []
 
     // Outer loop to create parent
     for (let x=0; x < parkingareas.length; x++) {
-      console.log(parkingareas[x])
+      // console.log(parkingareas[x])
       table.push(
         <Row className="d-flex" key={x}>
           <div className="mr-auto p-2"><div style={{fontSize: '11pt'}}>{parkingareas[x]['name']}</div></div>

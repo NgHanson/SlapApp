@@ -14,8 +14,6 @@ export default class ParkingSpace extends Component {
   constructor(props) {
     super(props);
     this.canvasRef = React.createRef();
-    console.log("ParkingSpaceConstructor")
-    console.log(this.props);
   }
   setupCanvas() {
     this.angle = this.props.place.geometry.rotation;
@@ -28,10 +26,22 @@ export default class ParkingSpace extends Component {
     this.ctx.translate(this.canvas.width/2, this.canvas.height/2);
     // CW radians
     this.ctx.rotate((this.angle * Math.PI) / 180);
-    // return {canvas, ctx};
+  }
+  fromLatLngToPoint(latLng, map) { 
+      var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast()); 
+      var bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest()); 
+      var scale = Math.pow(2, map.getZoom()); 
+      var worldPoint = map.getProjection().fromLatLngToPoint(latLng); 
+      return new this.props.mapApi.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
   }
   getParkingSpaceDimensions() {
-    const rectWidth = 50;
+    var point = this.props.mapInstance.getCenter();
+    var p1 = this.fromLatLngToPoint(this.props.mapInstance.getCenter(), this.props.mapInstance);
+    // Hardcoded space size
+    var myLatlng = new this.props.mapApi.LatLng(point.lat()+0.000011679022563271246,point.lng()+0.00003218650817871094);
+    var p2 = this.fromLatLngToPoint(myLatlng, this.props.mapInstance);
+  
+    const rectWidth = Math.sqrt((p1.y-p2.y)*(p1.y-p2.y)+(p1.x-p2.x)*(p1.x-p2.x))*0.7;
     // Normal aspect ratio for a parking space
     const rectHeight = rectWidth*6.7/2.6;
     const rectX = -rectWidth / 2;
@@ -90,28 +100,23 @@ export default class ParkingSpace extends Component {
       this.ctx.fillText(lines[i], textX, textY + (i*lineheight) );
   }
   componentDidUpdate(prevProps, prevState) {
-    console.log("componentdidupdate canvas")
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     const {rectWidth, rectHeight, rectX, rectY, thickness} = this.getParkingSpaceDimensions();
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawSpaceBorder(rectX, rectY, rectWidth, rectHeight, thickness);
     this.drawParkingSpaceBody(rectX, rectY, rectWidth, rectHeight);
     if (this.props.viewType == 2) {
       this.fillSpaceText(this.getTimeUpdateString(this.props.place.updated_date), 0, 0);  
     } else if (this.props.viewType == 3) {
-      console.log("ehre ================================")
-      console.log(this.props.place.analytics_percentage)
       this.fillSpaceText(this.getAnalyticsPercentageString(this.props.place.analytics_percentage), 0, 0);
     }    
   }
   componentDidMount() {
-    console.log("componentDidMount");
-    console.log(this.props)
     this.setupCanvas();
   }
   render() {
     return(
       <div>
-        <canvas style={temp} ref={this.canvasRef} width={150} height={150} />
+        <canvas style={temp} ref={this.canvasRef} width={300} height={300} />
       </div>
     )
   }
