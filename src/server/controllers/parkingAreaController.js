@@ -90,5 +90,7 @@ exports.getParkingAnalyticsForTimeRange = function(req, res) {
 				}
 			}
 		})
+	} else {
+		console.log("NEED TO IMPLEMENT getParkingAnalyticsForTimeRange for different lots!! ======================================")
 	}
 }
