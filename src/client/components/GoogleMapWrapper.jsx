@@ -43,10 +43,21 @@ const bindResizeListener = (map, maps, bounds) => {
   maps.event.addDomListenerOnce(map, 'idle', () => {
     maps.event.addDomListener(window, 'resize', () => {
       map.fitBounds(bounds);
+      moveMapCenterDueToSidebar(map);
     });
   });
 };
 
+const moveMapCenterDueToSidebar = (map) => {
+  // var point = map.getCenter();
+  // var pixelpoint = map.projection.fromLatLngToPoint(point);
+  // pixelpoint.x = pixelpoint.x + 300;
+  // var newpoint = projection.fromPointToLatLng(pixelpoint);
+  // map.setCenter(newpoint);
+
+  // Move map center by 300px (width of hamburger menu)
+  map.panBy(-300,0);
+};
 
 class Main extends Component {
   constructor(props) {
@@ -164,6 +175,7 @@ class Main extends Component {
     } else {
       map.setOptions({gestureHandling: "auto"});
     }
+    moveMapCenterDueToSidebar(map);
   };
 
   addPlace = (place) => {
