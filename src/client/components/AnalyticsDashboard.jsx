@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Chart } from "react-google-charts";
 import { FaChartBar } from "react-icons/fa";
 
-import * as Colour from './colour_consts';
+import * as Colour from '../../constants/colour_consts';
 
 var lotName = 'UW LOT 1'; //MOVE TO PROP
 var lotAddress = 'University Ave. & Phillip St.'

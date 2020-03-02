@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 
 // StyleSheets
 import './parkingdisplay.css';
-import * as Colour from './colour_consts';
+import * as Colour from '../../constants/colour_consts';
 
 export default class ParkingDisplay extends Component {
   constructor(props) {

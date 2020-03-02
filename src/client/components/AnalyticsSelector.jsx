@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 // Bootstrap Imports
 import Button from 'react-bootstrap/Button';
 
-import { exHigherTraffic9To5, exBusierOnWeekdays, exMoralsNearDinner, exBusierOnValentines } from './examples.js';
+import { exHigherTraffic9To5, exBusierOnWeekdays, exMoralsNearDinner, exBusierOnValentines } from '../../constants/examples.js';
 
-import * as Colour from './colour_consts';
+import * as Colour from '../../constants/colour_consts';
 import './analyticsselector.css';
 
 export default class AnalyticsSelector extends Component {

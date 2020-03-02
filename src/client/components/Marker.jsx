@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Chart } from "react-google-charts";
-import { lotOccupancyGraph } from './examples.js';
-import * as Colour from './colour_consts';
+import { lotOccupancyGraph } from '../../constants/examples.js';
+import * as Colour from '../../constants/colour_consts';
 
 // MOVE THESE INTO A CSS
 const temp = {

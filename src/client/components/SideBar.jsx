@@ -6,7 +6,7 @@ import SearchBox from './SearchBox';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import * as Colour from './colour_consts';
+import * as Colour from '../../constants/colour_consts';
 
 class SideBar extends Component {
   constructor(props) {
