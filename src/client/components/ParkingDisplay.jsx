@@ -19,9 +19,10 @@ export default class ParkingDisplay extends Component {
     console.log(this.props.parkingareas);
   }
 
-  goToAnalyticsView = (lot_id) => {
+  goToAnalyticsView = (lot_id, lat, lng) => {
     console.log(lot_id)
     console.log("yeet")
+    this.props.updateMapCenter(lat, lng);
     this.props.changeCurrentLot(lot_id)
     this.props.changeViewType(3);
   }
@@ -45,7 +46,7 @@ export default class ParkingDisplay extends Component {
           {/*<div className="p-2" xs={3}><Button variant={"link"} style={{fontSize: '11pt'}}>View</Button></div className="p-2">*/}
           <div className="p-2"><FaMapMarkedAlt className="display-icon" onClick={this.props.updateMapCenter.bind(this, parkingareas[x].lat, parkingareas[x].lng)}/></div>
           {this.props.parkingareas && <div className="p-2"><FaTimes className="display-icon"/></div>}
-          {this.props.managedparkingareas && <div className="p-2"><FaChartBar onClick={this.goToAnalyticsView.bind(this, parkingareas[x].lot_id)} className="display-icon"/></div>}
+          {this.props.managedparkingareas && <div className="p-2"><FaChartBar onClick={this.goToAnalyticsView.bind(this, parkingareas[x].lot_id, parkingareas[x].lat, parkingareas[x].lng)} className="display-icon"/></div>}
         </Row>);
     }
     return table
