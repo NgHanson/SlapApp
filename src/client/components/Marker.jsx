@@ -109,7 +109,7 @@ class MarkerModal extends Component {
           <p>{`Address: `}</p>
           <p>Notes: Free Parking, 2 HR Max</p>
         </div>
-        <div style={{width: '70px', margin: '0 auto', paddingBottom: '5px'}}>
+        <div style={{width: '70px', margin: '0 auto', paddingBottom: '30px'}}>
           <Button variant={"info"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE}} onClick={() => this.showDetails()} >
             Details
           </Button>
