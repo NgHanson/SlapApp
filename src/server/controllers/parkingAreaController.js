@@ -22,75 +22,88 @@ exports.createParkingArea = function(req, res) {
 }
 
 // Get Parking Lots
-exports.getParkingAreas = function(req, res) {
-  console.log("GET PARKING LOTS");
-  pool.query('SELECT * FROM lots', (error, results) => {
-    if (error) {
-      console.log("ERROR", error);
-    } else {
-      if (results && results.rows) {
-        var list = results.rows;
-        console.log(list);
-        res.send({parkingAreas: list});
-      }
-    }
-  });
+exports.getParkingAreas = async (req, res) => {
+	console.log("GET PARKING LOTS");
+	let allParkingLots = await dbQuery('SELECT * FROM lots');
+	for (let i = 0; i < allParkingLots.length; i++) {
+		let capacity = await dbQuery('SELECT COUNT(*) FROM devices WHERE lot_id = ' + allParkingLots[i].lot_id);
+		let free = await dbQuery('SELECT COUNT(*) FROM devices WHERE lot_id = ' + allParkingLots[i].lot_id + ' AND active = TRUE AND occupied = FALSE');
+		allParkingLots[i].capacity = capacity[0]['count'];
+		allParkingLots[i].freeCount = free[0]['count'];
+	}
+	console.log(allParkingLots);
+	res.send({parkingAreas: allParkingLots});
 };
 
 // Get Nearby Parking Lots
-exports.getNearbyParking = function(req, res) {
-	console.log(req.body);
-	console.log(req.body.lat);
-	minLat = Math.min(req.body.lat-1, req.body.lat+1);
-	maxLat = Math.max(req.body.lat-1, req.body.lat+1);
-	minLng = Math.min(req.body.lng-1, req.body.lng+1);
-	maxLng = Math.max(req.body.lng-1, req.body.lng+1);
-	const q_nearbyLots = 'SELECT * FROM lots  WHERE lat >'+minLat+' AND lat < '+maxLat+' AND lng >'+minLng+' AND lng < '+maxLng+' ORDER BY lot_id ASC';
-	pool.query(q_nearbyLots, (error, results) => {
-		if (error) {
-			console.log("ERROR in getNearbyParking", error);
-		} else {
-			if (results && results.rows) {
-				console.log(results.rows)
-				res.send({nearbyParking: results.rows});
-			}
-		}
-	});
+exports.getNearbyParking = async (req, res) => {
+	const body = req.body;
+	let nearbyParking = await getNearbyParkingLots(body);
+	for (let i = 0; i < nearbyParking.length; i++) {
+		let capacity = await dbQuery('SELECT COUNT(*) FROM devices WHERE lot_id = ' + nearbyParking[i].lot_id);
+		let free = await dbQuery('SELECT COUNT(*) FROM devices WHERE lot_id = ' + nearbyParking[i].lot_id + ' AND active = TRUE AND occupied = FALSE');
+		nearbyParking[i].capacity = capacity[0]['count'];
+		nearbyParking[i].freeCount = free[0]['count'];
+	}
+	console.log(nearbyParking);
+	res.send({nearbyParking: nearbyParking});
 };
 
-exports.getParkingAnalyticsForTimeRange = function(req, res) {
+// https://stackoverflow.com/questions/48626761/node-js-mysql-pool-connection-with-async-await
+exports.getParkingAnalyticsForTimeRange = async (req, res) => {
 	const body = req.body;
 	// Example lot
 	if (body.lot_id === "1") {
-		const q_lot = 'SELECT * FROM devices WHERE lot_id = ' + body.lot_id + ' ORDER BY device_id ASC';
-		pool.query(q_lot, (error, results) => {
-			if (error) {
-				console.log("ERROR in getParkingAnalyticsForTimeRange", error);
-			} else {
-				if (results && results.rows) {
-					var curr_response = results.rows;
-					// console.log(results.rows);
-					for (var i = 0; i < results.rows.length; i++) {
-						if (JSON.stringify(req.body.analyticsSelections) === JSON.stringify(exBody9to5)) {
-							console.log("9 to 5 example");
-							curr_response[i]['analytics_percentage'] = exHigherTraffic9To5.lotValues[results.rows[i].device_id];
-						} else if (JSON.stringify(req.body.analyticsSelections) === JSON.stringify(exBodyWeekday)) {
-							console.log("weekday example body")
-							curr_response[i]['analytics_percentage'] = exBusierOnWeekdays.lotValues[results.rows[i].device_id];
-						} else if (JSON.stringify(req.body.analyticsSelections) === JSON.stringify(exBodyDinner)) {
-							console.log("morals example body")
-							curr_response[i]['analytics_percentage'] = exMoralsNearDinner.lotValues[results.rows[i].device_id];
-						} else if (JSON.stringify(req.body.analyticsSelections) === JSON.stringify(exBodyValentines)) {
-							console.log("valentines example body")
-							curr_response[i]['analytics_percentage'] = exBusierOnValentines.lotValues[results.rows[i].device_id];
-						}
-					}
-					res.send({devices: curr_response});
-					console.log("done")
-				}
-			}
-		})
+		const answer = await getExampleAnalyticsQueries(body);
+		res.send({devices: answer});
 	} else {
 		console.log("NEED TO IMPLEMENT getParkingAnalyticsForTimeRange for different lots!! ======================================")
 	}
+}
+
+async function getNearbyParkingLots(body) {
+	minLat = Math.min(body.lat-1, body.lat+1);
+	maxLat = Math.max(body.lat-1, body.lat+1);
+	minLng = Math.min(body.lng-1, body.lng+1);
+	maxLng = Math.max(body.lng-1, body.lng+1);
+	const q_nearbyLots = 'SELECT * FROM lots  WHERE lat >'+minLat+' AND lat < '+maxLat+' AND lng >'+minLng+' AND lng < '+maxLng+' ORDER BY lot_id ASC';
+	const nearbyLots = await dbQuery(q_nearbyLots);
+	return nearbyLots
+}
+
+async function getExampleAnalyticsQueries(body) {
+	const q_lot = 'SELECT * FROM devices WHERE lot_id = ' + body.lot_id + ' ORDER BY device_id ASC';
+	let curr_response = await dbQuery(q_lot);
+	for (var i = 0; i < curr_response.length; i++) {
+		if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBody9to5)) {
+			console.log("9 to 5 example");
+			curr_response[i]['analytics_percentage'] = exHigherTraffic9To5.lotValues[results.rows[i].device_id];
+		} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodyWeekday)) {
+			console.log("weekday example body")
+			curr_response[i]['analytics_percentage'] = exBusierOnWeekdays.lotValues[results.rows[i].device_id];
+		} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodyDinner)) {
+			console.log("morals example body")
+			curr_response[i]['analytics_percentage'] = exMoralsNearDinner.lotValues[results.rows[i].device_id];
+		} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodyValentines)) {
+			console.log("valentines example body")
+			curr_response[i]['analytics_percentage'] = exBusierOnValentines.lotValues[results.rows[i].device_id];
+		}
+	}
+	return curr_response
+	console.log("done")
+}
+
+async function dbQuery(queryString) {
+	return new Promise((resolve) => {
+		pool.query(queryString, (error, results) => {
+			if (error) {
+				console.log("ERROR IN QUERY: ", queryString)
+				console.log(error)
+			} else {
+				if (results && results.rows) {
+					resolve(results.rows);
+				}
+			}
+		})
+	})
 }
