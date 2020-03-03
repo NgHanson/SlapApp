@@ -137,6 +137,7 @@ export default class AnalyticsSelector extends Component {
       currEx = exSingleTime;
     }
 
+    // Im updating state like this because I just do string comparisons in the backend...
     if (exNumber == 5) {
       this.setState({
         year: currEx.year,
