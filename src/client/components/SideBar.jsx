@@ -38,16 +38,18 @@ class SideBar extends Component {
        updateMapCenter,
        changeCurrentLot,
        setAnalyticsSelections,
-       currentLotID,
+       lotInfo,
     } = this.props;
+
+    let currentLotID = lotInfo ? lotInfo.id : 0;
 
     if (viewType == 1) { //General View
       return (
         // Pass on our props
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY }}}>
           <Container className="flex-column" style={{width: "100%", height: "90%"}}>
-              <Row>Find Parking Near...</Row>
-              <Row>{mapApiLoaded && <SearchBox updateMapCenter={updateMapCenter} map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
+            <Row>Find Parking Near...</Row>
+            <Row style={{marginBottom: '20px'}}>{mapApiLoaded && <SearchBox updateMapCenter={updateMapCenter} map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
             <Row>
               {this.state.parkingAreas && <ParkingDisplay title='Saved Lots' userType={userType} updateMapCenter={updateMapCenter} parkingareas={this.state.parkingAreas}></ParkingDisplay>}
               {this.state.parkingAreas && (userType==2) && <ParkingDisplay title='Managed Lots' changeCurrentLot={changeCurrentLot} changeViewType={changeViewType} userType={userType} updateMapCenter={updateMapCenter} managedparkingareas={this.state.parkingAreas}></ParkingDisplay>}
@@ -65,6 +67,12 @@ class SideBar extends Component {
       return (
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
           <Container width="100%">
+            <div>
+              {lotInfo['name']}
+            </div>
+            <div>
+              {`${lotInfo['freeCount']}/${lotInfo['capacity']}`}
+            </div>
             <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%'}} onClick={() => changeViewType(1)} >
               {'Back'}
             </Button>

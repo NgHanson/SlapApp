@@ -60,6 +60,7 @@ class Main extends Component {
       mapInstance: null,
       mapApi: null,
       places: [],
+      lots: {},
       placeMarkerOnClick: false,
       userType: 1,
       viewType: 1,
@@ -76,7 +77,6 @@ class Main extends Component {
   }
 
   setAnalyticsSelections = (selections) => {
-    console.log("set selections", selections);
     this.setState({analyticsSelections: selections});
   }
 
@@ -98,7 +98,7 @@ class Main extends Component {
           self.addPlace([])
           self.addPlace(curr_places)
       }
-    })
+    });
 
     // Other Stuff....
     this.setState({
@@ -128,8 +128,11 @@ class Main extends Component {
         const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
         self.addPlace([]);
         self.addPlace(placelist);
+
+        self.setLots(placelist);
       }).then(function(res) {self.fitMapToBounds();});
     }
+
     if (prevState.viewType !== this.state.viewType) {
       if (this.state.viewType == 1) {
         console.log("changed to viewType 1")
@@ -138,23 +141,42 @@ class Main extends Component {
           const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
           self.addPlace([]);
           self.addPlace(placelist);
-        }).then(function(res) {self.fitMapToBounds();});
+
+          self.setLots(placelist);
+        })
+        .then(function(res) {
+          self.fitMapToBounds();
+        });
+      
       } else if (this.state.viewType == 2) {          
           console.log("changed to viewType 2");
           getDevicesInLot(this.state.currentLotID).then(function(res) {
             return parkingSpaceJSONToMapsFormat(res.devices);
-          }).then(function(locationsToMark){self.addPlace([]);self.addPlace(locationsToMark)
-          }).then(function(res) { self.fitMapToBounds();});
+          })
+          .then(
+            function(locationsToMark) {
+              self.addPlace([]);
+              self.addPlace(locationsToMark);
+            }
+          )
+          .then(
+            function(res) { 
+              self.fitMapToBounds();
+            }
+          );
       } else if (this.state.viewType == 3) {
-        // self.addPlace([]);
         console.log("Changed to viewType 3");
-          getDevicesInLot(this.state.currentLotID).then(function(res) {
-            return parkingSpaceJSONToMapsFormat(res.devices);
-          }).then(function(locationsToMark){self.addPlace([]); self.addPlace(locationsToMark);
-          }).then(function(res) { self.fitMapToBounds();});
+        getDevicesInLot(this.state.currentLotID).then(function(res) {
+          return parkingSpaceJSONToMapsFormat(res.devices);
+        })
+        .then(function(locationsToMark){
+          self.addPlace([]); self.addPlace(locationsToMark);
+        })
+        .then(function(res) { 
+          self.fitMapToBounds();
+        });
       }
     }
-      // console.log(this.state.analyticsSelections)
       if (this.state.analyticsSelections !== prevState.analyticsSelections) {
         getAnalyticsSelections(this.state.currentLotID, this.state.analyticsSelections).then(function(res) {
           return parkingSpaceJSONToMapsFormat(res.devices);
@@ -168,7 +190,7 @@ class Main extends Component {
     this.setState({currentLotID: lot_id});
   };
 
-  updateMapCenter =(lat, lng) => {
+  updateMapCenter = (lat, lng) => {
     this.setState({mapLat: lat, mapLng: lng});
   };
 
@@ -186,6 +208,14 @@ class Main extends Component {
     moveMapCenterDueToSidebar(map);
   };
 
+  setLots = (lots) => {
+    let lotMap = {};
+    lots.forEach(l => {
+      lotMap[l.id] = l;
+    });
+    this.setState({ lots: lotMap });
+  }
+
   addPlace = (place) => {
     this.setState({ places: place });
   };
@@ -201,13 +231,14 @@ class Main extends Component {
       placeMarkerOnClick: true
     });
   };
+
   onZoomChanged = () => {
     console.log("zoom changed")
   };
 
   render() {
     const {
-      places, mapApiLoaded, mapInstance, mapApi, placeMarkerOnClick, userType, viewType
+      places, lots, mapApiLoaded, mapInstance, mapApi, userType, viewType
     } = this.state;
 
     return (
@@ -228,7 +259,7 @@ class Main extends Component {
           viewType={viewType}
           changeCurrentLot={this.changeCurrentLot}
           setAnalyticsSelections={this.setAnalyticsSelections}
-          currentLotID={this.state.currentLotID}
+          lotInfo={this.state.lots[this.state.currentLotID]}
         />
         
         <div style={{width: '100%', height: (viewType == 3 ? '90%' : '100%')}}>
@@ -256,12 +287,18 @@ class Main extends Component {
                   changeCurrentLot={this.changeCurrentLot}
                   capacity={place.capacity}
                   freeCount={place.freeCount}
-                ></Marker>                
+                />                
               } else if (viewType == 2 || viewType == 3) {
-                return <ParkingSpace mapApi={mapApi} mapInstance={mapInstance} viewType={viewType} key={place.id} place={place} lat={place.geometry.location.lat} lng={place.geometry.location.lng}/>
+                return <ParkingSpace 
+                  mapApi={mapApi}
+                  mapInstance={mapInstance}
+                  viewType={viewType}
+                  key={place.id}
+                  place={place}
+                  lat={place.geometry.location.lat}
+                  lng={place.geometry.location.lng}/>
               }
             })}
-
 
             {/* Place Component on map click */}
             {/*placeMarkerOnClick && <ParkingSpace place={{geometry: {rotation: 63.23308549}}} key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
