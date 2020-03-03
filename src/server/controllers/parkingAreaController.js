@@ -1,5 +1,5 @@
-var { exSingleTime, exHigherTraffic9To5, exBusierOnWeekdays, exMoralsNearDinner, exBusierOnValentines } = require('../../constants/examples.js');
-var { exBody9to5, exBodyWeekday, exBodyDinner, exBodyValentines } = require('../../constants/example_post_requests.js');
+var { exHigherTraffic9To5, exBusierOnWeekdays, exMoralsNearDinner, exBusierOnValentines, exSingleTime } = require('../../constants/examples.js');
+var { exBody9to5, exBodyWeekday, exBodyDinner, exBodyValentines, exBodySingleTime } = require('../../constants/example_post_requests.js');
 
 const Pool = require('pg').Pool
 
@@ -77,7 +77,7 @@ async function getExampleAnalyticsQueries(body) {
 	const q_lot = 'SELECT * FROM devices WHERE lot_id = ' + body.lot_id + ' ORDER BY device_id ASC';
 	let curr_response = await dbQuery(q_lot);
 	console.log(JSON.stringify(body.analyticsSelections))
-	console.log(JSON.stringify(exBody9to5))
+	console.log(JSON.stringify(exBodySingleTime))
 	for (var i = 0; i < curr_response.length; i++) {
 		if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBody9to5)) {
 			console.log("9 to 5 example");
@@ -91,6 +91,9 @@ async function getExampleAnalyticsQueries(body) {
 		} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodyValentines)) {
 			console.log("valentines example body")
 			curr_response[i]['analytics_percentage'] = exBusierOnValentines.lotValues[curr_response[i].device_id];
+		} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodySingleTime)) {
+			console.log("single time example body")
+			curr_response[i]['analytics_percentage'] = exSingleTime.lotValues[curr_response[i].device_id]
 		}
 	}
 	return curr_response

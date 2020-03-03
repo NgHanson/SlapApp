@@ -99,9 +99,35 @@ const exBodyValentines = {
     toEndMin: 0
 };
 
+const exBodySingleTime = {
+  isSingle: true,
+  year: 2020,
+  month: 1,
+  day: 31,
+  startHour: 18,
+  startMin: 50,
+  endHour: 19,
+  endMin: 0,
+  fromYear: 0,
+  fromMonth: 0,
+  fromDay: 0,
+  fromStartHour: 0,
+  fromStartMin: 0,
+  fromEndHour: 0,
+  fromEndMin: 0,
+  toYear: 0,
+  toMonth: 0,
+  toDay: 0,
+  toStartHour: 0,
+  toStartMin: 0,
+  toEndHour: 0,
+  toEndMin: 0
+};
+
 module.exports = {
   exBody9to5,
   exBodyWeekday,
   exBodyDinner,
-  exBodyValentines
+  exBodyValentines,
+  exBodySingleTime
 };

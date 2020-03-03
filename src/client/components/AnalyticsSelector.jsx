@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import { FaCaretRight, FaCaretDown } from "react-icons/fa";
 
-import { exSingleTime, exHigherTraffic9To5, exBusierOnWeekdays, exMoralsNearDinner, exBusierOnValentines } from '../../constants/examples.js';
+import { exHigherTraffic9To5, exBusierOnWeekdays, exMoralsNearDinner, exBusierOnValentines, exSingleTime } from '../../constants/examples.js';
 
 import * as Colour from '../../constants/colour_consts';
 import './analyticsselector.css';
