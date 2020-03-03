@@ -8,6 +8,20 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import * as Colour from '../../constants/colour_consts';
 
+import { Chart } from "react-google-charts";
+import { lotOccupancyGraph } from '../../constants/examples.js';
+const options = {
+  title: "Occupancy",
+  legend: "none",
+  hAxis: { showTextEvery: 4 },
+  vAxis: { maxValue: 140 }, //this DN work?
+  isStacked: true,
+  series: {
+    0:{color: Colour.LIGHT_RED},
+    1:{color: Colour.LIGHT_BLUE},
+  }
+};
+
 class SideBar extends Component {
   constructor(props) {
     super(props);
@@ -68,11 +82,21 @@ class SideBar extends Component {
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
           <Container width="100%">
             <div>
+              Details:
+            </div>
+            <div>
               {lotInfo['name']}
             </div>
             <div>
               {`${lotInfo['freeCount']}/${lotInfo['capacity']}`}
             </div>
+            <Chart
+              chartType="ColumnChart"
+              width="200px"
+              height="120px"
+              data={lotOccupancyGraph}
+              options={options}
+            />
             <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%'}} onClick={() => changeViewType(1)} >
               {'Back'}
             </Button>
