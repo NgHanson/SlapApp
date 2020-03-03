@@ -248,24 +248,13 @@ const exMoralsNearDinner = {
 
 // Entire parking lot was busier on valentines day
 const exBusierOnValentines = {
-	first: {
-		year: "",
-		month: "",
-		day: 14,
-		startH: 17,
-		startM: 0,
-		endH: 21,
-		endM: 0
-	},
-	second: {
-		year: "",
-		month: "",
-		day: 7,
-		startH: 17,
-		startM: 0,
-		endH: 21,
-		endM: 0
-	},
+	year: 0,
+    month: 0,
+    day: 0,
+    startHour: 0,
+    startMin: 0,
+    endHour: 0,
+    endMin: 0,
 	lotValues: {
 		"1": 9.2,
 		"2": 4.5,
@@ -320,10 +309,85 @@ const exBusierOnValentines = {
 	}
 };
 
+// exSingleTime
+const exSingleTime = {
+	first: {
+		year: "",
+		month: "",
+		day: 14,
+		startH: 17,
+		startM: 0,
+		endH: 21,
+		endM: 0
+	},
+	second: {
+		year: "",
+		month: "",
+		day: 7,
+		startH: 17,
+		startM: 0,
+		endH: 21,
+		endM: 0
+	},
+	lotValues: {
+		"1": 88.3,
+		"2": 84.9,
+		"3": 84,
+		"4": 88.7,
+		"5": 96.2,
+		"6": 81.6,
+		"7": 83.3,
+		"8": 87.8,
+		"9": 86.8,
+		"10": 91.4,
+		"11": 80.7,
+		"12": 93,
+		"13": 94.5,
+		"14": 80.8,
+		"15": 83.3,
+		"16": 97.1,
+		"17": 83.4,
+		"18": 81.8,
+		"19": 90.1,
+		"20": 80.2,
+		"21": 90.3,
+		"22": 93,
+		"23": 87,
+		"24": 99.1,
+		"25": 93.2,
+		"26": 84.9,
+		"27": 80.9,
+		"28": 92.7,
+		"29": 81.3,
+		"30": 89.2,
+		"31": 91.2,
+		"32": 94.6,
+		"33": 98.3,
+		"34": 91.5,
+		"35": 96.7,
+		"36": 95.6,
+		"37": 90.4,
+		"38": 80.1,
+		"39": 96.6,
+		"40": 89.6,
+		"41": 84.7,
+		"42": 89.9,
+		"43": 97.9,
+		"44": 92.9,
+		"45": 99.8,
+		"46": 97,
+		"47": 82.5,
+		"48": 80.6,
+		"49": 98.5,
+		"50": 96.2,
+	}
+}
+
 module.exports = {
 	lotOccupancyGraph,
 	exHigherTraffic9To5,
 	exBusierOnWeekdays,
 	exMoralsNearDinner,
 	exBusierOnValentines,
+	exSingleTime,
 };
