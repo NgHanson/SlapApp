@@ -46,11 +46,20 @@ ttn.data(APP_ID, ACCESS_KEY)
       console.log("Received uplink from ", devID);
       console.log(payload);
       // use ttn_uplink model
-
+      // INSERT INTO event (device_id, time, detected) VALUES (53, '2020-03-03 19:10:25', TRUE)
+      query_string = ''
       io.emit('DEVICE_DATA', payload);
 
       //JS Date() auto convert to local time.
       var local_time = new Date(payload['metadata']['time']);
+      console.log(payload.payload_fields.parkState)
+      console.log(local_time)
+      var event = {
+    event_id: id,
+    device_id: deviceId,
+    time: time,
+    detected: detected
+}
       //pretty sure the date is UTC time (its +5 hrs from local)
     })
   })
