@@ -41,7 +41,11 @@ exports.getParkingAreas = function(req, res) {
 exports.getNearbyParking = async (req, res) => {
 	const body = req.body;
 	const nearbyParking = await getNearbyParkingLots(body);
-	res.send(nearbyParking);
+	for (let i = 0; i < 2; i++) {
+		// console.log(nearbyParking)
+		// occupancy_query = 
+	}
+	res.send({nearbyParking: nearbyParking});
 };
 
 // https://stackoverflow.com/questions/48626761/node-js-mysql-pool-connection-with-async-await
@@ -50,68 +54,55 @@ exports.getParkingAnalyticsForTimeRange = async (req, res) => {
 	// Example lot
 	if (body.lot_id === "1") {
 		const answer = await getExampleAnalyticsQueries(body);
-		res.send(answer);
+		res.send({devices: answer});
 	} else {
 		console.log("NEED TO IMPLEMENT getParkingAnalyticsForTimeRange for different lots!! ======================================")
 	}
 }
 
 async function getNearbyParkingLots(body) {
-	return new Promise((resolve) => {
-		minLat = Math.min(body.lat-1, body.lat+1);
-		maxLat = Math.max(body.lat-1, body.lat+1);
-		minLng = Math.min(body.lng-1, body.lng+1);
-		maxLng = Math.max(body.lng-1, body.lng+1);
-		const q_nearbyLots = 'SELECT * FROM lots  WHERE lat >'+minLat+' AND lat < '+maxLat+' AND lng >'+minLng+' AND lng < '+maxLng+' ORDER BY lot_id ASC';
-		pool.query(q_nearbyLots, (error, results) => {
-			if (error) {
-				console.log("ERROR in getNearbyParking", error);
-			} else {
-				if (results && results.rows) {
-					let rows = results.rows;
-					// results.rows.length
-					console.log("GetNearbyParking... ================================================================================")
-					for (var i = 0; i < 2; i++) {
-						console.log(rows[i]);
-					}
-					resolve({nearbyParking: results.rows});
-				}
-			}
-			resolve({nearbyParking: []});
-		});		
-	})
+	minLat = Math.min(body.lat-1, body.lat+1);
+	maxLat = Math.max(body.lat-1, body.lat+1);
+	minLng = Math.min(body.lng-1, body.lng+1);
+	maxLng = Math.max(body.lng-1, body.lng+1);
+	const q_nearbyLots = 'SELECT * FROM lots  WHERE lat >'+minLat+' AND lat < '+maxLat+' AND lng >'+minLng+' AND lng < '+maxLng+' ORDER BY lot_id ASC';
+	const nearbyLots = await dbQuery(q_nearbyLots);
+	return nearbyLots
 }
 
 async function getExampleAnalyticsQueries(body) {
+	const q_lot = 'SELECT * FROM devices WHERE lot_id = ' + body.lot_id + ' ORDER BY device_id ASC';
+	let curr_response = await dbQuery(q_lot);
+	for (var i = 0; i < curr_response.length; i++) {
+		if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBody9to5)) {
+			console.log("9 to 5 example");
+			curr_response[i]['analytics_percentage'] = exHigherTraffic9To5.lotValues[results.rows[i].device_id];
+		} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodyWeekday)) {
+			console.log("weekday example body")
+			curr_response[i]['analytics_percentage'] = exBusierOnWeekdays.lotValues[results.rows[i].device_id];
+		} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodyDinner)) {
+			console.log("morals example body")
+			curr_response[i]['analytics_percentage'] = exMoralsNearDinner.lotValues[results.rows[i].device_id];
+		} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodyValentines)) {
+			console.log("valentines example body")
+			curr_response[i]['analytics_percentage'] = exBusierOnValentines.lotValues[results.rows[i].device_id];
+		}
+	}
+	return curr_response
+	console.log("done")
+}
+
+async function dbQuery(queryString) {
 	return new Promise((resolve) => {
-		const q_lot = 'SELECT * FROM devices WHERE lot_id = ' + body.lot_id + ' ORDER BY device_id ASC';
-		pool.query(q_lot, (error, results) => {
+		pool.query(queryString, (error, results) => {
 			if (error) {
-				console.log("ERROR in getParkingAnalyticsForTimeRange", error);
+				console.log("ERROR IN QUERY: ", queryString)
+				console.log(error)
 			} else {
 				if (results && results.rows) {
-					var curr_response = results.rows;
-					// console.log(results.rows);
-					for (var i = 0; i < results.rows.length; i++) {
-						if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBody9to5)) {
-							console.log("9 to 5 example");
-							curr_response[i]['analytics_percentage'] = exHigherTraffic9To5.lotValues[results.rows[i].device_id];
-						} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodyWeekday)) {
-							console.log("weekday example body")
-							curr_response[i]['analytics_percentage'] = exBusierOnWeekdays.lotValues[results.rows[i].device_id];
-						} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodyDinner)) {
-							console.log("morals example body")
-							curr_response[i]['analytics_percentage'] = exMoralsNearDinner.lotValues[results.rows[i].device_id];
-						} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodyValentines)) {
-							console.log("valentines example body")
-							curr_response[i]['analytics_percentage'] = exBusierOnValentines.lotValues[results.rows[i].device_id];
-						}
-					}
-					resolve({devices: curr_response});
-					console.log("done")
+					resolve(results.rows);
 				}
 			}
-			resolve({devices: []});
-		});
-	});
+		})
+	})
 }
