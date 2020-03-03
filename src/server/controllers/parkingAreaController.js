@@ -22,19 +22,17 @@ exports.createParkingArea = function(req, res) {
 }
 
 // Get Parking Lots
-exports.getParkingAreas = function(req, res) {
-  console.log("GET PARKING LOTS");
-  pool.query('SELECT * FROM lots', (error, results) => {
-    if (error) {
-      console.log("ERROR", error);
-    } else {
-      if (results && results.rows) {
-        var list = results.rows;
-        console.log(list);
-        res.send({parkingAreas: list});
-      }
-    }
-  });
+exports.getParkingAreas = async (req, res) => {
+	console.log("GET PARKING LOTS");
+	let allParkingLots = await dbQuery('SELECT * FROM lots');
+	for (let i = 0; i < allParkingLots.length; i++) {
+		let capacity = await dbQuery('SELECT COUNT(*) FROM devices WHERE lot_id = ' + allParkingLots[i].lot_id);
+		let free = await dbQuery('SELECT COUNT(*) FROM devices WHERE lot_id = ' + allParkingLots[i].lot_id + ' AND active = TRUE AND occupied = FALSE');
+		allParkingLots[i].capacity = capacity[0]['count'];
+		allParkingLots[i].freeCount = free[0]['count'];
+	}
+	console.log(allParkingLots);
+	res.send({parkingAreas: allParkingLots});
 };
 
 // Get Nearby Parking Lots
