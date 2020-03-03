@@ -84,7 +84,7 @@ export default class ParkingSpace extends Component {
     return time_string
   }
   getAnalyticsPercentageString(percentage) {
-    return percentage + "%"
+    return this.props.place.id + "\n" + percentage + "%"
   }
   fillSpaceText(textBody, textX, textY) {
     // Fill rectangle with text
