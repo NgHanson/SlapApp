@@ -32,10 +32,10 @@ export default class ParkingDisplay extends Component {
     for (let x=0; x < parkingareas.length; x++) {
       table.push(
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginTop: '6px'}}>
-          <div style={{fontSize: '11pt'}}>
+          <div style={{fontSize: '11pt', width: '75px'}}>
             {parkingareas[x]['name']}
           </div>
-          <div style={{fontSize: '11pt'}}>
+          <div style={{fontSize: '11pt', width: '30px'}}>
             {parkingareas[x]['freeCount']}/{parkingareas[x]['capacity']}
           </div>
           <FaMapMarkedAlt className="display-icon" onClick={this.props.updateMapCenter.bind(this, parkingareas[x].lat, parkingareas[x].lng)}/>

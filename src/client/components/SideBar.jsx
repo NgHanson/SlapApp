@@ -62,6 +62,7 @@ class SideBar extends Component {
         // Pass on our props
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY }}}>
           <Container className="flex-column" style={{width: "100%", height: "90%"}}>
+            <Row style={{fontSize: 'xx-large'}}><div style={{color: 'white'}}>SLAP</div><div style={{color: 'red'}}>.</div></Row>
             <Row>Find Parking Near...</Row>
             <Row style={{marginBottom: '20px'}}>{mapApiLoaded && <SearchBox updateMapCenter={updateMapCenter} map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
             <Row>
@@ -80,7 +81,8 @@ class SideBar extends Component {
 
       return (
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
-          <Container width="100%">
+          <Container className="flex-column" width="100%">
+            <Row style={{fontSize: 'xx-large'}}><div style={{color: 'white'}}>SLAP</div><div style={{color: 'red'}}>.</div></Row>
             <div>
               Details:
             </div>
@@ -107,7 +109,8 @@ class SideBar extends Component {
     } else { // Analytics
       return (
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
-          <Container width="100%">
+          <Container className="flex-column" width="100%">
+            <Row style={{fontSize: 'xx-large'}}><div style={{color: 'white'}}>SLAP</div><div style={{color: 'red'}}>.</div></Row>
             <AnalyticsSelector currentLotID={currentLotID} setAnalyticsSelections={setAnalyticsSelections} changeViewType={changeViewType}/>
           </Container>
         </Menu>
