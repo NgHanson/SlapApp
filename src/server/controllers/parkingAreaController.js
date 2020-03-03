@@ -40,11 +40,14 @@ exports.getParkingAreas = function(req, res) {
 // Get Nearby Parking Lots
 exports.getNearbyParking = async (req, res) => {
 	const body = req.body;
-	const nearbyParking = await getNearbyParkingLots(body);
-	for (let i = 0; i < 2; i++) {
-		// console.log(nearbyParking)
-		// occupancy_query = 
+	let nearbyParking = await getNearbyParkingLots(body);
+	for (let i = 0; i < nearbyParking.length; i++) {
+		let capacity = await dbQuery('SELECT COUNT(*) FROM devices WHERE lot_id = ' + nearbyParking[i].lot_id);
+		let free = await dbQuery('SELECT COUNT(*) FROM devices WHERE lot_id = ' + nearbyParking[i].lot_id + ' AND active = TRUE AND occupied = FALSE');
+		nearbyParking[i].capacity = capacity[0]['count'];
+		nearbyParking[i].free = free[0]['count'];
 	}
+	console.log(nearbyParking);
 	res.send({nearbyParking: nearbyParking});
 };
 
