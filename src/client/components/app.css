@@ -29,6 +29,9 @@
   color: white;
 }
 
+.bm-item:focus {
+	outline: 0px;
+}
 /* The rest copied directly from react-burger-menu docs */
 
 /* Position and sizing of burger button */
