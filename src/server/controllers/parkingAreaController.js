@@ -45,7 +45,7 @@ exports.getNearbyParking = async (req, res) => {
 		let capacity = await dbQuery('SELECT COUNT(*) FROM devices WHERE lot_id = ' + nearbyParking[i].lot_id);
 		let free = await dbQuery('SELECT COUNT(*) FROM devices WHERE lot_id = ' + nearbyParking[i].lot_id + ' AND active = TRUE AND occupied = FALSE');
 		nearbyParking[i].capacity = capacity[0]['count'];
-		nearbyParking[i].free = free[0]['count'];
+		nearbyParking[i].freeCount = free[0]['count'];
 	}
 	console.log(nearbyParking);
 	res.send({nearbyParking: nearbyParking});
