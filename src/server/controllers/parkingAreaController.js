@@ -1,5 +1,5 @@
-var { exHigherTraffic9To5, exBusierOnWeekdays, exMoralsNearDinner, exBusierOnValentines } = require('../../constants/examples.js');
-var { exBody9to5, exBodyWeekday, exBodyDinner, exBodyValentines } = require('../../constants/example_post_requests.js');
+var { exHigherTraffic9To5, exBusierOnWeekdays, exMoralsNearDinner, exBusierOnValentines, exSingleTime } = require('../../constants/examples.js');
+var { exBody9to5, exBodyWeekday, exBodyDinner, exBodyValentines, exBodySingleTime } = require('../../constants/example_post_requests.js');
 
 const Pool = require('pg').Pool
 
@@ -52,6 +52,8 @@ exports.getNearbyParking = async (req, res) => {
 // https://stackoverflow.com/questions/48626761/node-js-mysql-pool-connection-with-async-await
 exports.getParkingAnalyticsForTimeRange = async (req, res) => {
 	const body = req.body;
+	console.log("getParkingAnalyticsForTimeRange")
+	console.log(body)
 	// Example lot
 	if (body.lot_id === "1") {
 		const answer = await getExampleAnalyticsQueries(body);
@@ -74,19 +76,24 @@ async function getNearbyParkingLots(body) {
 async function getExampleAnalyticsQueries(body) {
 	const q_lot = 'SELECT * FROM devices WHERE lot_id = ' + body.lot_id + ' ORDER BY device_id ASC';
 	let curr_response = await dbQuery(q_lot);
+	console.log(JSON.stringify(body.analyticsSelections))
+	console.log(JSON.stringify(exBodySingleTime))
 	for (var i = 0; i < curr_response.length; i++) {
 		if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBody9to5)) {
 			console.log("9 to 5 example");
-			curr_response[i]['analytics_percentage'] = exHigherTraffic9To5.lotValues[results.rows[i].device_id];
+			curr_response[i]['analytics_percentage'] = exHigherTraffic9To5.lotValues[curr_response[i].device_id];
 		} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodyWeekday)) {
 			console.log("weekday example body")
-			curr_response[i]['analytics_percentage'] = exBusierOnWeekdays.lotValues[results.rows[i].device_id];
+			curr_response[i]['analytics_percentage'] = exBusierOnWeekdays.lotValues[curr_response[i].device_id];
 		} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodyDinner)) {
 			console.log("morals example body")
-			curr_response[i]['analytics_percentage'] = exMoralsNearDinner.lotValues[results.rows[i].device_id];
+			curr_response[i]['analytics_percentage'] = exMoralsNearDinner.lotValues[curr_response[i].device_id];
 		} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodyValentines)) {
 			console.log("valentines example body")
-			curr_response[i]['analytics_percentage'] = exBusierOnValentines.lotValues[results.rows[i].device_id];
+			curr_response[i]['analytics_percentage'] = exBusierOnValentines.lotValues[curr_response[i].device_id];
+		} else if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBodySingleTime)) {
+			console.log("single time example body")
+			curr_response[i]['analytics_percentage'] = exSingleTime.lotValues[curr_response[i].device_id]
 		}
 	}
 	return curr_response
