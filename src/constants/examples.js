@@ -248,13 +248,24 @@ const exMoralsNearDinner = {
 
 // Entire parking lot was busier on valentines day
 const exBusierOnValentines = {
-	year: 0,
-    month: 0,
-    day: 0,
-    startHour: 0,
-    startMin: 0,
-    endHour: 0,
-    endMin: 0,
+	first: {
+		year: "",
+		month: "",
+		day: 14,
+		startH: 17,
+		startM: 0,
+		endH: 21,
+		endM: 0
+	},
+	second: {
+		year: "",
+		month: "",
+		day: 7,
+		startH: 17,
+		startM: 0,
+		endH: 21,
+		endM: 0
+	},
 	lotValues: {
 		"1": 9.2,
 		"2": 4.5,
@@ -311,24 +322,13 @@ const exBusierOnValentines = {
 
 // exSingleTime
 const exSingleTime = {
-	first: {
-		year: "",
-		month: "",
-		day: 14,
-		startH: 17,
-		startM: 0,
-		endH: 21,
-		endM: 0
-	},
-	second: {
-		year: "",
-		month: "",
-		day: 7,
-		startH: 17,
-		startM: 0,
-		endH: 21,
-		endM: 0
-	},
+     year: 2020,
+     month: 1,
+     day: 31,
+     startHour: 18,
+     startMin: 50,
+     endHour: 19,
+     endMin: 0,
 	lotValues: {
 		"1": 88.3,
 		"2": 84.9,

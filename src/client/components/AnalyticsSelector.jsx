@@ -4,16 +4,12 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import { FaCaretRight, FaCaretDown } from "react-icons/fa";
 
-import { exHigherTraffic9To5, exBusierOnWeekdays, exMoralsNearDinner, exBusierOnValentines } from '../../constants/examples.js';
+import { exSingleTime, exHigherTraffic9To5, exBusierOnWeekdays, exMoralsNearDinner, exBusierOnValentines } from '../../constants/examples.js';
 
 import * as Colour from '../../constants/colour_consts';
 import './analyticsselector.css';
 
-export default class AnalyticsSelector extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+const defaultState = {
       //SINGLE TIMEFRAME
       year: 0, 
       month: 0,
@@ -40,6 +36,39 @@ export default class AnalyticsSelector extends Component {
       //toggles
       singleOpen: false,
       compareOpen: false,
+}
+
+export default class AnalyticsSelector extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      //SINGLE TIMEFRAME
+      year: defaultState.year,
+      month: defaultState.month,
+      day: defaultState.day,
+      startHour: defaultState.startHour,
+      startMin: defaultState.startMin,
+      endHour: defaultState.endHour,
+      endMin: defaultState.endMin,
+      //COMPARE 2 TIMEFRAMES
+      fromYear: defaultState.fromYear,
+      fromMonth: defaultState.fromMonth,
+      fromDay: defaultState.fromDay,
+      fromStartHour: defaultState.fromStartHour,
+      fromStartMin: defaultState.fromStartMin,
+      fromEndHour: defaultState.fromEndHour,
+      fromEndMin: defaultState.fromEndMin,
+      toYear: defaultState.toYear,
+      toMonth: defaultState.toMonth,
+      toDay: defaultState.toDay,
+      toStartHour: defaultState.toStartHour,
+      toStartMin: defaultState.toStartMin,
+      toEndHour: defaultState.toEndHour,
+      toEndMin: defaultState.toEndMin,
+      //toggles
+      singleOpen: defaultState.singleOpen,
+      compareOpen: defaultState.compareOpen,
     }
   }
 
@@ -104,24 +133,62 @@ export default class AnalyticsSelector extends Component {
       currEx = exMoralsNearDinner;
     } else if (exNumber == 4) {
       currEx = exBusierOnValentines;
+    } else if (exNumber == 5) {
+      currEx = exSingleTime;
     }
 
-    this.setState({
-      fromYear: currEx.first.year,
-      fromMonth: currEx.first.month,
-      fromDay: currEx.first.day,
-      fromStartHour: currEx.first.startH,
-      fromStartMin: currEx.first.startM,
-      fromEndHour: currEx.first.endH,
-      fromEndMin: currEx.first.endM,
-      toYear: currEx.second.year,
-      toMonth: currEx.second.month,
-      toDay: currEx.second.day,
-      toStartHour: currEx.second.startH,
-      toStartMin: currEx.second.startM,
-      toEndHour: currEx.second.endH,
-      toEndMin: currEx.second.endM
-    });
+    if (exNumber == 5) {
+      this.setState({
+        year: currEx.year,
+        month: currEx.month,
+        day: currEx.day,
+        startHour: currEx.startHour,
+        startMin: currEx.startMin,
+        endHour: currEx.endHour,
+        endMin: currEx.endMin,
+        //COMPARE 2 TIMEFRAMES
+        fromYear: defaultState.fromYear,
+        fromMonth: defaultState.fromMonth,
+        fromDay: defaultState.fromDay,
+        fromStartHour: defaultState.fromStartHour,
+        fromStartMin: defaultState.fromStartMin,
+        fromEndHour: defaultState.fromEndHour,
+        fromEndMin: defaultState.fromEndMin,
+        toYear: defaultState.toYear,
+        toMonth: defaultState.toMonth,
+        toDay: defaultState.toDay,
+        toStartHour: defaultState.toStartHour,
+        toStartMin: defaultState.toStartMin,
+        toEndHour: defaultState.toEndHour,
+        toEndMin: defaultState.toEndMin,
+      });
+    } else {
+      this.setState({
+        //SINGLE TIMEFRAME
+        year: defaultState.year,
+        month: defaultState.month,
+        day: defaultState.day,
+        startHour: defaultState.startHour,
+        startMin: defaultState.startMin,
+        endHour: defaultState.endHour,
+        endMin: defaultState.endMin,
+        // COMPARE 2 TIMEFRAMES
+        fromYear: currEx.first.year,
+        fromMonth: currEx.first.month,
+        fromDay: currEx.first.day,
+        fromStartHour: currEx.first.startH,
+        fromStartMin: currEx.first.startM,
+        fromEndHour: currEx.first.endH,
+        fromEndMin: currEx.first.endM,
+        toYear: currEx.second.year,
+        toMonth: currEx.second.month,
+        toDay: currEx.second.day,
+        toStartHour: currEx.second.startH,
+        toStartMin: currEx.second.startM,
+        toEndHour: currEx.second.endH,
+        toEndMin: currEx.second.endM
+      });      
+    }
   }
 
   inputField(state, name, label=null) {
@@ -144,6 +211,14 @@ export default class AnalyticsSelector extends Component {
     );
   }
 
+  singleLotExamples() {
+    return (
+      <div>
+        <Button variant={"info"} style={{fontSize: '11pt', width: '100%', marginTop: '10px'}} onClick={() => this.updateLotExample(5)} >Lot Occupancy for Time</Button>
+      </div>
+    );
+  }
+
   singleCompare() {
     return(
       <div style={{ marginBottom: '30px'}}>
@@ -162,6 +237,7 @@ export default class AnalyticsSelector extends Component {
           {this.inputField(this.state.endHour, 'endHour')}
           {this.inputField(this.state.endMin, 'endMin')}
         </div>
+        {(this.props.currentLotID == 1) && this.singleLotExamples()}
         <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%', marginTop: '10px'}} onClick={() => this.onSubmit(true)} >
           Submit
         </Button>
