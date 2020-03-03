@@ -3,6 +3,8 @@ export function parkingLotJSONToMapsFormat(placelist) {
 	for (let i = 0; i < placelist.length; i++) {
 	  locationsToMark.push({id: placelist[i].lot_id,
 	                        name: placelist[i].name,
+                          capacity: placelist[i].capacity,
+                          freeCount: placelist[i].freeCount,
 	                        geometry: {
 	                          location: {
 	                            lat: placelist[i].lat,

@@ -43,7 +43,7 @@ export default class ParkingDisplay extends Component {
       table.push(
         <Row className="d-flex" key={x}>
           <div className="mr-auto p-2"><div style={{fontSize: '11pt'}}>{parkingareas[x]['name']}</div></div>
-          <div className="mr-auto"><div style={{fontSize: '11pt'}}>{parkingareas[x]['occupancy']}/{parkingareas[x]['capacity']}</div></div>
+          <div className="mr-auto"><div style={{fontSize: '11pt'}}>{parkingareas[x]['freeCount']}/{parkingareas[x]['capacity']}</div></div>
           {/*<div className="p-2" xs={3}><Button variant={"link"} style={{fontSize: '11pt'}}>View</Button></div className="p-2">*/}
           <div className="p-2"><FaMapMarkedAlt className="display-icon" onClick={this.props.updateMapCenter.bind(this, parkingareas[x].lat, parkingareas[x].lng)}/></div>
           {this.props.parkingareas && <div className="p-2"><FaTimes className="display-icon"/></div>}

@@ -254,6 +254,8 @@ class Main extends Component {
                   userType={userType}
                   viewType={viewType}
                   changeCurrentLot={this.changeCurrentLot}
+                  capacity={place.capacity}
+                  freeCount={place.freeCount}
                 ></Marker>                
               } else if (viewType == 2 || viewType == 3) {
                 return <ParkingSpace mapApi={mapApi} mapInstance={mapInstance} viewType={viewType} key={place.id} place={place} lat={place.geometry.location.lat} lng={place.geometry.location.lng}/>
