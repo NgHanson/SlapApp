@@ -381,7 +381,7 @@ const exSingleTime = {
 		"49": 98.5,
 		"50": 96.2,
 	}
-}
+};
 
 module.exports = {
 	lotOccupancyGraph,

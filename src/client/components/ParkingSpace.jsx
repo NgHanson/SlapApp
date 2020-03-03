@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import * as Colour from '../../constants/colour_consts';
+import { HSLtoRGB, RGBtoHSL, HEXtoRGB, RGBtoHEX } from './color_ops.js';
+
 // MOVE THESE INTO A CSS
 // transform moves the canvas so it is centered around the mouse
 const temp = {
@@ -51,40 +54,46 @@ export default class ParkingSpace extends Component {
   }
   drawSpaceBorder(rectX, rectY, rectWidth, rectHeight, thickness) {
     // Draw border rectangle
-    this.ctx.fillStyle='#000';
+    this.ctx.fillStyle = Colour.BLACK;
     this.ctx.fillRect(rectX - (thickness), rectY - (thickness), rectWidth + (thickness * 2), rectHeight + (thickness * 2));
+  }
+  getColorForPercentage(givenColor, perc) {
+    let rgbVals = HEXtoRGB(givenColor);
+    let hslVals = RGBtoHSL(rgbVals.r, rgbVals.g, rgbVals.b);
+    let newRGBVals = HSLtoRGB(hslVals.h, hslVals.s, perc);
+    return RGBtoHEX(newRGBVals.r, newRGBVals.g, newRGBVals.b);
   }
   drawParkingSpaceBody(rectX, rectY, rectWidth, rectHeight) {
     // If the space is not active (sensor is not on), draw as Grey
     if (this.props.viewType == 2) {
       if (!this.props.place.active) {
-        this.ctx.fillStyle = "#C2C5CC";
+        this.ctx.fillStyle = Colour.LIGHT_GREY;
       } else if (this.props.place.occupied) {
-        this.ctx.fillStyle = '#FFCCCB';
+        this.ctx.fillStyle = Colour.LIGHT_GREEN;
       } else {
-        this.ctx.fillStyle = '#90EE90';
+        this.ctx.fillStyle = Colour.LIGHT_RED;
       }      
     } else if (this.props.viewType == 3) {
+      // Want lightness between 35% and 100%
+      const perc = 0.35+0.6*(100 - Math.abs(this.props.place.analytics_percentage))/100;
       if (this.props.place.analytics_percentage > 0) {
-        this.ctx.fillStyle = '#90EE90';
+        this.ctx.fillStyle = this.getColorForPercentage(Colour.GREEN, perc);
       } else if (this.props.place.analytics_percentage < 0) {
-        this.ctx.fillStyle = '#FFCCCB';
+        this.ctx.fillStyle = this.getColorForPercentage(Colour.RED, perc);
       } else {
-        this.ctx.fillStyle = "#C2C5CC";
+        this.ctx.fillStyle = Colour.WHITE;
       }
     }
-
     this.ctx.fillRect(rectX, rectY, rectWidth, rectHeight);    
   }
   getTimeUpdateString(last_updated_str) {
     const last_updated = new Date(last_updated_str);
     const curr_time = new Date();
     const time_diff = new Date(curr_time - last_updated);
-    const time_string = this.props.place.id + "\nLast Update:\n" + time_diff.getHours() + "h " + time_diff.getMinutes() + "m " + time_diff.getSeconds() + "s";
-    return time_string
+    return "Last Update:\n" + time_diff.getHours() + "h " + time_diff.getMinutes() + "m " + time_diff.getSeconds() + "s";
   }
   getAnalyticsPercentageString(percentage) {
-    return this.props.place.id + "\n" + percentage + "%"
+    return percentage + "%";
   }
   fillSpaceText(textBody, textX, textY) {
     // Fill rectangle with text
@@ -92,8 +101,9 @@ export default class ParkingSpace extends Component {
     this.ctx.textBaseline = "middle";
     this.ctx.textAlign = "center";
      /// text color
-    this.ctx.fillStyle = '#000';
+    this.ctx.fillStyle = Colour.BLACK;
     var lineheight = 15;
+    textBody = this.props.place.id + "\n" + textBody;
     var lines = textBody.split('\n');
 
     for (var i = 0; i<lines.length; i++)
