@@ -1,4 +1,12 @@
 const exBody9to5 = {
+     isSingle: false,
+     year: 0,
+     month: 0,
+     day: 0,
+     startHour: 0,
+     startMin: 0,
+     endHour: 0,
+     endMin: 0,
      fromYear: '',
      fromMonth: '',
      fromDay: 13,
@@ -15,7 +23,16 @@ const exBody9to5 = {
      toEndMin: 0
    };
 
+
 const exBodyWeekday = {
+     isSingle: false,
+     year: 0,
+     month: 0,
+     day: 0,
+     startHour: 0,
+     startMin: 0,
+     endHour: 0,
+     endMin: 0,
    fromYear: '',
    fromMonth: '',
    fromDay: 13,
@@ -33,6 +50,14 @@ const exBodyWeekday = {
 };
 
 const exBodyDinner = {
+     isSingle: false,
+     year: 0,
+     month: 0,
+     day: 0,
+     startHour: 0,
+     startMin: 0,
+     endHour: 0,
+     endMin: 0,
     fromYear: '',
     fromMonth: '',
     fromDay: 14,
@@ -50,6 +75,14 @@ const exBodyDinner = {
 };
 
 const exBodyValentines = {
+     isSingle: false,
+     year: 0,
+     month: 0,
+     day: 0,
+     startHour: 0,
+     startMin: 0,
+     endHour: 0,
+     endMin: 0,
     fromYear: '',
     fromMonth: '',
     fromDay: 14,
