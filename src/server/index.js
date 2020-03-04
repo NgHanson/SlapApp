@@ -34,9 +34,34 @@ app.get('/api/emit', function (req, res) {
   res.send('Test Socket IO Emit');
 })
 
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+const emitDeviceData = async (socket) => {
+  while (true) {
+    socket.emit('DEVICE_DATA', { device_id: 53, active: true, occupied: true });
+    await delay(5000);
+    socket.emit('DEVICE_DATA', { device_id: 53, active: true, occupied: false });
+    await delay(5000);
+    socket.emit('DEVICE_DATA', { device_id: 53, active: false, occupied: true });
+    await delay(5000);
+  }
+};
+
+const emitLotData = async (socket) => {
+  while (true) {
+    socket.emit('LOT_DATA', { lot_id: 3, capacity: 3, freeCount: 0 })
+    await delay(5000);
+    socket.emit('LOT_DATA', { lot_id: 3, capacity: 3, freeCount: 1 })
+    await delay(5000);
+    socket.emit('LOT_DATA', { lot_id: 3, capacity: 3, freeCount: 2 })
+    await delay(5000);
+  }
+}
+
 // Socket IO
-io.on('connection', function (socket) {
-  socket.emit('testing', { data: 'hello world' });
+io.on('connection', async function (socket) {
+  emitDeviceData(socket)
+  emitLotData(socket)
 });
 
 // The Things Network

@@ -32,11 +32,39 @@ class SideBar extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/parking/all')
-      .then(res => res.json())
-      .then(res => this.setState({parkingAreas: res['parkingAreas']}));
-    
-    console.log(this.state)
+    var self = this;
+    console.log("here... ===================")
+    console.log(this.props.lots)
+    if (Object.entries(this.props.lots).length === 0) {
+      fetch('/api/parking/all')
+        .then(res => res.json())
+        .then(function(res) {
+          let lotMap = {};
+          res['parkingAreas'].forEach(l => {
+            lotMap[l.lot_id] = l;
+          });
+          self.setState({parkingAreas: lotMap});
+        })
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.lots !== prevProps.lots) {
+      this.setState({parkingAreas: this.props.lots});
+    }
+    if (this.props.socketLotData !== prevProps.socketLotData  && this.props.socketLotData !== undefined && this.state.parkingAreas !== null) {
+      console.log("socketLotData updated...")
+      console.log(this.props.socketLotData)
+      let curr_lots = this.state.parkingAreas;
+      if (curr_lots[this.props.socketLotData.lot_id]) {
+        if (String(this.props.socketLotData.lot_id) in curr_lots) {
+        console.log(curr_lots[this.props.socketLotData.lot_id])
+        curr_lots[this.props.socketLotData.lot_id].capacity = this.props.socketLotData.capacity;
+        curr_lots[this.props.socketLotData.lot_id].freeCount = this.props.socketLotData.freeCount;    
+        this.setState({parkingAreas: curr_lots});
+        }
+        
+      }
+    }
   }
 
   render() {

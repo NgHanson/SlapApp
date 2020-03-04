@@ -26,6 +26,7 @@ export default class ParkingDisplay extends Component {
   }
 
   showParkingLots = (parkingareas) => {
+    parkingareas = Object.entries(parkingareas).map(([k, v]) => {return v})
     let table = []
 
     // Outer loop to create parent
