@@ -7,8 +7,8 @@ import GoogleMap from './GoogleMap.jsx';
 import SideBar from "./SideBar";
 import AnalyticsDashboard from "./AnalyticsDashboard";
 
-import { searchForNearbyParking, getDevicesInLot, getAnalyticsSelections } from './clientCalls.js';
-import { parkingLotJSONToMapsFormat, parkingSpaceJSONToMapsFormat } from './formatConverter.js';
+import { searchForNearbyParking, getDevicesInLot, getAnalyticsSelections, getManagedLots, getSavedLots } from './clientCalls.js';
+import { arrayToObj, objValsList, parkingLotJSONToMapsFormat, parkingSpaceJSONToMapsFormat } from './formatConverter.js';
 import { getMapBounds, bindResizeListener, moveMapCenterDueToSidebar } from './mapUtils.js';
 
 // consts
@@ -36,6 +36,8 @@ class Main extends Component {
       mapApi: null,
       places: [],
       lots: {},
+      managedLots: {},
+      savedLots: {},
       placeMarkerOnClick: false,
       userType: 1,
       viewType: 1,
@@ -62,13 +64,14 @@ class Main extends Component {
     });
   }
 
+  componentDidMount() {
+    const self = this;
+    getManagedLots().then(function(res) {self.setState({managedLots: arrayToObj(res, 'lot_id')});});
+    getSavedLots().then(function(res) {self.setState({savedLots: arrayToObj(res, 'lot_id')});});
+  }
+
   componentDidUpdate(prevProps, prevState) {
-    console.log("googlemapswrapper component did update");
-    if (this.state.mapInstance) {
-    console.log("Current Map Zoom: " + this.state.mapInstance.getZoom())  
-    }
-    
-    const self =this;
+    const self = this;
     if (prevState.mapLat !== this.state.mapLat || prevState.mapLng !== this.state.mapLng) {
       console.log("map center changed")
       searchForNearbyParking(this.state.mapLat, this.state.mapLng)
@@ -80,7 +83,6 @@ class Main extends Component {
         self.setLots(placelist);
       }).then(function(res) {self.fitMapToBounds();});
     }
-
     if (prevState.viewType !== this.state.viewType) {
       if (this.state.viewType == 1) {
         console.log("changed to viewType 1")
