@@ -43,35 +43,14 @@ class Main extends Component {
     };
   }
 
-  toggleUserType = () => {
-    this.setState((prevState) => ({ userType: prevState.userType == 2 ? 1 : 2}));
-  }
-
-  changeViewType = (type) => {
-    this.setState({viewType: type});
-  }
-
-  setAnalyticsSelections = (selections) => {
-    this.setState({analyticsSelections: selections});
-  }
-
-  apiIsLoaded = (map, maps, places) => {
-    let self = this
-    // map.setOptions({disableDefaultUI: true});
-    if (!isEmpty(places)){
-      // Get bounds by our places
-      const bounds = getMapBounds(map, maps, places);
-      // Fit map to bounds
-      map.fitBounds(bounds);
-      // Bind the resize listener
-      bindResizeListener(map, maps, bounds);
-    }
+  apiIsLoaded(map, maps, places) {
+    const self = this;
     // Add bounds change listener for when google maps zoom changes...
     map.addListener('bounds_changed', function(event) {
       if (self.state.viewType == 2 || self.state.viewType == 3) {
-          let curr_places = self.state.places
-          self.addPlace([])
-          self.addPlace(curr_places)
+          let curr_places = self.state.places;
+          self.addPlace([]);
+          self.addPlace(curr_places);
       }
     });
 
@@ -81,10 +60,6 @@ class Main extends Component {
         mapInstance: map,
         mapApi: maps,
     });
-  };
-
-  componentDidMount() {
-    this.setState({places: []});
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -185,6 +160,18 @@ class Main extends Component {
         
       }
     }
+  }
+
+  toggleUserType = () => {
+    this.setState((prevState) => ({ userType: prevState.userType == 2 ? 1 : 2}));
+  }
+
+  changeViewType = (type) => {
+    this.setState({viewType: type});
+  }
+
+  setAnalyticsSelections = (selections) => {
+    this.setState({analyticsSelections: selections});
   }
 
   changeCurrentLot = (lot_id) => {
