@@ -83,22 +83,24 @@ class SideBar extends Component {
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
           <div>
             <div style={{display: 'flex', fontSize: 'xx-large'}}><div style={{color: 'white'}}>SLAP</div><div style={{color: 'red'}}>.</div></div>
-            <div>
+            <div style={{marginBottom: '8px'}}>
               Details:
             </div>
             <div>
               {lotInfo['name']}
             </div>
-            <div>
-              {`${lotInfo['freeCount']}/${lotInfo['capacity']}`}
+            <div style={{marginBottom: '8px'}}>
+              {`Occupancy: ${lotInfo['freeCount']}/${lotInfo['capacity']}`}
             </div>
-            <Chart
-              chartType="ColumnChart"
-              width="200px"
-              height="120px"
-              data={lotOccupancyGraph}
-              options={options}
-            />
+            <div style={{marginBottom: '20px'}}>
+              <Chart
+                chartType="ColumnChart"
+                width="100%"
+                height="140px"
+                data={lotOccupancyGraph}
+                options={options}
+              />
+            </div>
             <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%'}} onClick={() => changeViewType(1)} >
               {'Back'}
             </Button>
