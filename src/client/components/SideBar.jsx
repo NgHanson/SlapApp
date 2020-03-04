@@ -81,8 +81,8 @@ class SideBar extends Component {
 
       return (
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
-          <Container className="flex-column" width="100%">
-            <Row style={{fontSize: 'xx-large'}}><div style={{color: 'white'}}>SLAP</div><div style={{color: 'red'}}>.</div></Row>
+          <div>
+            <div style={{display: 'flex', fontSize: 'xx-large'}}><div style={{color: 'white'}}>SLAP</div><div style={{color: 'red'}}>.</div></div>
             <div>
               Details:
             </div>
@@ -102,17 +102,17 @@ class SideBar extends Component {
             <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%'}} onClick={() => changeViewType(1)} >
               {'Back'}
             </Button>
-          </Container>
+          </div>
         </Menu>
       );
 
     } else { // Analytics
       return (
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
-          <Container className="flex-column" width="100%">
-            <Row style={{fontSize: 'xx-large'}}><div style={{color: 'white'}}>SLAP</div><div style={{color: 'red'}}>.</div></Row>
+          <div>
+          <div style={{display: 'flex', fontSize: 'xx-large'}}><div style={{color: 'white'}}>SLAP</div><div style={{color: 'red'}}>.</div></div>
             <AnalyticsSelector currentLotID={currentLotID} setAnalyticsSelections={setAnalyticsSelections} changeViewType={changeViewType}/>
-          </Container>
+          </div>
         </Menu>
       );
     }
