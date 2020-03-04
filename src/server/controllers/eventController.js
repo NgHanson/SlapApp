@@ -30,16 +30,14 @@ exports.listEvent = function(req, res) {
   });
 };
 
-// Create Event
-exports.createEvent = function(req, res) {
-  const { deviceId, detected } = req.body;
-
-  //node-postgres will convert JS date objects to expected format
-  var timestamp = new Date();
-
-  // pool.query('INSERT INTO event (device_id, time, detected) VALUES ($1, $2, $3)', [], (error, results) = {
-  //   if (error) {
-  //   }
-  // });
+// ENDPOINTS NOT CALLED BY FRONTEND
+exports.insertEvent = function(params) {
+  let { deviceId, detected, time} = params;
+  let query = `INSERT INTO event (device_id, time, detected) VALUES (${deviceId}, '${time}', ${detected})`;
+  pool.query(query, (error, results) => {
+    if (error) {
+      console.error('EVENT INSERT ERR', error);
+    }
+  });
 };
 //https://blog.logrocket.com/setting-up-a-restful-api-with-node-js-and-postgresql-d96d6fc892d8/

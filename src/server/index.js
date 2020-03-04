@@ -16,6 +16,9 @@ const eventRouter = require('./routes/eventRouter');
 const parkingAreaRouter = require('./routes/parkingAreaRouter');
 const deviceRouter = require('./routes/deviceRouter');
 
+const eventController = require('./controllers/eventController');
+const deviceController = require('./controllers/deviceController');
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -68,25 +71,26 @@ ttn.data(APP_ID, ACCESS_KEY)
   .then(function (client) {
     // listens to all uplinks from all devices
     client.on("uplink", function (devID, payload) {
-      console.log("Received uplink from ", devID);
-      console.log(payload);
-      // use ttn_uplink model
-      // INSERT INTO event (device_id, time, detected) VALUES (53, '2020-03-03 19:10:25', TRUE)
-      query_string = ''
-      io.emit('DEVICE_DATA', payload);
+      console.error("Received uplink from ", devID, payload);
+
+      //io.emit('DEVICE_DATA', payload);
 
       //JS Date() auto convert to local time.
-      var local_time = new Date(payload['metadata']['time']);
-      console.log(payload.payload_fields.parkState)
-      console.log(local_time)
-//       var event = {
-//     event_id: id,
-//     device_id: deviceId,
-//     time: time,
-//     detected: detected
-// }
       //pretty sure the date is UTC time (its +5 hrs from local)
-    })
+      //store in db as GMT time
+      let deviceId = payload['dev_id'];
+      let time = new Date(payload['metadata']['time']);
+      let timeString = `${time.getFullYear()}-${time.getMonth()}-${time.getDay()} ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+      let detected = payload['payload_fields']['parkState'] ? true : false;
+      var event = {
+        deviceId: deviceId,
+        time: timeString,
+        detected: detected,
+      }
+
+      eventController.insertEvent(event);
+      deviceController.updateDeviceStatus({deviceId: deviceId, detected: detected});
+    });
   })
   .catch(function (error) {
     console.error("Error", error)
