@@ -30,7 +30,7 @@ exports.listEvent = function(req, res) {
   });
 };
 
-// Create Event, not part of api...
+// ENDPOINTS NOT CALLED BY FRONTEND
 exports.insertEvent = function(params) {
   let { deviceId, detected, time} = params;
   let query = `INSERT INTO event (device_id, time, detected) VALUES (${deviceId}, '${time}', ${detected})`;

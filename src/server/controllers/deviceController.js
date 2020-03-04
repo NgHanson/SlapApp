@@ -26,7 +26,7 @@ exports.getDevicesForLot = function(req, res) {
   });
 };
 
-// not part of api...
+// ENDPOINTS NOT CALLED BY FRONTEND
 exports.updateDeviceStatus = function(params) {
   const { deviceId, detected } = params;
   let query = `UPDATE devices SET occupied = ${detected} WHERE device_id = ${deviceId}`;

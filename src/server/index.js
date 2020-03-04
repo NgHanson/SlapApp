@@ -46,10 +46,8 @@ ttn.data(APP_ID, ACCESS_KEY)
   .then(function (client) {
     // listens to all uplinks from all devices
     client.on("uplink", function (devID, payload) {
-      console.error("Received uplink from ", devID);
-      console.error(payload);
-      // use ttn_uplink model
-      
+      console.error("Received uplink from ", devID, payload);
+
       //io.emit('DEVICE_DATA', payload);
 
       //JS Date() auto convert to local time.
@@ -64,7 +62,7 @@ ttn.data(APP_ID, ACCESS_KEY)
         time: timeString,
         detected: detected,
       }
-      
+
       eventController.insertEvent(event);
       deviceController.updateDeviceStatus({deviceId: deviceId, detected: detected});
     });
