@@ -137,8 +137,8 @@ class Main extends Component {
         searchForNearbyParking(this.state.mapLat, this.state.mapLng)
         .then(function(res) {
           const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
-          self.addPlace([]);
-          self.addPlace(placelist);
+          // self.addPlace([]);
+          // self.addPlace(placelist);
 
           self.setLots(placelist);
         })
@@ -184,21 +184,28 @@ class Main extends Component {
     }
     if (this.props.socketDeviceData !== prevProps.socketDeviceData && (this.state.viewType == 2 || this.state.viewType == 3)) {
       console.log("SocketDeviceData updated...")
-      console.log(this.state.places);
+      // Places shouldn't really be an array... oh well demo is soon
+      let curr_spots = this.state.places ? this.state.places : [];
+      for (let i = 0; i < curr_spots.length; i++) {
+        if (String(curr_spots[i].id) === String(this.props.socketDeviceData.device_id)) {
+          curr_spots[i].active = this.props.socketDeviceData.active;
+          curr_spots[i].occupied = this.props.socketDeviceData.occupied;
+          break;
+        }
+      }
+      this.setState({places: curr_spots})
+      console.log("Updated ting... ", curr_spots)
     }
     if (this.props.socketLotData !== prevProps.socketLotData  && this.props.socketLotData !== undefined && this.state.viewType == 1) {
       console.log("socketLotData updated...")
       console.log(this.props.socketLotData)
-      let curr_lots = this.state.places ? this.state.places : [];
-      for (let i = 0; i < curr_lots.length; i++) {
-        if (String(curr_lots[i].id) === String(this.props.socketLotData.lot_id)) {
-          curr_lots[i].capacity = this.props.socketLotData.capacity;
-          curr_lots[i].freeCount = this.props.socketLotData.freeCount;
-          break;
-        }
+      let curr_lots = this.state.lots;
+      if (curr_lots[this.props.socketLotData.lot_id]) {
+        console.log(curr_lots[this.props.socketLotData.lot_id])
+        curr_lots[this.props.socketLotData.lot_id].capacity = this.props.socketLotData.capacity;
+        curr_lots[this.props.socketLotData.lot_id].freeCount = this.props.socketLotData.freeCount;  
       }
-      this.setState({places: curr_lots});
-      console.log(this.state.places)
+      this.setState({lots: curr_lots});
     }
   }
 
@@ -288,23 +295,8 @@ class Main extends Component {
             onZoomChanged={this.onZoomChanged}
           >
             {/* Place Components on the map from json file */}
-            {places.map((place) => {
+            {(viewType == 2 || viewType == 3) && places.map((place) => {
               // Note: https://stackoverflow.com/questions/41070083/wrong-location-of-marker-when-rendered-in-component
-              if (viewType === 1) {
-                return <Marker
-                  key={place.id}
-                  lot_id={place.id}
-                  text={place.name}
-                  lat={place.geometry.location.lat}
-                  lng={place.geometry.location.lng}
-                  changeViewType={this.changeViewType}
-                  userType={userType}
-                  viewType={viewType}
-                  changeCurrentLot={this.changeCurrentLot}
-                  capacity={place.capacity}
-                  freeCount={place.freeCount}
-                />                
-              } else if (viewType == 2 || viewType == 3) {
                 return <ParkingSpace 
                   mapApi={mapApi}
                   mapInstance={mapInstance}
@@ -313,7 +305,21 @@ class Main extends Component {
                   place={place}
                   lat={place.geometry.location.lat}
                   lng={place.geometry.location.lng}/>
-              }
+            })}
+            {(viewType === 1) && Object.entries(lots).map(([id, lot]) => {
+                return <Marker
+                  key={lot.id}
+                  lot_id={lot.id}
+                  text={lot.name}
+                  lat={lot.geometry.location.lat}
+                  lng={lot.geometry.location.lng}
+                  changeViewType={this.changeViewType}
+                  userType={userType}
+                  viewType={viewType}
+                  changeCurrentLot={this.changeCurrentLot}
+                  capacity={lot.capacity}
+                  freeCount={lot.freeCount}
+                />
             })}
 
             {/* Place Component on map click */}
