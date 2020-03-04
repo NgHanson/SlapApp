@@ -43,25 +43,32 @@ ttn.data(APP_ID, ACCESS_KEY)
   .then(function (client) {
     // listens to all uplinks from all devices
     client.on("uplink", function (devID, payload) {
-      console.log("Received uplink from ", devID);
-      console.log(payload);
+      console.error("Received uplink from ", devID);
+      console.error(payload);
       // use ttn_uplink model
-      // INSERT INTO event (device_id, time, detected) VALUES (53, '2020-03-03 19:10:25', TRUE)
-      query_string = ''
-      io.emit('DEVICE_DATA', payload);
+      
+      //io.emit('DEVICE_DATA', payload);
 
       //JS Date() auto convert to local time.
-      var local_time = new Date(payload['metadata']['time']);
-      console.log(payload.payload_fields.parkState)
-      console.log(local_time)
-      var event = {
-    event_id: id,
-    device_id: deviceId,
-    time: time,
-    detected: detected
-}
       //pretty sure the date is UTC time (its +5 hrs from local)
-    })
+      //store in db as GMT time
+      var local_time = new Date(payload['metadata']['time']);
+      var event = {
+        device_id: payload['dev_id'],
+        time: local_time,
+        detected: payload['payload_fields']['parkState'],
+      }
+      
+      console.error('EVENT TO INSERT', event);
+
+      fetch('/api/event/insert', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(event),
+      });
+    });
   })
   .catch(function (error) {
     console.error("Error", error)
