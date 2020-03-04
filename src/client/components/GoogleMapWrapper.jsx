@@ -9,6 +9,7 @@ import AnalyticsDashboard from "./AnalyticsDashboard";
 
 import { searchForNearbyParking, getDevicesInLot, getAnalyticsSelections } from './clientCalls.js';
 import { parkingLotJSONToMapsFormat, parkingSpaceJSONToMapsFormat } from './formatConverter.js';
+import { getMapBounds, bindResizeListener, moveMapCenterDueToSidebar } from './mapUtils.js';
 
 // consts
 const WATERLOO_CENTER = [43.472393361375325, -80.53837152380368];
@@ -20,37 +21,11 @@ User Type
 2 - Owner
 
 View Type
+0 - Initial View (App Start)
 1 - General
 2 - Lot
 3 - Analytics
 */
-
-// Return map bounds based on list of places
-const getMapBounds = (map, maps, places) => {
-  const bounds = new maps.LatLngBounds();
-  places.forEach((place) => {
-    bounds.extend(new maps.LatLng(
-      place.geometry.location.lat,
-      place.geometry.location.lng
-    ));
-  });
-  return bounds;
-};
-
-// Re-center map when resizing the window
-const bindResizeListener = (map, maps, bounds) => {
-  maps.event.addDomListenerOnce(map, 'idle', () => {
-    maps.event.addDomListener(window, 'resize', () => {
-      map.fitBounds(bounds);
-      moveMapCenterDueToSidebar(map);
-    });
-  });
-};
-
-const moveMapCenterDueToSidebar = (map) => {
-  // Move map center right 300px (width of hamburger menu)
-  map.panBy(-300,0);
-};
 
 class Main extends Component {
   constructor(props) {
