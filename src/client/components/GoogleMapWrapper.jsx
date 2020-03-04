@@ -209,7 +209,6 @@ class Main extends Component {
         }
         
       }
-      
     }
   }
 
@@ -224,7 +223,7 @@ class Main extends Component {
   fitMapToBounds = () => {
     const map = this.state.mapInstance;
     const maps = this.state.mapApi;
-    const bounds = getMapBounds(map, maps, this.state.places);
+    const bounds = (this.state.viewType == 2 || this.state.viewType == 3) ? getMapBounds(map, maps, this.state.places) : getMapBounds(map, maps, Object.entries(this.state.lots).map(([k, v]) => {return v}))
     map.fitBounds(bounds);
     bindResizeListener(map, maps, bounds);
     if (this.state.viewType == 2 || this.state.viewType == 3) {
@@ -288,6 +287,7 @@ class Main extends Component {
           setAnalyticsSelections={this.setAnalyticsSelections}
           lotInfo={this.state.lots[this.state.currentLotID]}
           lots={this.state.lots}
+          socketLotData={this.props.socketLotData}
         />
         
         <div style={{width: '100%', height: (viewType == 3 ? '90%' : '100%')}}>

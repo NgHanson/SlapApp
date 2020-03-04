@@ -51,6 +51,20 @@ class SideBar extends Component {
     if (this.props.lots !== prevProps.lots) {
       this.setState({parkingAreas: this.props.lots});
     }
+    if (this.props.socketLotData !== prevProps.socketLotData  && this.props.socketLotData !== undefined && this.state.parkingAreas !== null) {
+      console.log("socketLotData updated...")
+      console.log(this.props.socketLotData)
+      let curr_lots = this.state.parkingAreas;
+      if (curr_lots[this.props.socketLotData.lot_id]) {
+        if (String(this.props.socketLotData.lot_id) in curr_lots) {
+        console.log(curr_lots[this.props.socketLotData.lot_id])
+        curr_lots[this.props.socketLotData.lot_id].capacity = this.props.socketLotData.capacity;
+        curr_lots[this.props.socketLotData.lot_id].freeCount = this.props.socketLotData.freeCount;    
+        this.setState({parkingAreas: curr_lots});
+        }
+        
+      }
+    }
   }
 
   render() {

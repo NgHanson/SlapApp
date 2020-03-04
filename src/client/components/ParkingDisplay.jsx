@@ -26,7 +26,6 @@ export default class ParkingDisplay extends Component {
   }
 
   showParkingLots = (parkingareas) => {
-    console.log(parkingareas)
     parkingareas = Object.entries(parkingareas).map(([k, v]) => {return v})
     let table = []
 
