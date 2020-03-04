@@ -26,15 +26,13 @@ exports.getDevicesForLot = function(req, res) {
   });
 };
 
-exports.updateDeviceStatus = function(req, res) {
-  console.log('update device status', req.body);
-  const { deviceId, detected } = req.body;
-  let query = `UPDATE devices SET detected = ${detected} WHERE device_id = ${deviceId}`;
+// not part of api...
+exports.updateDeviceStatus = function(params) {
+  const { deviceId, detected } = params;
+  let query = `UPDATE devices SET occupied = ${detected} WHERE device_id = ${deviceId}`;
   pool.query(query, (error, results) => {
     if (error) {
       console.log('ERROR', error);
-    } else {
-      console.log('update worked', results);
     }
   });
 

@@ -30,16 +30,13 @@ exports.listEvent = function(req, res) {
   });
 };
 
-// Create Event
-exports.insertEvent = function(req, res) {
-  const { deviceId, detected, time} = req.body;
-  console.log('backend insert event', req.body);
-  let query = `INSERT INTO event (device_id, time, detected) VALUES (${deviceId}, ${time}, ${detected})`;
+// Create Event, not part of api...
+exports.insertEvent = function(params) {
+  let { deviceId, detected, time} = params;
+  let query = `INSERT INTO event (device_id, time, detected) VALUES (${deviceId}, '${time}', ${detected})`;
   pool.query(query, (error, results) => {
     if (error) {
       console.error('EVENT INSERT ERR', error);
-    } else {
-      console.error('event insert good', results);
     }
   });
 };

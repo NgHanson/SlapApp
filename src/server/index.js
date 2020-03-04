@@ -16,6 +16,9 @@ const eventRouter = require('./routes/eventRouter');
 const parkingAreaRouter = require('./routes/parkingAreaRouter');
 const deviceRouter = require('./routes/deviceRouter');
 
+const eventController = require('./controllers/eventController');
+const deviceController = require('./controllers/deviceController');
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -52,22 +55,18 @@ ttn.data(APP_ID, ACCESS_KEY)
       //JS Date() auto convert to local time.
       //pretty sure the date is UTC time (its +5 hrs from local)
       //store in db as GMT time
-      var local_time = new Date(payload['metadata']['time']);
+      let deviceId = payload['dev_id'];
+      let time = new Date(payload['metadata']['time']);
+      let timeString = `${time.getFullYear()}-${time.getMonth()}-${time.getDay()} ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+      let detected = payload['payload_fields']['parkState'] ? true : false;
       var event = {
-        device_id: payload['dev_id'],
-        time: local_time,
-        detected: payload['payload_fields']['parkState'],
+        deviceId: deviceId,
+        time: timeString,
+        detected: detected,
       }
       
-      console.error('EVENT TO INSERT', event);
-
-      fetch('/api/event/insert', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(event),
-      });
+      eventController.insertEvent(event);
+      deviceController.updateDeviceStatus({deviceId: deviceId, detected: detected});
     });
   })
   .catch(function (error) {
