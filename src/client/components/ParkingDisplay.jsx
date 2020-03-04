@@ -20,35 +20,29 @@ export default class ParkingDisplay extends Component {
   }
 
   goToAnalyticsView = (lot_id, lat, lng) => {
-    // console.log(lot_id)
-    // console.log("yeet")
-    // this.props.
     this.props.updateMapCenter(lat, lng)
     this.props.changeCurrentLot(lot_id)
     this.props.changeViewType(3)
   }
 
   showParkingLots = (parkingareas) => {
-    if (this.props.managedparkingareas !== null) {
-      console.log("erijfaoejfifjojeaoje")
-    }
-    // console.log("showParkingLots");
-    // const parkingareas = ting
-    // console.log(parkingareas)
     let table = []
 
     // Outer loop to create parent
     for (let x=0; x < parkingareas.length; x++) {
-      // console.log(parkingareas[x])
       table.push(
-        <Row className="d-flex" key={x}>
-          <div className="mr-auto p-2"><div style={{fontSize: '11pt'}}>{parkingareas[x]['name']}</div></div>
-          <div className="mr-auto"><div style={{fontSize: '11pt'}}>{parkingareas[x]['freeCount']}/{parkingareas[x]['capacity']}</div></div>
-          {/*<div className="p-2" xs={3}><Button variant={"link"} style={{fontSize: '11pt'}}>View</Button></div className="p-2">*/}
-          <div className="p-2"><FaMapMarkedAlt className="display-icon" onClick={this.props.updateMapCenter.bind(this, parkingareas[x].lat, parkingareas[x].lng)}/></div>
-          {this.props.parkingareas && <div className="p-2"><FaTimes className="display-icon"/></div>}
-          {this.props.managedparkingareas && <div className="p-2"><FaChartBar onClick={this.goToAnalyticsView.bind(this, parkingareas[x].lot_id, parkingareas[x].lat, parkingareas[x].lng)} className="display-icon"/></div>}
-        </Row>);
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginTop: '6px'}}>
+          <div style={{fontSize: '11pt', width: '75px'}}>
+            {parkingareas[x]['name']}
+          </div>
+          <div style={{fontSize: '11pt', width: '30px'}}>
+            {parkingareas[x]['freeCount']}/{parkingareas[x]['capacity']}
+          </div>
+          <FaMapMarkedAlt className="display-icon" onClick={this.props.updateMapCenter.bind(this, parkingareas[x].lat, parkingareas[x].lng)}/>
+          {this.props.parkingareas && <FaTimes className="display-icon"/>}
+          {this.props.managedparkingareas && <FaChartBar onClick={this.goToAnalyticsView.bind(this, parkingareas[x].lot_id, parkingareas[x].lat, parkingareas[x].lng)} className="display-icon"/>}
+        </div>
+      );
     }
     return table
   }
@@ -60,7 +54,7 @@ export default class ParkingDisplay extends Component {
         <Row>{title}</Row>
         {this.props.parkingareas && <Fragment>{this.showParkingLots(this.props.parkingareas)}</Fragment>}
         {this.props.managedparkingareas && <Fragment>{this.showParkingLots(this.props.managedparkingareas)}</Fragment>}
-        <Row className="justify-content-xs-center"><Col/><Col xs="auto"><Button variant='primary' style={{backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE}}>Add Lot</Button></Col><Col/></Row>
+        <Row className="justify-content-xs-center" style={{marginTop: '20px'}}><Col/><Col xs="auto"><Button variant='primary' style={{backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE}}>Add Lot</Button></Col><Col/></Row>
       </Container>
     );
   }

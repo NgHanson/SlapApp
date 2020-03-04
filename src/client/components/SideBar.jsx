@@ -8,6 +8,20 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import * as Colour from '../../constants/colour_consts';
 
+import { Chart } from "react-google-charts";
+import { lotOccupancyGraph } from '../../constants/examples.js';
+const options = {
+  title: "Occupancy",
+  legend: "none",
+  hAxis: { showTextEvery: 4 },
+  vAxis: { maxValue: 140 }, //this DN work?
+  isStacked: true,
+  series: {
+    0:{color: Colour.LIGHT_RED},
+    1:{color: Colour.LIGHT_BLUE},
+  }
+};
+
 class SideBar extends Component {
   constructor(props) {
     super(props);
@@ -38,16 +52,19 @@ class SideBar extends Component {
        updateMapCenter,
        changeCurrentLot,
        setAnalyticsSelections,
-       currentLotID,
+       lotInfo,
     } = this.props;
+
+    let currentLotID = lotInfo ? lotInfo.id : 0;
 
     if (viewType == 1) { //General View
       return (
         // Pass on our props
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY }}}>
           <Container className="flex-column" style={{width: "100%", height: "90%"}}>
-              <Row>Find Parking Near...</Row>
-              <Row>{mapApiLoaded && <SearchBox updateMapCenter={updateMapCenter} map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
+            <Row style={{fontSize: 'xx-large'}}><div style={{color: 'white'}}>SLAP</div><div style={{color: 'red'}}>.</div></Row>
+            <Row>Find Parking Near...</Row>
+            <Row style={{marginBottom: '20px'}}>{mapApiLoaded && <SearchBox updateMapCenter={updateMapCenter} map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
             <Row>
               {this.state.parkingAreas && <ParkingDisplay title='Saved Lots' userType={userType} updateMapCenter={updateMapCenter} parkingareas={this.state.parkingAreas}></ParkingDisplay>}
               {this.state.parkingAreas && (userType==2) && <ParkingDisplay title='Managed Lots' changeCurrentLot={changeCurrentLot} changeViewType={changeViewType} userType={userType} updateMapCenter={updateMapCenter} managedparkingareas={this.state.parkingAreas}></ParkingDisplay>}
@@ -64,20 +81,40 @@ class SideBar extends Component {
 
       return (
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
-          <Container width="100%">
+          <div>
+            <div style={{display: 'flex', fontSize: 'xx-large'}}><div style={{color: 'white'}}>SLAP</div><div style={{color: 'red'}}>.</div></div>
+            <div style={{marginBottom: '8px'}}>
+              Details:
+            </div>
+            <div>
+              {lotInfo['name']}
+            </div>
+            <div style={{marginBottom: '8px'}}>
+              {`Occupancy: ${lotInfo['freeCount']}/${lotInfo['capacity']}`}
+            </div>
+            <div style={{marginBottom: '20px'}}>
+              <Chart
+                chartType="ColumnChart"
+                width="100%"
+                height="140px"
+                data={lotOccupancyGraph}
+                options={options}
+              />
+            </div>
             <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%'}} onClick={() => changeViewType(1)} >
               {'Back'}
             </Button>
-          </Container>
+          </div>
         </Menu>
       );
 
     } else { // Analytics
       return (
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
-          <Container width="100%">
+          <div>
+          <div style={{display: 'flex', fontSize: 'xx-large'}}><div style={{color: 'white'}}>SLAP</div><div style={{color: 'red'}}>.</div></div>
             <AnalyticsSelector currentLotID={currentLotID} setAnalyticsSelections={setAnalyticsSelections} changeViewType={changeViewType}/>
-          </Container>
+          </div>
         </Menu>
       );
     }
