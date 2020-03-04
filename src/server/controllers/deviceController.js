@@ -8,7 +8,7 @@ const pool = new Pool({
   database: dbConfig.database,
   password: dbConfig.password,
   port: dbConfig.port,
-})
+});
 
 // Display list of all Events.
 exports.getDevicesForLot = function(req, res) {
@@ -25,5 +25,17 @@ exports.getDevicesForLot = function(req, res) {
     }
   });
 };
+
+// ENDPOINTS NOT CALLED BY FRONTEND
+exports.updateDeviceStatus = function(params) {
+  const { deviceId, detected } = params;
+  let query = `UPDATE devices SET occupied = ${detected} WHERE device_id = ${deviceId}`;
+  pool.query(query, (error, results) => {
+    if (error) {
+      console.log('ERROR', error);
+    }
+  });
+
+}
 
 // //https://blog.logrocket.com/setting-up-a-restful-api-with-node-js-and-postgresql-d96d6fc892d8/

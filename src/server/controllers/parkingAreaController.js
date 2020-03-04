@@ -1,25 +1,9 @@
 var { exHigherTraffic9To5, exBusierOnWeekdays, exMoralsNearDinner, exBusierOnValentines, exSingleTime } = require('../../constants/examples.js');
 var { exBody9to5, exBodyWeekday, exBodyDinner, exBodyValentines, exBodySingleTime } = require('../../constants/example_post_requests.js');
 
-const Pool = require('pg').Pool
-
-const dbConfig = require('../../../config')['development']['database'];
+let { dbQuery } = require('./db');
 
 //var Event = require('../models/event');
-
-const pool = new Pool({
-  user: dbConfig.user,
-  host: dbConfig.host,
-  database: dbConfig.database,
-  password: dbConfig.password,
-  port: dbConfig.port,
-})
-
-
-// Create Parking Lot
-exports.createParkingArea = function(req, res) {
-  
-}
 
 // Get Parking Lots
 exports.getParkingAreas = async (req, res) => {
@@ -100,17 +84,4 @@ async function getExampleAnalyticsQueries(body) {
 	console.log("done")
 }
 
-async function dbQuery(queryString) {
-	return new Promise((resolve) => {
-		pool.query(queryString, (error, results) => {
-			if (error) {
-				console.log("ERROR IN QUERY: ", queryString)
-				console.log(error)
-			} else {
-				if (results && results.rows) {
-					resolve(results.rows);
-				}
-			}
-		})
-	})
-}
+
