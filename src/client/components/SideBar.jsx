@@ -32,11 +32,25 @@ class SideBar extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/parking/all')
-      .then(res => res.json())
-      .then(res => this.setState({parkingAreas: res['parkingAreas']}));
-    
-    console.log(this.state)
+    var self = this;
+    console.log("here... ===================")
+    console.log(this.props.lots)
+    if (Object.entries(this.props.lots).length === 0) {
+      fetch('/api/parking/all')
+        .then(res => res.json())
+        .then(function(res) {
+          let lotMap = {};
+          res['parkingAreas'].forEach(l => {
+            lotMap[l.lot_id] = l;
+          });
+          self.setState({parkingAreas: lotMap});
+        })
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.lots !== prevProps.lots) {
+      this.setState({parkingAreas: this.props.lots});
+    }
   }
 
   render() {

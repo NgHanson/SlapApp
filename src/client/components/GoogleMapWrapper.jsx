@@ -201,11 +201,15 @@ class Main extends Component {
       console.log(this.props.socketLotData)
       let curr_lots = this.state.lots;
       if (curr_lots[this.props.socketLotData.lot_id]) {
+        if (String(this.props.socketLotData.lot_id) in curr_lots) {
         console.log(curr_lots[this.props.socketLotData.lot_id])
         curr_lots[this.props.socketLotData.lot_id].capacity = this.props.socketLotData.capacity;
-        curr_lots[this.props.socketLotData.lot_id].freeCount = this.props.socketLotData.freeCount;  
+        curr_lots[this.props.socketLotData.lot_id].freeCount = this.props.socketLotData.freeCount;    
+        this.setState({lots: curr_lots});
+        }
+        
       }
-      this.setState({lots: curr_lots});
+      
     }
   }
 
@@ -283,6 +287,7 @@ class Main extends Component {
           changeCurrentLot={this.changeCurrentLot}
           setAnalyticsSelections={this.setAnalyticsSelections}
           lotInfo={this.state.lots[this.state.currentLotID]}
+          lots={this.state.lots}
         />
         
         <div style={{width: '100%', height: (viewType == 3 ? '90%' : '100%')}}>
