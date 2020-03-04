@@ -113,9 +113,7 @@ class Main extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("googlemapswrapper component did update")
-    console.log(prevState.viewType)
-    console.log(this.state.viewType)
+    console.log("googlemapswrapper component did update");
     if (this.state.mapInstance) {
     console.log("Current Map Zoom: " + this.state.mapInstance.getZoom())  
     }
@@ -177,13 +175,31 @@ class Main extends Component {
         });
       }
     }
-      if (this.state.analyticsSelections !== prevState.analyticsSelections) {
-        getAnalyticsSelections(this.state.currentLotID, this.state.analyticsSelections).then(function(res) {
-          return parkingSpaceJSONToMapsFormat(res.devices);
-        }).then(function(locationsToMark){self.addPlace(locationsToMark)
-        }).then(function(res) {self.fitMapToBounds();
-        }).then(function(res) {console.log("done")});
+    if (this.state.analyticsSelections !== prevState.analyticsSelections) {
+      getAnalyticsSelections(this.state.currentLotID, this.state.analyticsSelections).then(function(res) {
+        return parkingSpaceJSONToMapsFormat(res.devices);
+      }).then(function(locationsToMark){self.addPlace(locationsToMark)
+      }).then(function(res) {self.fitMapToBounds();
+      }).then(function(res) {console.log("done")});
+    }
+    if (this.props.socketDeviceData !== prevProps.socketDeviceData && (this.state.viewType == 2 || this.state.viewType == 3)) {
+      console.log("SocketDeviceData updated...")
+      console.log(this.state.places);
+    }
+    if (this.props.socketLotData !== prevProps.socketLotData  && this.props.socketLotData !== undefined && this.state.viewType == 1) {
+      console.log("socketLotData updated...")
+      console.log(this.props.socketLotData)
+      let curr_lots = this.state.places ? this.state.places : [];
+      for (let i = 0; i < curr_lots.length; i++) {
+        if (String(curr_lots[i].id) === String(this.props.socketLotData.lot_id)) {
+          curr_lots[i].capacity = this.props.socketLotData.capacity;
+          curr_lots[i].freeCount = this.props.socketLotData.freeCount;
+          break;
+        }
       }
+      this.setState({places: curr_lots});
+      console.log(this.state.places)
+    }
   }
 
   changeCurrentLot = (lot_id) => {
