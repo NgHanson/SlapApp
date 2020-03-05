@@ -21,7 +21,6 @@ User Type
 2 - Owner
 
 View Type
-0 - Initial View (App Start)
 1 - General
 2 - Lot
 3 - Analytics
@@ -112,7 +111,6 @@ class Main extends Component {
         self.setState({parkingSpaces: spacelist});
       }).then(function(res) {self.fitMapToBounds();});
     }
-    // TODO: NEED TO UPDATE SAVED AND MANAGED LOTS IN THE SAME WAY!! ===========================================================================
     // Web Socket Updates - Parking Spaces
     if (this.props.socketDeviceData !== prevProps.socketDeviceData && this.props.socketDeviceData !== undefined && (this.state.viewType == 2 || this.state.viewType == 3)) {
       console.log("this.props.socketDeviceData ", this.props.socketDeviceData)
