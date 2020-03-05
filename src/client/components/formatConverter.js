@@ -12,21 +12,21 @@ export function objValsList(obj) {
 
 // Specific Conversions
 export function parkingLotJSONToMapsFormat(placelist) {
-	let locationsToMark = [];
-	for (let i = 0; i < placelist.length; i++) {
-	  locationsToMark.push({id: placelist[i].lot_id,
-	                        name: placelist[i].name,
-                          capacity: placelist[i].capacity,
-                          freeCount: placelist[i].freeCount,
-	                        geometry: {
-	                          location: {
-	                            lat: placelist[i].lat,
-	                            lng: placelist[i].lng
-	                          }
-	                        }
-	                      });
-	}
-	return locationsToMark;
+	// let locationsToMark = [];
+	// for (let i = 0; i < placelist.length; i++) {
+	//   locationsToMark.push({id: placelist[i].lot_id,
+	//                         name: placelist[i].name,
+ //                          capacity: placelist[i].capacity,
+ //                          freeCount: placelist[i].freeCount,
+	//                         geometry: {
+	//                           location: {
+	//                             lat: placelist[i].lat,
+	//                             lng: placelist[i].lng
+	//                           }
+	//                         }
+	//                       });
+	// }
+	// return locationsToMark;
 }
 
 export function parkingSpaceJSONToMapsFormat(placelist) {

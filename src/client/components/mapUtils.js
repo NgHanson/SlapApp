@@ -3,8 +3,8 @@ const getMapBounds = (map, maps, places) => {
   const bounds = new maps.LatLngBounds();
   places.forEach((place) => {
     bounds.extend(new maps.LatLng(
-      place.geometry.location.lat,
-      place.geometry.location.lng
+      place.lat,
+      place.lng
     ));
   });
   return bounds;

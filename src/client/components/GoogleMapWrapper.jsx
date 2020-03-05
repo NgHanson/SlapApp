@@ -72,15 +72,15 @@ class Main extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const self = this;
+    // Some sort of search
     if (prevState.mapLat !== this.state.mapLat || prevState.mapLng !== this.state.mapLng) {
       console.log("map center changed")
       searchForNearbyParking(this.state.mapLat, this.state.mapLng)
       .then(function(res) {
-        const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
-        self.addPlace([]);
-        self.addPlace(placelist);
-
-        self.setLots(placelist);
+        const placelist = arrayToObj(res.nearbyParking, 'lot_id');
+        console.log("placelist: ", placelist)
+        self.setState({lots: placelist})
+        return res.nearbyParking;
       }).then(function(res) {self.fitMapToBounds();});
     }
     if (prevState.viewType !== this.state.viewType) {
@@ -88,11 +88,11 @@ class Main extends Component {
         console.log("changed to viewType 1")
         searchForNearbyParking(this.state.mapLat, this.state.mapLng)
         .then(function(res) {
-          const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
+          const placelist = arrayToObj(res.nearbyParking, 'lot_id');
           // self.addPlace([]);
           // self.addPlace(placelist);
-
-          self.setLots(placelist);
+          self.setState({lots: placelist});
+          // self.setLots(placelist);
         })
         .then(function(res) {
           self.fitMapToBounds();
@@ -277,11 +277,11 @@ class Main extends Component {
             })}
             {(viewType === 1) && Object.entries(lots).map(([id, lot]) => {
                 return <Marker
-                  key={lot.id}
-                  lot_id={lot.id}
+                  key={lot.lot_id}
+                  lot_id={lot.lot_id}
                   text={lot.name}
-                  lat={lot.geometry.location.lat}
-                  lng={lot.geometry.location.lng}
+                  lat={lot.lat}
+                  lng={lot.lng}
                   changeViewType={this.changeViewType}
                   userType={userType}
                   viewType={viewType}
