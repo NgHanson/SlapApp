@@ -112,12 +112,12 @@ class Main extends Component {
       }).then(function(res) {self.fitMapToBounds();});
     }
     // Web Socket Updates - Parking Spaces
-    if (this.props.socketDeviceData !== prevProps.socketDeviceData && this.props.socketDeviceData !== undefined && (this.state.viewType == 2 || this.state.viewType == 3)) {
+    if (this.props.socketDeviceData !== prevProps.socketDeviceData && this.props.socketDeviceData !== undefined) {
       console.log("this.props.socketDeviceData ", this.props.socketDeviceData)
       this.setState({parkingSpaces: this.updateSpaceOnSocket(this.state.parkingSpaces)});
     }
     // Web Socket Updates - Parking Lots
-    if (this.props.socketLotData !== prevProps.socketLotData  && this.props.socketLotData !== undefined && this.state.viewType == 1) {
+    if (this.props.socketLotData !== prevProps.socketLotData  && this.props.socketLotData !== undefined) {
       this.setState({lots: this.updateLotOnSocket(this.state.lots ? this.state.lots : {}),
                      managedLots: this.updateLotOnSocket(this.state.managedLots),
                      savedLots: this.updateLotOnSocket(this.state.savedLots)});
