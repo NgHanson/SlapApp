@@ -51,7 +51,8 @@ class SideBar extends Component {
        updateMapCenter,
        changeCurrentLot,
        setAnalyticsSelections,
-       currentLotID
+       currentLotID,
+       setMapsWrapperState
     } = this.props;
 
     if (viewType == 1) { //General View
@@ -72,6 +73,7 @@ class SideBar extends Component {
                 title='Managed Lots' 
                 changeCurrentLot={changeCurrentLot} 
                 changeViewType={changeViewType} 
+                setMapsWrapperState={setMapsWrapperState}
                 userType={userType} 
                 updateMapCenter={updateMapCenter} 
                 managedLots={this.props.managedLots}/>}

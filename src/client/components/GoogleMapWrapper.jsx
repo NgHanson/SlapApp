@@ -232,6 +232,7 @@ class Main extends Component {
           currentLotID={this.state.currentLotID}
           managedLots={this.state.managedLots}
           savedLots={this.state.savedLots}
+          setMapsWrapperState={this.setMapsWrapperState}
         />
         
         <div style={{width: '100%', height: (viewType == 3 ? '90%' : '100%')}}>

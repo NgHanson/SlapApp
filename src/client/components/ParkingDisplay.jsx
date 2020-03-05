@@ -22,9 +22,10 @@ export default class ParkingDisplay extends Component {
   }
 
   goToAnalyticsView = (lot_id, lat, lng) => {
-    this.props.updateMapCenter(lat, lng)
-    this.props.changeCurrentLot(lot_id)
-    this.props.changeViewType(3)
+    this.props.setMapsWrapperState({mapLat: lat, 
+                                    mapLng: lng,
+                                    currentLotID: lot_id,
+                                    viewType: 3});
   }
 
   showParkingLots = (parkingareas) => {
