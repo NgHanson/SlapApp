@@ -36,7 +36,7 @@ exports.findDeviceLot = async function(deviceId) {
 }
 
 exports.findOccupancyValues = async function(lotId) {
-  let query = `SELECT COUNT(*) as capacity,count(CASE WHEN occupied THEN 1 END) as freeCount FROM devices WHERE lot_id = ${lotId}`;
+  let query = `SELECT COUNT(*) as capacity,count(CASE WHEN occupied = false THEN 1 END) as freeCount FROM devices WHERE lot_id = ${lotId}`;
   let results = await dbQuery(query);
   return results;
 }
