@@ -10,7 +10,6 @@ const temp = {
   transform: 'translate(-50%, -50%)',
   textAlign: 'center',
   cursor: 'pointer',
-  border:'1px solid #d3d3d3',
 };
 
 export default class ParkingSpace extends Component {
