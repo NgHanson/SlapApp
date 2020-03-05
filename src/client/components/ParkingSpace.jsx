@@ -92,7 +92,7 @@ export default class ParkingSpace extends Component {
     return "Last Update:\n" + time_diff.getHours() + "h " + time_diff.getMinutes() + "m " + time_diff.getSeconds() + "s";
   }
   getAnalyticsPercentageString(percentage) {
-    return percentage + "%";
+    return percentage === undefined ? "" : percentage + "%";
   }
   fillSpaceText(textBody, textX, textY) {
     // Fill rectangle with text
@@ -114,7 +114,8 @@ export default class ParkingSpace extends Component {
     this.drawSpaceBorder(rectX, rectY, rectWidth, rectHeight, thickness);
     this.drawParkingSpaceBody(rectX, rectY, rectWidth, rectHeight);
     if (this.props.viewType == 2) {
-      // this.fillSpaceText(this.getTimeUpdateString(this.props.place.updated_date), 0, 0);  
+      this.fillSpaceText("", 0, 0);
+      // this.getTimeUpdateString(this.props.place.updated_date)
     } else if (this.props.viewType == 3) {
       this.fillSpaceText(this.getAnalyticsPercentageString(this.props.place.analytics_percentage), 0, 0);
     }    
