@@ -28,26 +28,13 @@ class SideBar extends Component {
     this.state ={
       parkingAreas: null,
       timeRangeOpen: false,
-    }
+      lotInfo: {}
+    };
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.lots !== prevProps.lots) {
-      this.setState({parkingAreas: this.props.lots});
-    }
-    if (this.props.socketLotData !== prevProps.socketLotData  && this.props.socketLotData !== undefined && this.state.parkingAreas !== null) {
-      console.log("socketLotData updated...")
-      console.log(this.props.socketLotData)
-      let curr_lots = this.state.parkingAreas;
-      if (curr_lots[this.props.socketLotData.lot_id]) {
-        if (String(this.props.socketLotData.lot_id) in curr_lots) {
-        console.log(curr_lots[this.props.socketLotData.lot_id])
-        curr_lots[this.props.socketLotData.lot_id].capacity = this.props.socketLotData.capacity;
-        curr_lots[this.props.socketLotData.lot_id].freeCount = this.props.socketLotData.freeCount;    
-        this.setState({parkingAreas: curr_lots});
-        }
-        
-      }
+    if (this.props.lots !== prevProps.lots || this.props.currentLotID !== prevProps.currentLotID && this.props.lots !== undefined && this.props.currentLotID !== undefined) {
+      this.setState({lotInfo: this.props.lots[this.props.currentLotID]});
     }
   }
 
@@ -64,7 +51,6 @@ class SideBar extends Component {
        updateMapCenter,
        changeCurrentLot,
        setAnalyticsSelections,
-       lotInfo,
        currentLotID
     } = this.props;
 
@@ -102,16 +88,16 @@ class SideBar extends Component {
 
       return (
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
-          <div>
+          {this.state.lotInfo && <div>
             <div style={{display: 'flex', fontSize: 'xx-large'}}><div style={{color: 'white'}}>SLAP</div><div style={{color: 'red'}}>.</div></div>
             <div style={{marginBottom: '8px'}}>
               Details:
             </div>
             <div>
-              {lotInfo['name']}
+              {this.state.lotInfo['name']}
             </div>
             <div style={{marginBottom: '8px'}}>
-              {`Occupancy: ${lotInfo['freeCount']}/${lotInfo['capacity']}`}
+              {`Occupancy: ${this.state.lotInfo['freeCount']}/${this.state.lotInfo['capacity']}`}
             </div>
             <div style={{marginBottom: '20px'}}>
               <Chart
@@ -125,7 +111,7 @@ class SideBar extends Component {
             <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%'}} onClick={() => changeViewType(1)} >
               {'Back'}
             </Button>
-          </div>
+          </div>}
         </Menu>
       );
 

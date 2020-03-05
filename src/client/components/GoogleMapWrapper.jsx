@@ -114,27 +114,35 @@ class Main extends Component {
     }
     // TODO: NEED TO UPDATE SAVED AND MANAGED LOTS IN THE SAME WAY!! ===========================================================================
     // Web Socket Updates - Parking Spaces
-    if (this.props.socketDeviceData !== prevProps.socketDeviceData && (this.state.viewType == 2 || this.state.viewType == 3)) {
-      console.log("SocketDeviceData updated...")
-      let curr_spots = this.state.parkingSpaces;
-      if (curr_spots[this.props.socketDeviceData.device_id]) {
-        curr_spots[this.props.socketDeviceData.device_id].active = this.props.socketDeviceData.active;
-        curr_spots[this.props.socketDeviceData.device_id].occupied = this.props.socketDeviceData.occupied;
-        this.setState({parkingSpaces: curr_spots})
-      }
+    if (this.props.socketDeviceData !== prevProps.socketDeviceData && this.props.socketDeviceData !== undefined && (this.state.viewType == 2 || this.state.viewType == 3)) {
+      console.log("this.props.socketDeviceData ", this.props.socketDeviceData)
+      this.setState({parkingSpaces: this.updateSpaceOnSocket(this.state.parkingSpaces)});
     }
     // Web Socket Updates - Parking Lots
     if (this.props.socketLotData !== prevProps.socketLotData  && this.props.socketLotData !== undefined && this.state.viewType == 1) {
-      console.log("socketLotData updated...");
-      let curr_lots = this.state.lots;
-      if (curr_lots[this.props.socketLotData.lot_id]) {
-        if (String(this.props.socketLotData.lot_id) in curr_lots) {
-          curr_lots[this.props.socketLotData.lot_id].capacity = this.props.socketLotData.capacity;
-          curr_lots[this.props.socketLotData.lot_id].freeCount = this.props.socketLotData.freeCount;    
-          this.setState({lots: curr_lots});
-        }
+      this.setState({lots: this.updateLotOnSocket(this.state.lots ? this.state.lots : {}),
+                     managedLots: this.updateLotOnSocket(this.state.managedLots),
+                     savedLots: this.updateLotOnSocket(this.state.savedLots)});
+    }
+  }
+
+  updateSpaceOnSocket(curr_spots) {
+    if (curr_spots[this.props.socketDeviceData.device_id]) {
+      curr_spots[this.props.socketDeviceData.device_id].active = this.props.socketDeviceData.active;
+      curr_spots[this.props.socketDeviceData.device_id].occupied = this.props.socketDeviceData.occupied;
+    }
+    return curr_spots;
+  }
+
+  updateLotOnSocket(curr_lots) {
+    console.log("socketLotData updated...");
+    if (curr_lots[this.props.socketLotData.lot_id]) {
+      if (String(this.props.socketLotData.lot_id) in curr_lots) {
+        curr_lots[this.props.socketLotData.lot_id].capacity = this.props.socketLotData.capacity;
+        curr_lots[this.props.socketLotData.lot_id].freeCount = this.props.socketLotData.freeCount;    
       }
     }
+    return curr_lots;
   }
 
   toggleUserType = () => {
@@ -155,6 +163,10 @@ class Main extends Component {
 
   updateMapCenter = (lat, lng) => {
     this.setState({mapLat: lat, mapLng: lng});
+  };
+
+  setMapsWrapperState = (state_obj) => {
+    this.setState(state_obj);
   };
 
   fitMapToBounds = () => {
@@ -215,7 +227,6 @@ class Main extends Component {
           viewType={viewType}
           changeCurrentLot={this.changeCurrentLot}
           setAnalyticsSelections={this.setAnalyticsSelections}
-          lotInfo={this.state.lots[this.state.currentLotID]}
           lots={this.state.lots}
           socketLotData={this.props.socketLotData}
           currentLotID={this.state.currentLotID}
@@ -251,12 +262,11 @@ class Main extends Component {
                   text={lot.name}
                   lat={lot.lat}
                   lng={lot.lng}
-                  changeViewType={this.changeViewType}
                   userType={userType}
                   viewType={viewType}
-                  changeCurrentLot={this.changeCurrentLot}
                   capacity={lot.capacity}
                   freeCount={lot.freeCount}
+                  setMapsWrapperState={this.setMapsWrapperState}
                 />
             })}
 
