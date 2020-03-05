@@ -89,24 +89,19 @@ class Main extends Component {
         searchForNearbyParking(this.state.mapLat, this.state.mapLng)
         .then(function(res) {
           const placelist = arrayToObj(res.nearbyParking, 'lot_id');
-          // self.addPlace([]);
-          // self.addPlace(placelist);
           self.setState({lots: placelist});
-          // self.setLots(placelist);
-        })
-        .then(function(res) {
-          self.fitMapToBounds();
-        });
-      
+        }).then(function(res) {self.fitMapToBounds();});
       } else if (this.state.viewType == 2) {          
           console.log("changed to viewType 2");
           getDevicesInLot(this.state.currentLotID).then(function(res) {
-            return parkingSpaceJSONToMapsFormat(res.devices);
+            // return parkingSpaceJSONToMapsFormat(res.devices);
+            const spacelist = arrayToObj(res.devices, 'device_id');
+            self.setState({places: spacelist});
           })
           .then(
             function(locationsToMark) {
-              self.addPlace([]);
-              self.addPlace(locationsToMark);
+              // self.addPlace([]);
+              // self.addPlace(locationsToMark);
             }
           )
           .then(
@@ -117,10 +112,12 @@ class Main extends Component {
       } else if (this.state.viewType == 3) {
         console.log("Changed to viewType 3");
         getDevicesInLot(this.state.currentLotID).then(function(res) {
-          return parkingSpaceJSONToMapsFormat(res.devices);
+          // return parkingSpaceJSONToMapsFormat(res.devices);
+          const spacelist = arrayToObj(res.devices, 'device_id');
+          self.setState({places: spacelist});
         })
         .then(function(locationsToMark){
-          self.addPlace([]); self.addPlace(locationsToMark);
+          // self.addPlace([]); self.addPlace(locationsToMark);
         })
         .then(function(res) { 
           self.fitMapToBounds();
@@ -129,8 +126,11 @@ class Main extends Component {
     }
     if (this.state.analyticsSelections !== prevState.analyticsSelections) {
       getAnalyticsSelections(this.state.currentLotID, this.state.analyticsSelections).then(function(res) {
-        return parkingSpaceJSONToMapsFormat(res.devices);
-      }).then(function(locationsToMark){self.addPlace(locationsToMark)
+        // return parkingSpaceJSONToMapsFormat(res.devices);
+        const spacelist = arrayToObj(res.devices, 'device_id');
+        self.setState({places: spacelist});
+      }).then(function(locationsToMark){
+        // self.addPlace(locationsToMark)
       }).then(function(res) {self.fitMapToBounds();
       }).then(function(res) {console.log("done")});
     }
@@ -187,7 +187,7 @@ class Main extends Component {
   fitMapToBounds = () => {
     const map = this.state.mapInstance;
     const maps = this.state.mapApi;
-    const bounds = (this.state.viewType == 2 || this.state.viewType == 3) ? getMapBounds(map, maps, this.state.places) : getMapBounds(map, maps, Object.entries(this.state.lots).map(([k, v]) => {return v}))
+    const bounds = (this.state.viewType == 2 || this.state.viewType == 3) ? getMapBounds(map, maps, Object.entries(this.state.places).map(([k, v]) => {return v})) : getMapBounds(map, maps, Object.entries(this.state.lots).map(([k, v]) => {return v}))
     map.fitBounds(bounds);
     bindResizeListener(map, maps, bounds);
     if (this.state.viewType == 2 || this.state.viewType == 3) {
@@ -264,16 +264,16 @@ class Main extends Component {
             onZoomChanged={this.onZoomChanged}
           >
             {/* Place Components on the map from json file */}
-            {(viewType == 2 || viewType == 3) && places.map((place) => {
+            {(viewType == 2 || viewType == 3) && Object.entries(places).map(([id, place]) => {
               // Note: https://stackoverflow.com/questions/41070083/wrong-location-of-marker-when-rendered-in-component
                 return <ParkingSpace 
                   mapApi={mapApi}
                   mapInstance={mapInstance}
                   viewType={viewType}
-                  key={place.id}
+                  key={place.device_id}
                   place={place}
-                  lat={place.geometry.location.lat}
-                  lng={place.geometry.location.lng}/>
+                  lat={place.lat}
+                  lng={place.lng}/>
             })}
             {(viewType === 1) && Object.entries(lots).map(([id, lot]) => {
                 return <Marker

@@ -19,7 +19,7 @@ export default class ParkingSpace extends Component {
     this.canvasRef = React.createRef();
   }
   setupCanvas() {
-    this.angle = this.props.place.geometry.rotation;
+    this.angle = this.props.place.rotation_degrees;
     this.canvas = this.canvasRef.current;
     this.ctx = this.canvas.getContext('2d');
     this.ctx.save();
@@ -103,7 +103,7 @@ export default class ParkingSpace extends Component {
      /// text color
     this.ctx.fillStyle = Colour.BLACK;
     var lineheight = 15;
-    textBody = this.props.place.id + "\n" + textBody;
+    textBody = this.props.place.device_id + "\n" + textBody;
     var lines = textBody.split('\n');
 
     for (var i = 0; i<lines.length; i++)
