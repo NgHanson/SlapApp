@@ -51,8 +51,7 @@ class Main extends Component {
     map.addListener('bounds_changed', function(event) {
       if (self.state.viewType == 2 || self.state.viewType == 3) {
           let curr_places = self.state.places;
-          self.addPlace([]);
-          self.addPlace(curr_places);
+          self.setState({places: curr_places});
       }
     });
 
@@ -113,6 +112,7 @@ class Main extends Component {
         self.setState({places: spacelist});
       }).then(function(res) {self.fitMapToBounds();});
     }
+    // TODO: NEED TO UPDATE SAVED AND MANAGED LOTS IN THE SAME WAY!! ===========================================================================
     // Web Socket Updates - Parking Spaces
     if (this.props.socketDeviceData !== prevProps.socketDeviceData && (this.state.viewType == 2 || this.state.viewType == 3)) {
       console.log("SocketDeviceData updated...")
@@ -171,14 +171,6 @@ class Main extends Component {
     }
     moveMapCenterDueToSidebar(map);
   };
-
-  setLots = (lots) => {
-    let lotMap = {};
-    lots.forEach(l => {
-      lotMap[l.id] = l;
-    });
-    this.setState({ lots: lotMap });
-  }
 
   addPlace = (place) => {
     this.setState({ places: place });
