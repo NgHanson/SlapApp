@@ -53,7 +53,7 @@ export default class Marker extends Component {
         <div style={temp} onClick={()=>this.toggleModal()}>
           <div>
             <p style={{display: 'block', margin: 0}} >{this.props.text}</p>
-            <p style={{display: 'block', margin: 0}} >{this.props.freeCount}/{this.props.capacity}</p>
+            <p style={{display: 'block', margin: 0}} >{this.props.capacity - this.props.freeCount}/{this.props.capacity}</p>
           </div>
         </div>
       </div>
