@@ -137,9 +137,6 @@ class Main extends Component {
         searchForNearbyParking(this.state.mapLat, this.state.mapLng)
         .then(function(res) {
           const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
-          // self.addPlace([]);
-          // self.addPlace(placelist);
-
           self.setLots(placelist);
         })
         .then(function(res) {

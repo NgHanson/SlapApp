@@ -118,7 +118,7 @@ class SideBar extends Component {
               {lotInfo['name']}
             </div>
             <div style={{marginBottom: '8px'}}>
-              {`Occupancy: ${lotInfo['freeCount']}/${lotInfo['capacity']}`}
+              {`Occupancy: ${lotInfo['capacity'] - lotInfo['freeCount']}/${lotInfo['capacity']}`}
             </div>
             <div style={{marginBottom: '20px'}}>
               <Chart

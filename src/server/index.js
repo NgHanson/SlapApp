@@ -60,8 +60,8 @@ const emitLotData = async (socket) => {
 
 // Socket IO
 io.on('connection', async function (socket) {
-  emitDeviceData(socket)
-  emitLotData(socket)
+  // emitDeviceData(socket)
+  // emitLotData(socket)
 });
 
 // The Things Network
@@ -72,8 +72,6 @@ ttn.data(APP_ID, ACCESS_KEY)
     // listens to all uplinks from all devices
     client.on("uplink", function (devID, payload) {
       console.error("Received uplink from ", devID, payload);
-
-      //io.emit('DEVICE_DATA', payload);
 
       //JS Date() auto convert to local time.
       //pretty sure the date is UTC time (its +5 hrs from local)
@@ -90,6 +88,16 @@ ttn.data(APP_ID, ACCESS_KEY)
 
       eventController.insertEvent(event);
       deviceController.updateDeviceStatus({deviceId: deviceId, detected: detected});
+      deviceController.findDeviceLot(deviceId).then((data) => {
+        let lotId = data[0]['lot_id'];
+        deviceController.findOccupancyValues(lotId).then((data) => {
+          //ADD ERROR CHECKS
+          let capactiy = data[0]['capacity'];
+          let freecount = data[0]['freecount'];
+          io.emit('DEVICE_DATA', { device_id: deviceId, active: true, occupied: detected });
+          io.emit('LOT_DATA', { lot_id: lotId, capacity: capactiy, freeCount: freecount });
+        });
+      });
     });
   })
   .catch(function (error) {
