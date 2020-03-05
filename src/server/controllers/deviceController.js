@@ -10,6 +10,8 @@ const pool = new Pool({
   port: dbConfig.port,
 });
 
+let { dbQuery } = require('./db');
+
 // Display list of all Events.
 exports.getDevicesForLot = function(req, res) {
   console.log(req.params.lot_id);
@@ -27,6 +29,18 @@ exports.getDevicesForLot = function(req, res) {
 };
 
 // ENDPOINTS NOT CALLED BY FRONTEND
+exports.findDeviceLot = async function(deviceId) {
+  let query = `SELECT lot_id FROM devices where device_id = ${deviceId}`;
+  let lotId = await dbQuery(query);
+  return lotId;
+}
+
+exports.findOccupancyValues = async function(lotId) {
+  let query = `SELECT COUNT(*) as capacity,count(CASE WHEN occupied THEN 1 END) as freeCount FROM devices WHERE lot_id = ${lotId}`;
+  let results = await dbQuery(query);
+  return results;
+}
+
 exports.updateDeviceStatus = function(params) {
   const { deviceId, detected } = params;
   let query = `UPDATE devices SET occupied = ${detected} WHERE device_id = ${deviceId}`;

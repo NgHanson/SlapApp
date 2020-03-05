@@ -40,7 +40,7 @@ export default class ParkingDisplay extends Component {
             {parkingareas[x]['name']}
           </div>
           <div style={{fontSize: '11pt', width: '30px'}}>
-            {parkingareas[x]['freeCount']}/{parkingareas[x]['capacity']}
+            {parkingareas[x]['capacity'] - parkingareas[x]['freeCount']}/{parkingareas[x]['capacity']}
           </div>
           <FaMapMarkedAlt className="display-icon" onClick={this.props.updateMapCenter.bind(this, parkingareas[x].lat, parkingareas[x].lng)}/>
           {this.props.savedLots && <FaTimes className="display-icon"/>}

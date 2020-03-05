@@ -99,7 +99,7 @@ class SideBar extends Component {
               {this.state.lotInfo['name']}
             </div>
             <div style={{marginBottom: '8px'}}>
-              {`Occupancy: ${this.state.lotInfo['freeCount']}/${this.state.lotInfo['capacity']}`}
+              {`Occupancy: ${this.state.lotInfo['capacity'] - this.state.lotInfo['freeCount']}/${this.state.lotInfo['capacity']}`}
             </div>
             <div style={{marginBottom: '20px'}}>
               <Chart

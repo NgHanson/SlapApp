@@ -69,9 +69,9 @@ export default class ParkingSpace extends Component {
       if (!this.props.place.active) {
         this.ctx.fillStyle = Colour.LIGHT_GREY;
       } else if (this.props.place.occupied) {
-        this.ctx.fillStyle = Colour.LIGHT_GREEN;
-      } else {
         this.ctx.fillStyle = Colour.LIGHT_RED;
+      } else {
+        this.ctx.fillStyle = Colour.LIGHT_GREEN;
       }      
     } else if (this.props.viewType == 3) {
       // Want lightness between 35% and 100%
