@@ -218,6 +218,9 @@ class Main extends Component {
           lotInfo={this.state.lots[this.state.currentLotID]}
           lots={this.state.lots}
           socketLotData={this.props.socketLotData}
+          currentLotID={this.state.currentLotID}
+          managedLots={this.state.managedLots}
+          savedLots={this.state.savedLots}
         />
         
         <div style={{width: '100%', height: (viewType == 3 ? '90%' : '100%')}}>

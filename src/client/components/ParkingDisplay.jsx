@@ -12,6 +12,8 @@ import Button from 'react-bootstrap/Button';
 import './parkingdisplay.css';
 import * as Colour from '../../constants/colour_consts';
 
+import { objValsList } from './formatConverter.js';
+
 export default class ParkingDisplay extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +28,7 @@ export default class ParkingDisplay extends Component {
   }
 
   showParkingLots = (parkingareas) => {
-    parkingareas = Object.entries(parkingareas).map(([k, v]) => {return v})
+    parkingareas = objValsList(parkingareas);
     let table = []
 
     // Outer loop to create parent
@@ -40,8 +42,8 @@ export default class ParkingDisplay extends Component {
             {parkingareas[x]['freeCount']}/{parkingareas[x]['capacity']}
           </div>
           <FaMapMarkedAlt className="display-icon" onClick={this.props.updateMapCenter.bind(this, parkingareas[x].lat, parkingareas[x].lng)}/>
-          {this.props.parkingareas && <FaTimes className="display-icon"/>}
-          {this.props.managedparkingareas && <FaChartBar onClick={this.goToAnalyticsView.bind(this, parkingareas[x].lot_id, parkingareas[x].lat, parkingareas[x].lng)} className="display-icon"/>}
+          {this.props.savedLots && <FaTimes className="display-icon"/>}
+          {this.props.managedLots && <FaChartBar onClick={this.goToAnalyticsView.bind(this, parkingareas[x].lot_id, parkingareas[x].lat, parkingareas[x].lng)} className="display-icon"/>}
         </div>
       );
     }
@@ -53,8 +55,8 @@ export default class ParkingDisplay extends Component {
     return(
       <Container style={{marginBottom:'20px'}}>
         <Row>{title}</Row>
-        {this.props.parkingareas && <Fragment>{this.showParkingLots(this.props.parkingareas)}</Fragment>}
-        {this.props.managedparkingareas && <Fragment>{this.showParkingLots(this.props.managedparkingareas)}</Fragment>}
+        {this.props.savedLots && <Fragment>{this.showParkingLots(this.props.savedLots)}</Fragment>}
+        {this.props.managedLots && <Fragment>{this.showParkingLots(this.props.managedLots)}</Fragment>}
         <Row className="justify-content-xs-center" style={{marginTop: '20px'}}><Col/><Col xs="auto"><Button variant='primary' style={{backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE}}>Add Lot</Button></Col><Col/></Row>
       </Container>
     );

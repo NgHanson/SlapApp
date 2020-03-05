@@ -31,22 +31,6 @@ class SideBar extends Component {
     }
   }
 
-  componentDidMount() {
-    var self = this;
-    console.log("here... ===================")
-    console.log(this.props.lots)
-    if (Object.entries(this.props.lots).length === 0) {
-      fetch('/api/parking/all')
-        .then(res => res.json())
-        .then(function(res) {
-          let lotMap = {};
-          res['parkingAreas'].forEach(l => {
-            lotMap[l.lot_id] = l;
-          });
-          self.setState({parkingAreas: lotMap});
-        })
-    }
-  }
   componentDidUpdate(prevProps, prevState) {
     if (this.props.lots !== prevProps.lots) {
       this.setState({parkingAreas: this.props.lots});
@@ -81,9 +65,8 @@ class SideBar extends Component {
        changeCurrentLot,
        setAnalyticsSelections,
        lotInfo,
+       currentLotID
     } = this.props;
-
-    let currentLotID = lotInfo ? lotInfo.id : 0;
 
     if (viewType == 1) { //General View
       return (
@@ -94,8 +77,18 @@ class SideBar extends Component {
             <Row>Find Parking Near...</Row>
             <Row style={{marginBottom: '20px'}}>{mapApiLoaded && <SearchBox updateMapCenter={updateMapCenter} map={map} mapApi={mapApi} addplace={addplace.bind(this)} />}</Row>
             <Row>
-              {this.state.parkingAreas && <ParkingDisplay title='Saved Lots' userType={userType} updateMapCenter={updateMapCenter} parkingareas={this.state.parkingAreas}></ParkingDisplay>}
-              {this.state.parkingAreas && (userType==2) && <ParkingDisplay title='Managed Lots' changeCurrentLot={changeCurrentLot} changeViewType={changeViewType} userType={userType} updateMapCenter={updateMapCenter} managedparkingareas={this.state.parkingAreas}></ParkingDisplay>}
+              {this.props.savedLots && <ParkingDisplay 
+                title='Saved Lots' 
+                userType={userType} 
+                updateMapCenter={updateMapCenter} 
+                savedLots={this.props.savedLots}/>}
+              {this.props.managedLots && (userType==2) && <ParkingDisplay 
+                title='Managed Lots' 
+                changeCurrentLot={changeCurrentLot} 
+                changeViewType={changeViewType} 
+                userType={userType} 
+                updateMapCenter={updateMapCenter} 
+                managedLots={this.props.managedLots}/>}
             </Row>
             <Row style={{bottom: "20px", position: "absolute"}}>
               <Button variant={"secondary"} style={{fontSize: '11pt'}} onClick={() => userTypeToggle()} >
