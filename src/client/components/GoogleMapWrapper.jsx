@@ -34,7 +34,7 @@ class Main extends Component {
       mapApiLoaded: false,
       mapInstance: null,
       mapApi: null,
-      places: [],
+      parkingSpaces: [],
       lots: {},
       managedLots: {},
       savedLots: {},
@@ -50,8 +50,8 @@ class Main extends Component {
     // Add bounds change listener for when google maps zoom changes...
     map.addListener('bounds_changed', function(event) {
       if (self.state.viewType == 2 || self.state.viewType == 3) {
-          let curr_places = self.state.places;
-          self.setState({places: curr_places});
+          let curr_places = self.state.parkingSpaces;
+          self.setState({parkingSpaces: curr_places});
       }
     });
 
@@ -95,13 +95,13 @@ class Main extends Component {
           console.log("changed to viewType 2");
           getDevicesInLot(this.state.currentLotID).then(function(res) {
             const spacelist = arrayToObj(res.devices, 'device_id');
-            self.setState({places: spacelist});
+            self.setState({parkingSpaces: spacelist});
           }).then(function(res) { self.fitMapToBounds();});
       } else if (this.state.viewType == 3) {
         console.log("Changed to viewType 3");
         getDevicesInLot(this.state.currentLotID).then(function(res) {
           const spacelist = arrayToObj(res.devices, 'device_id');
-          self.setState({places: spacelist});
+          self.setState({parkingSpaces: spacelist});
         }).then(function(res) { self.fitMapToBounds();});
       }
     }
@@ -109,18 +109,18 @@ class Main extends Component {
     if (this.state.analyticsSelections !== prevState.analyticsSelections) {
       getAnalyticsSelections(this.state.currentLotID, this.state.analyticsSelections).then(function(res) {
         const spacelist = arrayToObj(res.devices, 'device_id');
-        self.setState({places: spacelist});
+        self.setState({parkingSpaces: spacelist});
       }).then(function(res) {self.fitMapToBounds();});
     }
     // TODO: NEED TO UPDATE SAVED AND MANAGED LOTS IN THE SAME WAY!! ===========================================================================
     // Web Socket Updates - Parking Spaces
     if (this.props.socketDeviceData !== prevProps.socketDeviceData && (this.state.viewType == 2 || this.state.viewType == 3)) {
       console.log("SocketDeviceData updated...")
-      let curr_spots = this.state.places;
+      let curr_spots = this.state.parkingSpaces;
       if (curr_spots[this.props.socketDeviceData.device_id]) {
         curr_spots[this.props.socketDeviceData.device_id].active = this.props.socketDeviceData.active;
         curr_spots[this.props.socketDeviceData.device_id].occupied = this.props.socketDeviceData.occupied;
-        this.setState({places: curr_spots})
+        this.setState({parkingSpaces: curr_spots})
       }
     }
     // Web Socket Updates - Parking Lots
@@ -160,7 +160,7 @@ class Main extends Component {
   fitMapToBounds = () => {
     const map = this.state.mapInstance;
     const maps = this.state.mapApi;
-    const currPlaces = (this.state.viewType == 2 || this.state.viewType == 3) ? this.state.places : this.state.lots;
+    const currPlaces = (this.state.viewType == 2 || this.state.viewType == 3) ? this.state.parkingSpaces : this.state.lots;
     const bounds = getMapBounds(map, maps, objValsList(currPlaces));
     map.fitBounds(bounds);
     bindResizeListener(map, maps, bounds);
@@ -173,7 +173,7 @@ class Main extends Component {
   };
 
   addPlace = (place) => {
-    this.setState({ places: place });
+    this.setState({ parkingSpaces: place });
   };
 
   // https://github.com/google-map-react/google-map-react/blob/master/API.md#onclick-func
@@ -194,7 +194,7 @@ class Main extends Component {
 
   render() {
     const {
-      places, lots, mapApiLoaded, mapInstance, mapApi, userType, viewType
+      parkingSpaces, lots, mapApiLoaded, mapInstance, mapApi, userType, viewType
     } = this.state;
 
     return (
@@ -228,12 +228,12 @@ class Main extends Component {
             defaultZoom={10}
             defaultCenter={WATERLOO_CENTER}
             yesIWantToUseGoogleMapApiInternals
-            onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps, places)}
+            onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps, parkingSpaces)}
             onClick={this._onClick}
             onZoomChanged={this.onZoomChanged}
           >
             {/* Place Components on the map from json file */}
-            {(viewType == 2 || viewType == 3) && Object.entries(places).map(([id, place]) => {
+            {(viewType == 2 || viewType == 3) && Object.entries(parkingSpaces).map(([id, place]) => {
               // Note: https://stackoverflow.com/questions/41070083/wrong-location-of-marker-when-rendered-in-component
                 return <ParkingSpace 
                   mapApi={mapApi}
