@@ -7,8 +7,9 @@ import GoogleMap from './GoogleMap.jsx';
 import SideBar from "./SideBar";
 import AnalyticsDashboard from "./AnalyticsDashboard";
 
-import { searchForNearbyParking, getDevicesInLot, getAnalyticsSelections } from './clientCalls.js';
-import { parkingLotJSONToMapsFormat, parkingSpaceJSONToMapsFormat } from './formatConverter.js';
+import { searchForNearbyParking, getDevicesInLot, getAnalyticsSelections, getManagedLots, getSavedLots } from './clientCalls.js';
+import { arrayToObj, objValsList } from './formatConverter.js';
+import { getMapBounds, bindResizeListener, moveMapCenterDueToSidebar } from './mapUtils.js';
 
 // consts
 const WATERLOO_CENTER = [43.472393361375325, -80.53837152380368];
@@ -25,33 +26,6 @@ View Type
 3 - Analytics
 */
 
-// Return map bounds based on list of places
-const getMapBounds = (map, maps, places) => {
-  const bounds = new maps.LatLngBounds();
-  places.forEach((place) => {
-    bounds.extend(new maps.LatLng(
-      place.geometry.location.lat,
-      place.geometry.location.lng
-    ));
-  });
-  return bounds;
-};
-
-// Re-center map when resizing the window
-const bindResizeListener = (map, maps, bounds) => {
-  maps.event.addDomListenerOnce(map, 'idle', () => {
-    maps.event.addDomListener(window, 'resize', () => {
-      map.fitBounds(bounds);
-      moveMapCenterDueToSidebar(map);
-    });
-  });
-};
-
-const moveMapCenterDueToSidebar = (map) => {
-  // Move map center right 300px (width of hamburger menu)
-  map.panBy(-300,0);
-};
-
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -59,8 +33,10 @@ class Main extends Component {
       mapApiLoaded: false,
       mapInstance: null,
       mapApi: null,
-      places: [],
+      parkingSpaces: [],
       lots: {},
+      managedLots: {},
+      savedLots: {},
       placeMarkerOnClick: false,
       userType: 1,
       viewType: 1,
@@ -68,35 +44,13 @@ class Main extends Component {
     };
   }
 
-  toggleUserType = () => {
-    this.setState((prevState) => ({ userType: prevState.userType == 2 ? 1 : 2}));
-  }
-
-  changeViewType = (type) => {
-    this.setState({viewType: type});
-  }
-
-  setAnalyticsSelections = (selections) => {
-    this.setState({analyticsSelections: selections});
-  }
-
-  apiIsLoaded = (map, maps, places) => {
-    let self = this
-    // map.setOptions({disableDefaultUI: true});
-    if (!isEmpty(places)){
-      // Get bounds by our places
-      const bounds = getMapBounds(map, maps, places);
-      // Fit map to bounds
-      map.fitBounds(bounds);
-      // Bind the resize listener
-      bindResizeListener(map, maps, bounds);
-    }
+  apiIsLoaded(map, maps, places) {
+    const self = this;
     // Add bounds change listener for when google maps zoom changes...
     map.addListener('bounds_changed', function(event) {
       if (self.state.viewType == 2 || self.state.viewType == 3) {
-          let curr_places = self.state.places
-          self.addPlace([])
-          self.addPlace(curr_places)
+          let curr_places = self.state.parkingSpaces;
+          self.setState({parkingSpaces: curr_places});
       }
     });
 
@@ -106,108 +60,100 @@ class Main extends Component {
         mapInstance: map,
         mapApi: maps,
     });
-  };
+  }
 
   componentDidMount() {
-    this.setState({places: []});
+    const self = this;
+    getManagedLots().then(function(res) {self.setState({managedLots: arrayToObj(res, 'lot_id')});});
+    getSavedLots().then(function(res) {self.setState({savedLots: arrayToObj(res, 'lot_id')});});
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("googlemapswrapper component did update");
-    if (this.state.mapInstance) {
-    console.log("Current Map Zoom: " + this.state.mapInstance.getZoom())  
-    }
-    
-    const self =this;
+    const self = this;
+    // Some sort of search
     if (prevState.mapLat !== this.state.mapLat || prevState.mapLng !== this.state.mapLng) {
       console.log("map center changed")
       searchForNearbyParking(this.state.mapLat, this.state.mapLng)
       .then(function(res) {
-        const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
-        self.addPlace([]);
-        self.addPlace(placelist);
-
-        self.setLots(placelist);
+        const placelist = arrayToObj(res.nearbyParking, 'lot_id');
+        console.log("placelist: ", placelist)
+        self.setState({lots: placelist})
+        return res.nearbyParking;
       }).then(function(res) {self.fitMapToBounds();});
     }
-
+    // ViewType updates
     if (prevState.viewType !== this.state.viewType) {
       if (this.state.viewType == 1) {
         console.log("changed to viewType 1")
         searchForNearbyParking(this.state.mapLat, this.state.mapLng)
         .then(function(res) {
-          const placelist = parkingLotJSONToMapsFormat(res.nearbyParking);
-          self.setLots(placelist);
-        })
-        .then(function(res) {
-          self.fitMapToBounds();
-        });
-      
+          const placelist = arrayToObj(res.nearbyParking, 'lot_id');
+          self.setState({lots: placelist});
+        }).then(function(res) {self.fitMapToBounds();});
       } else if (this.state.viewType == 2) {          
           console.log("changed to viewType 2");
           getDevicesInLot(this.state.currentLotID).then(function(res) {
-            return parkingSpaceJSONToMapsFormat(res.devices);
-          })
-          .then(
-            function(locationsToMark) {
-              self.addPlace([]);
-              self.addPlace(locationsToMark);
-            }
-          )
-          .then(
-            function(res) { 
-              self.fitMapToBounds();
-            }
-          );
+            const spacelist = arrayToObj(res.devices, 'device_id');
+            self.setState({parkingSpaces: spacelist});
+          }).then(function(res) { self.fitMapToBounds();});
       } else if (this.state.viewType == 3) {
         console.log("Changed to viewType 3");
         getDevicesInLot(this.state.currentLotID).then(function(res) {
-          return parkingSpaceJSONToMapsFormat(res.devices);
-        })
-        .then(function(locationsToMark){
-          self.addPlace([]); self.addPlace(locationsToMark);
-        })
-        .then(function(res) { 
-          self.fitMapToBounds();
-        });
+          const spacelist = arrayToObj(res.devices, 'device_id');
+          self.setState({parkingSpaces: spacelist});
+        }).then(function(res) { self.fitMapToBounds();});
       }
     }
+    // Analytics Updates
     if (this.state.analyticsSelections !== prevState.analyticsSelections) {
       getAnalyticsSelections(this.state.currentLotID, this.state.analyticsSelections).then(function(res) {
-        return parkingSpaceJSONToMapsFormat(res.devices);
-      }).then(function(locationsToMark){self.addPlace(locationsToMark)
-      }).then(function(res) {self.fitMapToBounds();
-      }).then(function(res) {console.log("done")});
+        const spacelist = arrayToObj(res.devices, 'device_id');
+        self.setState({parkingSpaces: spacelist});
+      }).then(function(res) {self.fitMapToBounds();});
     }
-    if (this.props.socketDeviceData !== prevProps.socketDeviceData && (this.state.viewType == 2 || this.state.viewType == 3)) {
-      console.log("SocketDeviceData updated...")
-      // Places shouldn't really be an array... oh well demo is soon
-      let curr_spots = this.state.places ? this.state.places : [];
-      for (let i = 0; i < curr_spots.length; i++) {
-        if (String(curr_spots[i].id) === String(this.props.socketDeviceData.device_id)) {
-          curr_spots[i].active = this.props.socketDeviceData.active;
-          curr_spots[i].occupied = this.props.socketDeviceData.occupied;
-          break;
-        }
-      }
-      this.setState({places: curr_spots})
-      console.log("Updated ting... ", curr_spots)
+    // Web Socket Updates - Parking Spaces
+    if (this.props.socketDeviceData !== prevProps.socketDeviceData && this.props.socketDeviceData !== undefined && (this.state.viewType == 2 || this.state.viewType == 3)) {
+      console.log("this.props.socketDeviceData ", this.props.socketDeviceData)
+      this.setState({parkingSpaces: this.updateSpaceOnSocket(this.state.parkingSpaces)});
     }
+    // Web Socket Updates - Parking Lots
     if (this.props.socketLotData !== prevProps.socketLotData  && this.props.socketLotData !== undefined && this.state.viewType == 1) {
-      console.log("socketLotData updated...")
-      console.log(this.props.socketLotData)
-      let curr_lots = this.state.lots;
-      if (curr_lots[this.props.socketLotData.lot_id]) {
-        if (String(this.props.socketLotData.lot_id) in curr_lots) {
-        console.log(curr_lots[this.props.socketLotData.lot_id])
-        curr_lots[this.props.socketLotData.lot_id].capacity = this.props.socketLotData.capacity;
-        curr_lots[this.props.socketLotData.lot_id].freeCount = this.props.socketLotData.freeCount;    
-        this.setState({lots: curr_lots});
-        }
-        
-      }
+      this.setState({lots: this.updateLotOnSocket(this.state.lots ? this.state.lots : {}),
+                     managedLots: this.updateLotOnSocket(this.state.managedLots),
+                     savedLots: this.updateLotOnSocket(this.state.savedLots)});
     }
   }
+
+  updateSpaceOnSocket(curr_spots) {
+    if (curr_spots[this.props.socketDeviceData.device_id]) {
+      curr_spots[this.props.socketDeviceData.device_id].active = this.props.socketDeviceData.active;
+      curr_spots[this.props.socketDeviceData.device_id].occupied = this.props.socketDeviceData.occupied;
+    }
+    return curr_spots;
+  }
+
+  updateLotOnSocket(curr_lots) {
+    console.log("socketLotData updated...");
+    if (curr_lots[this.props.socketLotData.lot_id]) {
+      if (String(this.props.socketLotData.lot_id) in curr_lots) {
+        curr_lots[this.props.socketLotData.lot_id].capacity = this.props.socketLotData.capacity;
+        curr_lots[this.props.socketLotData.lot_id].freeCount = this.props.socketLotData.freeCount;    
+      }
+    }
+    return curr_lots;
+  }
+
+  toggleUserType = () => {
+    this.setState((prevState) => ({ userType: prevState.userType == 2 ? 1 : 2}));
+  };
+
+  changeViewType = (type) => {
+    this.setState({viewType: type});
+  };
+
+  setAnalyticsSelections = (selections) => {
+    this.setState({analyticsSelections: selections});
+  };
 
   changeCurrentLot = (lot_id) => {
     this.setState({currentLotID: lot_id});
@@ -217,10 +163,15 @@ class Main extends Component {
     this.setState({mapLat: lat, mapLng: lng});
   };
 
+  setMapsWrapperState = (state_obj) => {
+    this.setState(state_obj);
+  };
+
   fitMapToBounds = () => {
     const map = this.state.mapInstance;
     const maps = this.state.mapApi;
-    const bounds = (this.state.viewType == 2 || this.state.viewType == 3) ? getMapBounds(map, maps, this.state.places) : getMapBounds(map, maps, Object.entries(this.state.lots).map(([k, v]) => {return v}))
+    const currPlaces = (this.state.viewType == 2 || this.state.viewType == 3) ? this.state.parkingSpaces : this.state.lots;
+    const bounds = getMapBounds(map, maps, objValsList(currPlaces));
     map.fitBounds(bounds);
     bindResizeListener(map, maps, bounds);
     if (this.state.viewType == 2 || this.state.viewType == 3) {
@@ -231,16 +182,8 @@ class Main extends Component {
     moveMapCenterDueToSidebar(map);
   };
 
-  setLots = (lots) => {
-    let lotMap = {};
-    lots.forEach(l => {
-      lotMap[l.id] = l;
-    });
-    this.setState({ lots: lotMap });
-  }
-
   addPlace = (place) => {
-    this.setState({ places: place });
+    this.setState({ parkingSpaces: place });
   };
 
   // https://github.com/google-map-react/google-map-react/blob/master/API.md#onclick-func
@@ -261,7 +204,7 @@ class Main extends Component {
 
   render() {
     const {
-      places, lots, mapApiLoaded, mapInstance, mapApi, userType, viewType
+      parkingSpaces, lots, mapApiLoaded, mapInstance, mapApi, userType, viewType
     } = this.state;
 
     return (
@@ -282,9 +225,12 @@ class Main extends Component {
           viewType={viewType}
           changeCurrentLot={this.changeCurrentLot}
           setAnalyticsSelections={this.setAnalyticsSelections}
-          lotInfo={this.state.lots[this.state.currentLotID]}
           lots={this.state.lots}
           socketLotData={this.props.socketLotData}
+          currentLotID={this.state.currentLotID}
+          managedLots={this.state.managedLots}
+          savedLots={this.state.savedLots}
+          setMapsWrapperState={this.setMapsWrapperState}
         />
         
         <div style={{width: '100%', height: (viewType == 3 ? '90%' : '100%')}}>
@@ -292,35 +238,34 @@ class Main extends Component {
             defaultZoom={10}
             defaultCenter={WATERLOO_CENTER}
             yesIWantToUseGoogleMapApiInternals
-            onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps, places)}
+            onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps, parkingSpaces)}
             onClick={this._onClick}
             onZoomChanged={this.onZoomChanged}
           >
             {/* Place Components on the map from json file */}
-            {(viewType == 2 || viewType == 3) && places.map((place) => {
+            {(viewType == 2 || viewType == 3) && Object.entries(parkingSpaces).map(([id, place]) => {
               // Note: https://stackoverflow.com/questions/41070083/wrong-location-of-marker-when-rendered-in-component
                 return <ParkingSpace 
                   mapApi={mapApi}
                   mapInstance={mapInstance}
                   viewType={viewType}
-                  key={place.id}
+                  key={place.device_id}
                   place={place}
-                  lat={place.geometry.location.lat}
-                  lng={place.geometry.location.lng}/>
+                  lat={place.lat}
+                  lng={place.lng}/>
             })}
             {(viewType === 1) && Object.entries(lots).map(([id, lot]) => {
                 return <Marker
-                  key={lot.id}
-                  lot_id={lot.id}
+                  key={lot.lot_id}
+                  lot_id={lot.lot_id}
                   text={lot.name}
-                  lat={lot.geometry.location.lat}
-                  lng={lot.geometry.location.lng}
-                  changeViewType={this.changeViewType}
+                  lat={lot.lat}
+                  lng={lot.lng}
                   userType={userType}
                   viewType={viewType}
-                  changeCurrentLot={this.changeCurrentLot}
                   capacity={lot.capacity}
                   freeCount={lot.freeCount}
+                  setMapsWrapperState={this.setMapsWrapperState}
                 />
             })}
 

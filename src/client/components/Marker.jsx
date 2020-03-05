@@ -44,12 +44,13 @@ export default class Marker extends Component {
       userType,
       viewType,
       lot_id,
-      changeCurrentLot
+      changeCurrentLot,
+      setMapsWrapperState
     } = this.props;
 
     return (
       <div>
-        {this.state.modalOpen && <MarkerModal changeCurrentLot={changeCurrentLot} lot_id={lot_id} closeModal={this.closeModal} userType={userType} changeViewType={changeViewType} viewType={viewType}/>}
+        {this.state.modalOpen && <MarkerModal setMapsWrapperState={setMapsWrapperState}changeCurrentLot={changeCurrentLot} lot_id={lot_id} closeModal={this.closeModal} userType={userType} changeViewType={changeViewType} viewType={viewType}/>}
         <div style={temp} onClick={()=>this.toggleModal()}>
           <div>
             <p style={{display: 'block', margin: 0}} >{this.props.text}</p>
@@ -78,8 +79,7 @@ class MarkerModal extends Component {
     super(props)
   }
   showDetails = () => {
-      this.props.changeCurrentLot(this.props.lot_id);
-      this.props.changeViewType(2);       
+      this.props.setMapsWrapperState({currentLotID: this.props.lot_id, viewType: 2})
   }
   render() {
     const {

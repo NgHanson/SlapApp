@@ -27,3 +27,11 @@ export function getAnalyticsSelections(currentLotID, analyticsSelections) {
     body: payload,
  }).then(function(res) {return res.json();});
 }
+
+export function getManagedLots() {
+  return fetch('/api/parking/all').then(res => res.json()).then(json => json["parkingAreas"]);
+}
+
+export function getSavedLots() {
+  return fetch('/api/parking/all').then(res => res.json()).then(json => json["parkingAreas"]);
+}
