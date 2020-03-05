@@ -8,7 +8,7 @@ import SideBar from "./SideBar";
 import AnalyticsDashboard from "./AnalyticsDashboard";
 
 import { searchForNearbyParking, getDevicesInLot, getAnalyticsSelections, getManagedLots, getSavedLots } from './clientCalls.js';
-import { arrayToObj, objValsList, parkingLotJSONToMapsFormat, parkingSpaceJSONToMapsFormat } from './formatConverter.js';
+import { arrayToObj, objValsList } from './formatConverter.js';
 import { getMapBounds, bindResizeListener, moveMapCenterDueToSidebar } from './mapUtils.js';
 
 // consts
@@ -83,6 +83,7 @@ class Main extends Component {
         return res.nearbyParking;
       }).then(function(res) {self.fitMapToBounds();});
     }
+    // ViewType updates
     if (prevState.viewType !== this.state.viewType) {
       if (this.state.viewType == 1) {
         console.log("changed to viewType 1")
@@ -94,87 +95,59 @@ class Main extends Component {
       } else if (this.state.viewType == 2) {          
           console.log("changed to viewType 2");
           getDevicesInLot(this.state.currentLotID).then(function(res) {
-            // return parkingSpaceJSONToMapsFormat(res.devices);
             const spacelist = arrayToObj(res.devices, 'device_id');
             self.setState({places: spacelist});
-          })
-          .then(
-            function(locationsToMark) {
-              // self.addPlace([]);
-              // self.addPlace(locationsToMark);
-            }
-          )
-          .then(
-            function(res) { 
-              self.fitMapToBounds();
-            }
-          );
+          }).then(function(res) { self.fitMapToBounds();});
       } else if (this.state.viewType == 3) {
         console.log("Changed to viewType 3");
         getDevicesInLot(this.state.currentLotID).then(function(res) {
-          // return parkingSpaceJSONToMapsFormat(res.devices);
           const spacelist = arrayToObj(res.devices, 'device_id');
           self.setState({places: spacelist});
-        })
-        .then(function(locationsToMark){
-          // self.addPlace([]); self.addPlace(locationsToMark);
-        })
-        .then(function(res) { 
-          self.fitMapToBounds();
-        });
+        }).then(function(res) { self.fitMapToBounds();});
       }
     }
+    // Analytics Updates
     if (this.state.analyticsSelections !== prevState.analyticsSelections) {
       getAnalyticsSelections(this.state.currentLotID, this.state.analyticsSelections).then(function(res) {
-        // return parkingSpaceJSONToMapsFormat(res.devices);
         const spacelist = arrayToObj(res.devices, 'device_id');
         self.setState({places: spacelist});
-      }).then(function(locationsToMark){
-        // self.addPlace(locationsToMark)
-      }).then(function(res) {self.fitMapToBounds();
-      }).then(function(res) {console.log("done")});
+      }).then(function(res) {self.fitMapToBounds();});
     }
+    // Web Socket Updates - Parking Spaces
     if (this.props.socketDeviceData !== prevProps.socketDeviceData && (this.state.viewType == 2 || this.state.viewType == 3)) {
       console.log("SocketDeviceData updated...")
-      // Places shouldn't really be an array... oh well demo is soon
-      let curr_spots = this.state.places ? this.state.places : [];
-      for (let i = 0; i < curr_spots.length; i++) {
-        if (String(curr_spots[i].id) === String(this.props.socketDeviceData.device_id)) {
-          curr_spots[i].active = this.props.socketDeviceData.active;
-          curr_spots[i].occupied = this.props.socketDeviceData.occupied;
-          break;
-        }
+      let curr_spots = this.state.places;
+      if (curr_spots[this.props.socketDeviceData.device_id]) {
+        curr_spots[this.props.socketDeviceData.device_id].active = this.props.socketDeviceData.active;
+        curr_spots[this.props.socketDeviceData.device_id].occupied = this.props.socketDeviceData.occupied;
+        this.setState({places: curr_spots})
       }
-      this.setState({places: curr_spots})
-      console.log("Updated ting... ", curr_spots)
     }
+    // Web Socket Updates - Parking Lots
     if (this.props.socketLotData !== prevProps.socketLotData  && this.props.socketLotData !== undefined && this.state.viewType == 1) {
-      console.log("socketLotData updated...")
-      console.log(this.props.socketLotData)
+      console.log("socketLotData updated...");
       let curr_lots = this.state.lots;
       if (curr_lots[this.props.socketLotData.lot_id]) {
         if (String(this.props.socketLotData.lot_id) in curr_lots) {
-        console.log(curr_lots[this.props.socketLotData.lot_id])
-        curr_lots[this.props.socketLotData.lot_id].capacity = this.props.socketLotData.capacity;
-        curr_lots[this.props.socketLotData.lot_id].freeCount = this.props.socketLotData.freeCount;    
-        this.setState({lots: curr_lots});
+          curr_lots[this.props.socketLotData.lot_id].capacity = this.props.socketLotData.capacity;
+          curr_lots[this.props.socketLotData.lot_id].freeCount = this.props.socketLotData.freeCount;    
+          this.setState({lots: curr_lots});
         }
-        
       }
     }
   }
 
   toggleUserType = () => {
     this.setState((prevState) => ({ userType: prevState.userType == 2 ? 1 : 2}));
-  }
+  };
 
   changeViewType = (type) => {
     this.setState({viewType: type});
-  }
+  };
 
   setAnalyticsSelections = (selections) => {
     this.setState({analyticsSelections: selections});
-  }
+  };
 
   changeCurrentLot = (lot_id) => {
     this.setState({currentLotID: lot_id});
@@ -187,7 +160,8 @@ class Main extends Component {
   fitMapToBounds = () => {
     const map = this.state.mapInstance;
     const maps = this.state.mapApi;
-    const bounds = (this.state.viewType == 2 || this.state.viewType == 3) ? getMapBounds(map, maps, Object.entries(this.state.places).map(([k, v]) => {return v})) : getMapBounds(map, maps, Object.entries(this.state.lots).map(([k, v]) => {return v}))
+    const currPlaces = (this.state.viewType == 2 || this.state.viewType == 3) ? this.state.places : this.state.lots;
+    const bounds = getMapBounds(map, maps, objValsList(currPlaces));
     map.fitBounds(bounds);
     bindResizeListener(map, maps, bounds);
     if (this.state.viewType == 2 || this.state.viewType == 3) {
