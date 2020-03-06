@@ -36,7 +36,22 @@ const options1 = {
   title: "Today's Hourly Lot Occupancy vs Avg for today",
   curveType: "function",
   legend: "none",
-  hAxis: { showTextEvery: 4 },
+  backgroundColor: Colour.BLUE_GREY,
+  hAxis: {
+    showTextEvery: 4,
+    textStyle: {
+      color: Colour.CLOUD,
+    }
+  },
+  vAxis: {
+    textStyle: {
+      color: Colour.CLOUD,
+    }
+  },
+  titleTextStyle: {
+    color: Colour.CLOUD,
+  },
+  colors: [Colour.BLUE, Colour.RED],
 };
 
 const data2 = [
@@ -55,6 +70,21 @@ const options2 = {
   title: "7-Day Rolling Max Occupancy",
   curveType: "function",
   legend: "none",
+  backgroundColor: Colour.BLUE_GREY,
+  hAxis: {
+    textStyle: {
+      color: Colour.CLOUD,
+    }
+  },
+  vAxis: {
+    textStyle: {
+      color: Colour.CLOUD,
+    }
+  },
+  titleTextStyle: {
+    color: Colour.CLOUD,
+  },
+  colors: [Colour.ORANGE],
 };
 
 const data3 = [
@@ -72,6 +102,21 @@ const options3 = {
   title: "Daily Average Occupancy Time",
   curveType: "function",
   legend: "none",
+  backgroundColor: Colour.BLUE_GREY,
+  hAxis: {
+    textStyle: {
+      color: Colour.CLOUD,
+    }
+  },
+  vAxis: {
+    textStyle: {
+      color: Colour.CLOUD,
+    }
+  },
+  titleTextStyle: {
+    color: Colour.CLOUD,
+  },
+  colors: [Colour.BLUE],
 };
 
 //WEIGHTS SHOULD ADD UP TO MAIN OPERATION TIME
@@ -88,6 +133,7 @@ const pieData = [
 const pieOptions = {
   title: "Occupancy % Distribution During Main Operation Hours",
   pieHole: 0.4,
+  backgroundColor: Colour.BLUE_GREY,
   slices: [
     {
       color: "#2BB673"
@@ -106,7 +152,7 @@ const pieOptions = {
     position: "bottom",
     alignment: "center",
     textStyle: {
-      color: "233238",
+      color: Colour.CLOUD,
       fontSize: 14
     }
   },

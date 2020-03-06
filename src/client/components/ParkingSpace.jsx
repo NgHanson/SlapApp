@@ -80,7 +80,7 @@ export default class ParkingSpace extends Component {
       } else if (this.props.place.analytics_percentage < 0) {
         this.ctx.fillStyle = this.getColorForPercentage(Colour.RED, perc);
       } else {
-        this.ctx.fillStyle = Colour.WHITE;
+        this.ctx.fillStyle = Colour.CLOUD;
       }
     }
     this.ctx.fillRect(rectX, rectY, rectWidth, rectHeight);    

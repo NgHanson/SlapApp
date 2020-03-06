@@ -17,7 +17,5 @@ export const YELLOW = "#f1c40f";
 export const ORANGE = "#f39c12";
 
 export const BLACK = "#000";
-
 export const LIGHT_GREY = "#ecf0f1";
-
-export const WHITE = "#FFF";
+export const CLOUD = "#ecf0f1";
