@@ -61,7 +61,7 @@ async function getExampleAnalyticsQueries(body) {
 	const q_lot = 'SELECT * FROM devices WHERE lot_id = ' + body.lot_id + ' ORDER BY device_id ASC';
 	let curr_response = await dbQuery(q_lot);
 	console.log(JSON.stringify(body.analyticsSelections))
-	console.log(JSON.stringify(exBodySingleTime))
+	console.log(JSON.stringify(exBodyDinner))
 	for (var i = 0; i < curr_response.length; i++) {
 		if (JSON.stringify(body.analyticsSelections) === JSON.stringify(exBody9to5)) {
 			console.log("9 to 5 example");

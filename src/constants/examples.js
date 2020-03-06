@@ -26,7 +26,7 @@ const lotOccupancyGraph = [
 const exHigherTraffic9To5 = {
 	first: {
 		year: "",
-		month: "",
+		month: 2,
 		day: 13,
 		startH: 9,
 		startM: 0,
@@ -35,7 +35,7 @@ const exHigherTraffic9To5 = {
 	},
 	second: {
 		year: "",
-		month: "",
+		month: 2,
 		day: 13,
 		startH: 17,
 		startM: 0,
@@ -102,7 +102,7 @@ const exHigherTraffic9To5 = {
 const exBusierOnWeekdays = {
 	first: {
 		year: "",
-		month: "",
+		month: 2,
 		day: 13,
 		startH: 9,
 		startM: 0,
@@ -111,7 +111,7 @@ const exBusierOnWeekdays = {
 	},
 	second: {
 		year: "",
-		month: "",
+		month: 2,
 		day: 15,
 		startH: 9,
 		startM: 0,
@@ -176,7 +176,7 @@ const exBusierOnWeekdays = {
 const exMoralsNearDinner = {
 	first: {
 		year: "",
-		month: "",
+		month: 2,
 		day: 14,
 		startH: 9,
 		startM: 0,
@@ -185,7 +185,7 @@ const exMoralsNearDinner = {
 	},
 	second: {
 		year: "",
-		month: "",
+		month: 2,
 		day: 14,
 		startH: 17,
 		startM: 0,
@@ -250,7 +250,7 @@ const exMoralsNearDinner = {
 const exBusierOnValentines = {
 	first: {
 		year: "",
-		month: "",
+		month: 2,
 		day: 14,
 		startH: 17,
 		startM: 0,
@@ -259,7 +259,7 @@ const exBusierOnValentines = {
 	},
 	second: {
 		year: "",
-		month: "",
+		month: 2,
 		day: 7,
 		startH: 17,
 		startM: 0,
