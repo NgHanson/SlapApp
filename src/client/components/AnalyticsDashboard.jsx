@@ -33,7 +33,7 @@ const data1 = [
 ];
 
 const options1 = {
-  title: "Today's Hourly Lot Occupancy vs Avg for today",
+  title: "Hourly Vs. Avg. Occupancy",
   curveType: "function",
   legend: "none",
   backgroundColor: Colour.BLUE_GREY,
