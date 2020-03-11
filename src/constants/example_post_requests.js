@@ -61,16 +61,16 @@ const exBodyDinner = {
     fromYear: '',
     fromMonth: 2,
     fromDay: 14,
-    fromStartHour: 9,
+    fromStartHour: 17,
     fromStartMin: 0,
-    fromEndHour: 17,
+    fromEndHour: 21,
     fromEndMin: 0,
     toYear: '',
     toMonth: 2,
     toDay: 14,
-    toStartHour: 17,
+    toStartHour: 9,
     toStartMin: 0,
-    toEndHour: 21,
+    toEndHour: 17,
     toEndMin: 0
 };
 

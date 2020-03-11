@@ -223,20 +223,22 @@ export default class AnalyticsSelector extends Component {
   singleCompare() {
     return(
       <div style={{ marginBottom: '30px'}}>
-        <div style={{display: 'flex'}}>
-          {this.inputField(this.state.year, 'year', 'Year')}
-          {this.inputField(this.state.month, 'month', 'Month')}
-          {this.inputField(this.state.day, 'day', 'Day')}
-        </div>
-        <div>Start Time</div>
-        <div style={{display: 'flex'}}>
-          {this.inputField(this.state.startHour, 'startHour')}
-          {this.inputField(this.state.startMin, 'startMin')}
-        </div>
-        <div>End Time</div>
-        <div style={{display: 'flex'}}>
-          {this.inputField(this.state.endHour, 'endHour')}
-          {this.inputField(this.state.endMin, 'endMin')}
+        <div style={{ background: Colour.BLUE_GREY, padding: '10px' }}>
+          <div style={{display: 'flex'}}>
+            {this.inputField(this.state.year, 'year', 'Year')}
+            {this.inputField(this.state.month, 'month', 'Month')}
+            {this.inputField(this.state.day, 'day', 'Day')}
+          </div>
+          <div>Start Time</div>
+          <div style={{display: 'flex'}}>
+            {this.inputField(this.state.startHour, 'startHour')}
+            {this.inputField(this.state.startMin, 'startMin')}
+          </div>
+          <div>End Time</div>
+          <div style={{display: 'flex'}}>
+            {this.inputField(this.state.endHour, 'endHour')}
+            {this.inputField(this.state.endMin, 'endMin')}
+          </div>
         </div>
         {(this.props.currentLotID == 1) && this.singleLotExamples()}
         <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%', marginTop: '10px'}} onClick={() => this.onSubmit(true)} >
@@ -249,43 +251,47 @@ export default class AnalyticsSelector extends Component {
   doubleCompare() {
     return (
       <div style={{ marginBottom: '30px'}}>
-        <div>To:</div>
-        <div style={{display: 'flex'}}>
-          {this.inputField(this.state.toYear, 'toYear', 'Year')}
-          {this.inputField(this.state.toMonth, 'toMonth', 'Month')}
-          {this.inputField(this.state.toDay, 'toDay', 'Day')}
+      <div style={{ background: Colour.BLUE_GREY, padding: '10px', marginBottom: '20px' }}>
+          <div>Time Frame 1:</div>
+          <div style={{display: 'flex'}}>
+            {this.inputField(this.state.toYear, 'toYear', 'Year')}
+            {this.inputField(this.state.toMonth, 'toMonth', 'Month')}
+            {this.inputField(this.state.toDay, 'toDay', 'Day')}
+          </div>
+          <div>Start Time</div>
+          <div style={{display: 'flex'}}>
+            {this.inputField(this.state.toStartHour, 'toStartHour')}
+            {this.inputField(this.state.toStartMin, 'toStartMin')}
+          </div>
+          <div>End Time</div>
+          <div style={{display: 'flex'}}>
+            {this.inputField(this.state.toEndHour, 'toEndHour')}
+            {this.inputField(this.state.toEndMin, 'toEndMin')}
+          </div>
         </div>
-        <div>Start Time</div>
-        <div style={{display: 'flex'}}>
-          {this.inputField(this.state.toStartHour, 'toStartHour')}
-          {this.inputField(this.state.toStartMin, 'toStartMin')}
-        </div>
-        <div>End Time</div>
-        <div style={{display: 'flex'}}>
-          {this.inputField(this.state.toEndHour, 'toEndHour')}
-          {this.inputField(this.state.toEndMin, 'toEndMin')}
-        </div>
-
-        <div>From:</div>
-        <div style={{display: 'flex'}}>
-          {this.inputField(this.state.fromYear, 'fromYear', 'Year')}
-          {this.inputField(this.state.fromMonth, 'fromMonth', 'Month')}
-          {this.inputField(this.state.fromDay, 'fromDay', 'Day')}
-        </div>
-        <div>Start Time</div>
-        <div style={{display: 'flex'}}>
-          {this.inputField(this.state.fromStartHour, 'fromStartHour')}
-          {this.inputField(this.state.fromStartMin, 'fromStartMin')}
-        </div>
-        <div>End Time</div>
-        <div style={{display: 'flex'}}>
-          {this.inputField(this.state.fromEndHour, 'fromEndHour')}
-          {this.inputField(this.state.fromEndMin, 'fromEndMin')}
+        <div style={{ background: Colour.BLUE_GREY, padding: '10px' }}>
+          <div>Time Frame 2:</div>
+          <div style={{display: 'flex'}}>
+            {this.inputField(this.state.fromYear, 'fromYear', 'Year')}
+            {this.inputField(this.state.fromMonth, 'fromMonth', 'Month')}
+            {this.inputField(this.state.fromDay, 'fromDay', 'Day')}
+          </div>
+          <div>Start Time</div>
+          <div style={{display: 'flex'}}>
+            {this.inputField(this.state.fromStartHour, 'fromStartHour')}
+            {this.inputField(this.state.fromStartMin, 'fromStartMin')}
+          </div>
+          <div>End Time</div>
+          <div style={{display: 'flex'}}>
+            {this.inputField(this.state.fromEndHour, 'fromEndHour')}
+            {this.inputField(this.state.fromEndMin, 'fromEndMin')}
+          </div>
         </div>
         {(this.props.currentLotID == 1) && this.doubleLotExamples()}
         <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%', marginTop: '10px'}} onClick={() => this.onSubmit(false)} >
           Submit
         </Button>
+        <p style={{fontSize: '10px', textAlign: 'center', textDecoration: 'underline'}}>Displays Time Frame 2 - Time Frame 1</p>
       </div>
     );
   }

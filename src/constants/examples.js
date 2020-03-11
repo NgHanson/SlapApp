@@ -196,18 +196,18 @@ const exMoralsNearDinner = {
 		year: "",
 		month: 2,
 		day: 14,
-		startH: 9,
+		startH: 17,
 		startM: 0,
-		endH: 17,
+		endH: 21,
 		endM: 0
 	},
 	second: {
 		year: "",
 		month: 2,
 		day: 14,
-		startH: 17,
+		startH: 9,
 		startM: 0,
-		endH: 21,
+		endH: 17,
 		endM: 0
 	},
 	lotValues: {
