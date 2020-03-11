@@ -183,8 +183,8 @@ export default class AnalyticsDashboard extends Component {
         <div style={{display: 'flex', alignItems: 'center', padding: '40px', color: 'white'}}>
           <FaChartBar className="display-icon"/>
           <p style={{margin: '0 0 0 25px'}}>Analytics Dashboard</p>
-          <p style={{margin: '0 0 0 25px'}}>{`${lotName}`}</p>
-          <p style={{margin: '0 0 0 25px'}}>{`${lotAddress}`}</p>
+          <p style={{margin: '0 0 0 25px'}}>{`${this.props.lots[this.props.currentLotID]['name']}`}</p>
+          <p style={{margin: '0 0 0 25px'}}>{`${this.props.lots[this.props.currentLotID]['address']}`}</p>
         </div>
         <div style={{padding: '0 40px 40px 40px', background: Colour.DARK_BLUE_GREY}}>
           <div style={{display: 'flex'}}>

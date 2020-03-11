@@ -38,6 +38,15 @@ class SideBar extends Component {
     }
   }
 
+  showNotes(given_notes) {
+    let notes = given_notes.split("\\n");
+    let table = []
+    for (let i = 0; i < notes.length; i++) {
+      table.push(<p>{notes[i]}</p>)
+    }
+    return table
+  }
+
   render() {
     const {
        mapApiLoaded,
@@ -98,6 +107,10 @@ class SideBar extends Component {
             <div>
               {this.state.lotInfo['name']}
             </div>
+            <div>Address:</div>
+            <div>{this.state.lotInfo["address"]}</div>
+            <div>Notes:</div>
+            <div><Fragment>{this.showNotes(this.state.lotInfo["notes"])}</Fragment></div>
             <div style={{marginBottom: '8px'}}>
               {`Occupancy: ${this.state.lotInfo['capacity'] - this.state.lotInfo['freeCount']}/${this.state.lotInfo['capacity']}`}
             </div>
