@@ -1,7 +1,9 @@
 const Colour = require('./colour_consts.js');
 
-// Constants for Lot 1 Demos
-// IMPORTANT: Data is displayed back to front in a layered bar chart (We want the averages to be in the back, not the current val)
+// Live View - Lot Occcupancy ======================================================================================================
+
+// IMPORTANT: Data is displayed back to front in a layered bar chart!
+//            (We want the averages to be in the back, not the current val)
 const lotOccupancyGraph = [
   ["Time", "Avg", "Current"],
   ["6am", 10, 0],
@@ -39,6 +41,10 @@ const lotOccupancyOptions = {
     0:{color: Colour.LIGHT_BLUE, targetAxisIndex: 0},
   }
 };
+
+// ================================================================================================================================
+
+// Analytics View - Time Comparisons ==============================================================================================
 
 // Example: Higher Traffic 9-5
 const exHigherTraffic9To5 = {
@@ -400,6 +406,11 @@ const exSingleTime = {
 		"50": 96.2,
 	}
 };
+
+// ================================================================================================================================
+
+// Analytics View - Dashboard Examples
+
 
 module.exports = {
 	lotOccupancyGraph,

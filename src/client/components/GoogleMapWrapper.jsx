@@ -231,50 +231,51 @@ class Main extends Component {
           savedLots={this.state.savedLots}
           setMapsWrapperState={this.setMapsWrapperState}
         />
-        
-        <div style={{width: '100%', height: (viewType == 3 ? '90%' : '100%')}}>
-          <GoogleMap
-            defaultZoom={10}
-            defaultCenter={WATERLOO_CENTER}
-            yesIWantToUseGoogleMapApiInternals
-            onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps, parkingSpaces)}
-            onClick={this._onClick}
-            onZoomChanged={this.onZoomChanged}
-          >
-            {/* Place Components on the map from json file */}
-            {(viewType == 2 || viewType == 3) && Object.entries(parkingSpaces).map(([id, place]) => {
-              // Note: https://stackoverflow.com/questions/41070083/wrong-location-of-marker-when-rendered-in-component
-                return <ParkingSpace 
-                  mapApi={mapApi}
-                  mapInstance={mapInstance}
-                  viewType={viewType}
-                  key={place.device_id}
-                  place={place}
-                  lat={place.lat}
-                  lng={place.lng}/>
-            })}
-            {(viewType === 1) && Object.entries(lots).map(([id, lot]) => {
-                return <Marker
-                  key={lot.lot_id}
-                  lot_id={lot.lot_id}
-                  text={lot.name}
-                  lat={lot.lat}
-                  lng={lot.lng}
-                  userType={userType}
-                  viewType={viewType}
-                  capacity={lot.capacity}
-                  freeCount={lot.freeCount}
-                  setMapsWrapperState={this.setMapsWrapperState}
-                  address={lot.address}
-                  notes={lot.notes}
-                />
-            })}
+        <div id="page-wrap" style={{width: '100%', height: '100%'}}>
+          <div style={{width: '100%', height: (viewType == 3 ? '90%' : '100%')}}>
+            <GoogleMap
+              defaultZoom={10}
+              defaultCenter={WATERLOO_CENTER}
+              yesIWantToUseGoogleMapApiInternals
+              onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps, parkingSpaces)}
+              onClick={this._onClick}
+              onZoomChanged={this.onZoomChanged}
+            >
+              {/* Place Components on the map from json file */}
+              {(viewType == 2 || viewType == 3) && Object.entries(parkingSpaces).map(([id, place]) => {
+                // Note: https://stackoverflow.com/questions/41070083/wrong-location-of-marker-when-rendered-in-component
+                  return <ParkingSpace 
+                    mapApi={mapApi}
+                    mapInstance={mapInstance}
+                    viewType={viewType}
+                    key={place.device_id}
+                    place={place}
+                    lat={place.lat}
+                    lng={place.lng}/>
+              })}
+              {(viewType === 1) && Object.entries(lots).map(([id, lot]) => {
+                  return <Marker
+                    key={lot.lot_id}
+                    lot_id={lot.lot_id}
+                    text={lot.name}
+                    lat={lot.lat}
+                    lng={lot.lng}
+                    userType={userType}
+                    viewType={viewType}
+                    capacity={lot.capacity}
+                    freeCount={lot.freeCount}
+                    setMapsWrapperState={this.setMapsWrapperState}
+                    address={lot.address}
+                    notes={lot.notes}
+                  />
+              })}
 
-            {/* Place Component on map click */}
-            {/*placeMarkerOnClick && <ParkingSpace place={{geometry: {rotation: 63.23308549}}} key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
-          </GoogleMap>
+              {/* Place Component on map click */}
+              {/*placeMarkerOnClick && <ParkingSpace place={{geometry: {rotation: 63.23308549}}} key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
+            </GoogleMap>
+          </div>
+          {viewType == 3 && this.state.lots[this.state.currentLotID] !== undefined && <AnalyticsDashboard lots={this.state.lots} currentLotID={this.state.currentLotID}/>}
         </div>
-        {viewType == 3 && this.state.lots[this.state.currentLotID] !== undefined && <AnalyticsDashboard lots={this.state.lots} currentLotID={this.state.currentLotID}/>}
       </div>
     );
   }
