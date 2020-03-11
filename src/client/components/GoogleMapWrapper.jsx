@@ -274,7 +274,7 @@ class Main extends Component {
             {/*placeMarkerOnClick && <ParkingSpace place={{geometry: {rotation: 63.23308549}}} key={"clickMarker"} text="New Marker" lat={this.state.clickLat} lng={this.state.clickLng}/>*/}
           </GoogleMap>
         </div>
-        {viewType == 3 && <AnalyticsDashboard lots={this.state.lots} currentLotID={this.state.currentLotID}/>}
+        {viewType == 3 && this.state.lots[this.state.currentLotID] !== undefined && <AnalyticsDashboard lots={this.state.lots} currentLotID={this.state.currentLotID}/>}
       </div>
     );
   }
