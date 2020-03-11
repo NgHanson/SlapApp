@@ -9,18 +9,7 @@ import Button from 'react-bootstrap/Button';
 import * as Colour from '../../constants/colour_consts';
 
 import { Chart } from "react-google-charts";
-import { lotOccupancyGraph } from '../../constants/examples.js';
-const options = {
-  title: "Occupancy",
-  legend: "none",
-  hAxis: { showTextEvery: 4 },
-  vAxis: { maxValue: 140 }, //this DN work?
-  isStacked: true,
-  series: {
-    0:{color: Colour.LIGHT_RED},
-    1:{color: Colour.LIGHT_BLUE},
-  }
-};
+import { lotOccupancyGraph, lotOccupancyOptions } from '../../constants/examples.js';
 
 class SideBar extends Component {
   constructor(props) {
@@ -120,7 +109,7 @@ class SideBar extends Component {
                 width="100%"
                 height="140px"
                 data={lotOccupancyGraph}
-                options={options}
+                options={lotOccupancyOptions}
               />
             </div>
             <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%'}} onClick={() => changeViewType(1)} >

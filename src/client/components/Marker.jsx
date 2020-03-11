@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Chart } from "react-google-charts";
-import { lotOccupancyGraph } from '../../constants/examples.js';
+import { lotOccupancyGraph, lotOccupancyOptions } from '../../constants/examples.js';
 import * as Colour from '../../constants/colour_consts';
 
 // MOVE THESE INTO A CSS
@@ -71,18 +71,6 @@ export default class Marker extends Component {
   }
 }
 
-const options = {
-  title: "Occupancy",
-  legend: "none",
-  hAxis: { showTextEvery: 4 },
-  vAxis: { maxValue: 140 }, //this DN work?
-  isStacked: true,
-  series: {
-    0:{color: Colour.LIGHT_RED},
-    1:{color: Colour.LIGHT_BLUE},
-  }
-};
-
 class MarkerModal extends Component {
   constructor(props) {
     super(props)
@@ -121,7 +109,7 @@ class MarkerModal extends Component {
             width="360px"
             height="160px"
             data={lotOccupancyGraph}
-            options={options}
+            options={lotOccupancyOptions}
           />
         </div>
         <div style={{margin: '0 30px 20px 30px', color: 'white'}}>

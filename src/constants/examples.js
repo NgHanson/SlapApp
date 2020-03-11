@@ -1,26 +1,44 @@
+const Colour = require('./colour_consts.js');
+
 // Constants for Lot 1 Demos
+// IMPORTANT: Data is displayed back to front in a layered bar chart (We want the averages to be in the back, not the current val)
 const lotOccupancyGraph = [
-  ["Time", "Current", "Avg"],
-  ["6am", 0, 10],
-  ["7am", 0, 20],
-  ["8am", 0, 40],
-  ["9am", 0, 80],
-  ["10am", 0, 100],
-  ["11am", 0, 120],
-  ["12pm", 0, 140],
-  ["1pm", 0, 130],
-  ["2pm", 0, 120],
-  ["3pm", 100, 20], //NEED TO DO MATH TO FIGURE THIS OUT
-  ["4pm", 0, 110],
-  ["5pm", 0, 90],
-  ["6pm", 0, 80],
-  ["7pm", 0, 80],
-  ["8pm", 0, 70],
-  ["9pm", 0, 70],
-  ["10pm", 0, 40],
-  ["11pm", 0, 20],
-  ["12am", 0, 20]
+  ["Time", "Avg", "Current"],
+  ["6am", 10, 0],
+  ["7am", 20, 0],
+  ["8am", 30, 0],
+  ["9am", 40, 0],
+  ["10am", 45, 0],
+  ["11am", 45, 0],
+  ["12pm", 50, 0],
+  ["1pm", 50, 0],
+  ["2pm", 50, 0],
+  ["3pm", 43, 36], //NEED TO DO MATH TO FIGURE THIS OUT
+  ["4pm", 41, 0],
+  ["5pm", 47, 0],
+  ["6pm", 44, 0],
+  ["7pm", 49, 0],
+  ["8pm", 49, 0],
+  ["9pm", 40, 0],
+  ["10pm", 30, 0],
+  ["11pm", 20, 0],
+  ["12am", 10, 0]
 ];
+
+const lotOccupancyOptions = {
+  chartType:"ComboChart",
+  title: "Occupancy",
+  legend: "none",
+  hAxis: { showTextEvery: 4 },
+  vAxis: { maxValue: 55 }, //this DN work?
+  isStacked: true,
+  stackSeries: true,
+  seriesType: "bars",
+  series: {
+    1:{color: Colour.LIGHT_RED, targetAxisIndex: 1, dataOpacity: 0.8},
+    0:{color: Colour.LIGHT_BLUE, targetAxisIndex: 0},
+  }
+};
 
 // Example: Higher Traffic 9-5
 const exHigherTraffic9To5 = {
@@ -385,6 +403,7 @@ const exSingleTime = {
 
 module.exports = {
 	lotOccupancyGraph,
+	lotOccupancyOptions,
 	exHigherTraffic9To5,
 	exBusierOnWeekdays,
 	exMoralsNearDinner,
