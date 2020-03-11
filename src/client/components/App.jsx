@@ -22,17 +22,13 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    var self = this;
-    socket.on("DEVICE_DATA", function(data) {
-      console.log(data); 
-      self.setState({socketDeviceData: data});
-    });
-    socket.on('LOT_DATA', function(data) {
+    const self = this;
+    socket.on('DEVICE_LOT_DATA', function(data) {
       console.log(data);
-      self.setState({socketLotData: data});
-    })
-    // socket.on("testing", data => this.setState({ response: data }));
-    // socket.on("testing", data => console.log("Socket.io... ", data))
+      self.setState({socketDeviceData: data['DEVICE_DATA'],
+                     socketLotData: data['LOT_DATA']
+      });
+    });
   }
 
   render() {

@@ -38,11 +38,15 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 
 const emitDeviceData = async (socket) => {
   while (true) {
-    socket.emit('DEVICE_DATA', { device_id: 53, active: true, occupied: true });
+    socket.emit('DEVICE_LOT_DATA', 
+            {'DEVICE_DATA': { device_id: 53, active: true, occupied: true },
+             'LOT_DATA': { lot_id: 3, capacity: 3, freeCount: 2 }
+          });
     await delay(5000);
-    socket.emit('DEVICE_DATA', { device_id: 53, active: true, occupied: false });
-    await delay(5000);
-    socket.emit('DEVICE_DATA', { device_id: 53, active: false, occupied: true });
+                  socket.emit('DEVICE_LOT_DATA', 
+            {'DEVICE_DATA': { device_id: 53, active: true, occupied: false },
+             'LOT_DATA': { lot_id: 3, capacity: 3, freeCount: 3 }
+          });
     await delay(5000);
   }
 };
@@ -94,8 +98,11 @@ ttn.data(APP_ID, ACCESS_KEY)
           //ADD ERROR CHECKS
           let capactiy = data[0]['capacity'];
           let freecount = data[0]['freecount'];
-          io.emit('DEVICE_DATA', { device_id: deviceId, active: true, occupied: detected });
-          io.emit('LOT_DATA', { lot_id: lotId, capacity: capactiy, freeCount: freecount });
+          // NOTE SENDING 2 SOCKET UPDATES IN A ROW IS SLOW - MAY NEED TO PUT INTO ONE MESSAGE
+          io.emit('DEVICE_LOT_DATA', 
+            {'DEVICE_DATA': { device_id: deviceId, active: true, occupied: detected },
+             'LOT_DATA': { lot_id: lotId, capacity: capactiy, freeCount: freecount }
+          });
         });
       });
     });

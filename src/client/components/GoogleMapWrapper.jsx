@@ -133,7 +133,6 @@ class Main extends Component {
   }
 
   updateLotOnSocket(curr_lots) {
-    console.log("socketLotData updated...");
     if (curr_lots[this.props.socketLotData.lot_id]) {
       if (String(this.props.socketLotData.lot_id) in curr_lots) {
         curr_lots[this.props.socketLotData.lot_id].capacity = this.props.socketLotData.capacity;
