@@ -309,7 +309,10 @@ export default class AnalyticsSelector extends Component {
           {this.state.compareOpen ? <FaCaretDown className="display-icon" onClick={() => this.toggleCompareOpen()}/> : <FaCaretRight className="display-icon"  onClick={() => this.toggleCompareOpen()}/>}
         </div>
         {this.state.compareOpen && this.doubleCompare()}
-        <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%', margin: '20px 0'}} onClick={() => this.props.changeViewType(1)} >
+        <Button 
+        variant={"secondary"} 
+        style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%', margin: '20px 0'}} 
+        onClick={() => this.props.setMapsWrapperState({currentLotID: this.props.currentLotID, viewType: 2})} >
           Current
         </Button>
         <Button variant={"secondary"} style={{fontSize: '11pt', width: '100%'}} onClick={() => this.props.changeViewType(1)} >
