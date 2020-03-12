@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { Chart } from "react-google-charts";
 import { lotOccupancyGraph, lotOccupancyOptions } from '../../constants/examples.js';
 import * as Colour from '../../constants/colour_consts';
-import { FaParking, FaRegClock, FaClock } from "react-icons/fa";
+import { FaParking, FaRegClock } from "react-icons/fa";
 
 // MOVE THESE INTO A CSS
 const temp = {
@@ -79,15 +79,6 @@ class MarkerModal extends Component {
 
   showDetails = () => {
       this.props.setMapsWrapperState({currentLotID: this.props.lot_id, viewType: 2})
-  }
-
-  showNotes() {
-    let notes = this.props.notes.split("\\n");
-    let table = []
-    for (let i = 0; i < notes.length; i++) {
-      table.push(<p>{notes[i]}</p>)
-    }
-    return table
   }
 
   generateNotes() {

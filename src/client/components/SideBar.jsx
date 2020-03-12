@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import * as Colour from '../../constants/colour_consts';
+import { FaParking, FaRegClock } from "react-icons/fa";
 
 import { Chart } from "react-google-charts";
 import { lotOccupancyGraph, lotOccupancyOptions } from '../../constants/examples.js';
@@ -27,13 +28,52 @@ class SideBar extends Component {
     }
   }
 
-  showNotes(given_notes) {
+  generateLogo() {
+    return (
+      <div style={{display: 'flex', fontSize: 'xx-large', paddingBottom: '20px'}}>
+        <div style={{color: 'white'}}>SLAP</div>
+        <div style={{color: 'red'}}>.</div>
+    </div>
+    );
+  }
+
+  generateNotes(given_notes) {
     let notes = given_notes.split("\\n");
-    let table = []
-    for (let i = 0; i < notes.length; i++) {
-      table.push(<p>{notes[i]}</p>)
-    }
-    return table
+
+    let divs = [];
+
+    notes.forEach(n => {
+      let note = n.trim();
+      //debugger
+      if ("Free Parking" == note) {
+        divs.push(
+          <div style={{display: 'flex', marginRight: '16px', alignItems: 'center'}}>
+            <FaParking style={{background: Colour.GREEN, fontSize: '30px'}} />
+            <div style={{marginLeft: '8px', fontSize: '14px'}}>Free Parking</div>
+          </div>
+        );
+      } else if ("Permit Only" == note) {
+        divs.push(
+          <div style={{display: 'flex', marginRight: '16px', alignItems: 'center'}}>
+            <FaParking style={{background: Colour.ORANGE, fontSize: '30px'}} />
+            <div style={{marginLeft: '8px', fontSize: '14px'}}>Permit Only</div>
+          </div>
+        );
+      } else if ("2HR Max" == note) {
+        divs.push(
+          <div style={{display: 'flex', marginRight: '16px', alignItems: 'center'}}>
+            <FaRegClock style={{ fontSize: '30px'}}/>
+            <div style={{marginLeft: '8px', fontSize: '14px'}}>2HR Max</div>
+          </div>
+        );
+      }
+    });
+
+    return (
+      <div style={{display: 'flex', marginBottom: '20px'}}>
+        {divs}
+      </div>
+    );
   }
 
   render() {
@@ -89,21 +129,15 @@ class SideBar extends Component {
       return (
         <Menu {...this.props} styles={{bmMenu: {background: Colour.DARK_BLUE_GREY}}}>
           {this.state.lotInfo && <div>
-            <div style={{display: 'flex', fontSize: 'xx-large'}}><div style={{color: 'white'}}>SLAP</div><div style={{color: 'red'}}>.</div></div>
-            <div style={{marginBottom: '8px'}}>
-              Details:
-            </div>
-            <div>
+            {this.generateLogo()}
+            <div style={{marginBottom: '10px'}}>
               {this.state.lotInfo['name']}
             </div>
-            <div>Address:</div>
-            <div>{this.state.lotInfo["address"]}</div>
-            <div>Notes:</div>
-            <div><Fragment>{this.showNotes(this.state.lotInfo["notes"])}</Fragment></div>
-            <div style={{marginBottom: '8px'}}>
+            <div style={{marginBottom: '10px'}}>{this.state.lotInfo["address"]}</div>
+            <div style={{marginBottom: '10px'}}>
               {`Occupancy: ${this.state.lotInfo['capacity'] - this.state.lotInfo['freeCount']}/${this.state.lotInfo['capacity']}`}
             </div>
-            <div style={{marginBottom: '20px'}}>
+            <div style={{margin: '20px 0'}}>
               <Chart
                 chartType="ColumnChart"
                 width="100%"
@@ -112,6 +146,7 @@ class SideBar extends Component {
                 options={lotOccupancyOptions}
               />
             </div>
+            {this.generateNotes(this.state.lotInfo["notes"])}
             <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%'}} onClick={() => changeViewType(1)} >
               {'Back'}
             </Button>
