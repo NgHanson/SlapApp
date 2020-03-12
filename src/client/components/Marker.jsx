@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { Chart } from "react-google-charts";
 import { lotOccupancyGraph, lotOccupancyOptions } from '../../constants/examples.js';
 import * as Colour from '../../constants/colour_consts';
+import { FaParking, FaRegClock, FaClock } from "react-icons/fa";
 
 // MOVE THESE INTO A CSS
 const temp = {
@@ -75,9 +76,11 @@ class MarkerModal extends Component {
   constructor(props) {
     super(props)
   }
+
   showDetails = () => {
       this.props.setMapsWrapperState({currentLotID: this.props.lot_id, viewType: 2})
   }
+
   showNotes() {
     let notes = this.props.notes.split("\\n");
     let table = []
@@ -86,6 +89,49 @@ class MarkerModal extends Component {
     }
     return table
   }
+
+  generateNotes() {
+    let notes = this.props.notes.split("\\n");
+    //debugger
+
+    let divs = [];
+
+    notes.forEach(n => {
+      let note = n.trim();
+      //debugger
+      if ("Free Parking" == note) {
+        divs.push(
+          <div style={{display: 'flex', marginRight: '16px', alignItems: 'center'}}>
+            <FaParking style={{background: Colour.GREEN, fontSize: '30px'}} />
+            <div style={{marginLeft: '8px', fontSize: '14px'}}>Free Parking</div>
+          </div>
+        );
+      } else if ("Permit Only" == note) {
+        divs.push(
+          <div style={{display: 'flex', marginRight: '16px', alignItems: 'center'}}>
+            <FaParking style={{background: Colour.ORANGE, fontSize: '30px'}} />
+            <div style={{marginLeft: '8px', fontSize: '14px'}}>Permit Only</div>
+          </div>
+        );
+      } else if ("2HR Max" == note) {
+        divs.push(
+          <div style={{display: 'flex', marginRight: '16px', alignItems: 'center'}}>
+            <FaRegClock style={{ fontSize: '30px'}}/>
+            <div style={{marginLeft: '8px', fontSize: '14px'}}>2HR Max</div>
+          </div>
+        );
+      }
+    });
+
+    return (
+      <div style={{display: 'flex'}}>
+        {divs}
+      </div>
+    );
+
+  }
+
+
   render() {
     const {
       closeModal,
@@ -102,8 +148,11 @@ class MarkerModal extends Component {
     occupation times, for ex. generally 6am - 12am vs Fit4Less parking lot which is 24 hr
     */
     return (
-      <div style={{backgroundColor: Colour.BLUE_GREY, width:'fit-content', height: 'fit-content', border: `2px solid ${Colour.DARK_BLUE_GREY}`}} onClick={() => closeModal()}>
-        <div className={"chart-container"} style={{padding: '30px'}}>
+      <div style={{fontFamily: '', backgroundColor: Colour.BLUE_GREY, width:'fit-content', height: 'fit-content', border: `2px solid ${Colour.DARK_BLUE_GREY}`}} onClick={() => closeModal()}>
+        <div style={{padding: '30px 30px 30px 30px', color: Colour.CLOUD, fontSize: 'medium'}}>
+          {address}
+        </div> 
+        <div className={"chart-container"} style={{padding: '0 30px'}}>
           <Chart
             chartType="ColumnChart"
             width="360px"
@@ -112,10 +161,8 @@ class MarkerModal extends Component {
             options={lotOccupancyOptions}
           />
         </div>
-        <div style={{margin: '0 30px 20px 30px', color: 'white', textAlign: 'left'}}>
-          <p><strong>Address:</strong>{address}</p>
-          <p><strong>Notes:</strong></p>
-          <Fragment>{this.showNotes()}</Fragment>
+        <div style={{margin: '20px 30px 20px 30px', color: 'white', textAlign: 'left'}}>
+          {this.generateNotes()}
         </div>
         <div style={{ padding: '0 30px 30px 30px'}}>
           <Button variant={"info"} style={{width: '100%', fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE}} onClick={() => this.showDetails()} >

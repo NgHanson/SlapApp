@@ -220,21 +220,21 @@ export default class AnalyticsDashboard extends Component {
                 <div className={"metrics-box"} style={{display: 'flex', height: '150px'}}>
                   <div style={{background: Colour.DARK_BLUE_GREY, flex: 1, margin: '0 20px 20px 20px', padding: '20px'}}>
                     <div style={{color: Colour.CLOUD}}>Current Lot Utilization</div>
-                    <div style={{color: Colour.YELLOW, fontSize: '55px', textAlign: 'center'}}>95<FaPercent style={{fontSize: '20px', marginBottom: '10px'}}/></div>
+                    <div style={{color: Colour.YELLOW, fontSize: '45px', textAlign: 'center'}}>95<FaPercent style={{fontSize: '20px', marginBottom: '10px'}}/></div>
                   </div>
                   <div style={{background: Colour.DARK_BLUE_GREY, flex: 1, margin: '0 20px 20px 20px', padding: '20px'}}>
-                    <div style={{color: Colour.CLOUD}}>Avg Occupancy Duration (9am-5pm)</div>
-                    <div style={{color: Colour.LIGHT_GREEN, fontSize: '55px', textAlign: 'center'}}>5 mins</div>
+                    <div style={{color: Colour.CLOUD}}>Avg Occupancy Duration</div>
+                    <div style={{color: Colour.LIGHT_GREEN, fontSize: '45px', textAlign: 'center'}}>5 mins</div>
                   </div>
                 </div>
                 <div className={"metrics-box"} style={{display: 'flex', height: '150px'}}>
                   <div style={{background: Colour.DARK_BLUE_GREY, flex: 1, margin: '20px 20px 0px 20px', padding: '20px'}}>
-                    <div style={{color: Colour.CLOUD}}>People Exceeding Time Limit (Today)</div>
-                    <div style={{color: Colour.LIGHT_RED, fontSize: '55px', textAlign: 'center'}}>{lotTimeViolaters}</div>
+                    <div style={{color: Colour.CLOUD}}>Over Time Limit</div>
+                    <div style={{color: Colour.LIGHT_RED, fontSize: '45px', textAlign: 'center'}}>{lotTimeViolaters}</div>
                   </div>
                   <div style={{background: Colour.DARK_BLUE_GREY, flex: 1, margin: '20px 20px 0px 20px', padding: '20px'}}>
                     <div style={{color: Colour.CLOUD}}>Pods Requiring Servicing</div>
-                    <div style={{color: Colour.LIGHT_GREEN, fontSize: '55px', textAlign: 'center'}}>0</div>
+                    <div style={{color: Colour.LIGHT_GREEN, fontSize: '45px', textAlign: 'center'}}>0</div>
                   </div>
                 </div>
                 <div style={{margin: '20px'}}>
