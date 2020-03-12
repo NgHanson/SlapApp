@@ -113,12 +113,12 @@ class MarkerModal extends Component {
           />
         </div>
         <div style={{margin: '0 30px 20px 30px', color: 'white', textAlign: 'left'}}>
-          <p><strong>Address:   </strong>{address}</p>
+          <p><strong>Address:</strong>{address}</p>
           <p><strong>Notes:</strong></p>
           <Fragment>{this.showNotes()}</Fragment>
         </div>
-        <div style={{width: '70px', margin: '0 auto', paddingBottom: '30px'}}>
-          <Button variant={"info"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE}} onClick={() => this.showDetails()} >
+        <div style={{ padding: '0 30px 30px 30px'}}>
+          <Button variant={"info"} style={{width: '100%', fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE}} onClick={() => this.showDetails()} >
             Details
           </Button>
         </div>

@@ -5,8 +5,6 @@ import { FaChartBar, FaPercent } from "react-icons/fa";
 
 import * as Colour from '../../constants/colour_consts';
 
-var lotName = 'UW LOT 1'; //MOVE TO PROP
-var lotAddress = 'University Ave. & Phillip St.'
 var lotTimeViolaters = 10;
 
 const data1 = [
@@ -37,7 +35,7 @@ const options1 = {
   titlePosition: "center",
   curveType: "function",
   legend: {position: 'bottom', textStyle: {color: Colour.CLOUD, fontSize: 16}},
-  backgroundColor: Colour.BLUE_GREY,
+  backgroundColor: Colour.DARK_BLUE_GREY,
   hAxis: {
     showTextEvery: 4,
     textStyle: {
@@ -71,7 +69,7 @@ const options2 = {
   title: "7-Day Rolling Max Occupancy",
   curveType: "function",
   legend: "none",
-  backgroundColor: Colour.BLUE_GREY,
+  backgroundColor: Colour.DARK_BLUE_GREY,
   hAxis: {
     textStyle: {
       color: Colour.CLOUD,
@@ -103,7 +101,7 @@ const options3 = {
   title: "Daily Average Occupancy Time (min)",
   curveType: "function",
   legend: "none",
-  backgroundColor: Colour.BLUE_GREY,
+  backgroundColor: Colour.DARK_BLUE_GREY,
   hAxis: {
     textStyle: {
       color: Colour.CLOUD,
@@ -135,7 +133,7 @@ const options4 = {
   title: "Daily Max Occupancy Time (min)",
   curveType: "function",
   legend: "none",
-  backgroundColor: Colour.BLUE_GREY,
+  backgroundColor: Colour.DARK_BLUE_GREY,
   hAxis: {
     textStyle: {
       color: Colour.CLOUD,
@@ -166,7 +164,7 @@ const pieData = [
 const pieOptions = {
   title: "Parking Space Occupancy Freq. Distribution (9am-5pm)",
   pieHole: 0.4,
-  backgroundColor: Colour.BLUE_GREY,
+  backgroundColor: Colour.DARK_BLUE_GREY,
   slices: [
     { color: "#2BB673" },
     { color: "#d91e48" },
@@ -201,13 +199,13 @@ export default class AnalyticsDashboard extends Component {
   // number of people exceeding limit this week ...
   render() {
     return(
-      <div className={'analytics-dashboard'} style={{ background: Colour.DARK_BLUE_GREY }}>
+      <div className={'analytics-dashboard'} style={{ background: Colour.DARKER_BLUE_GREY }}>
         <div style={{marginLeft: '300px'}}>
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px', color: 'white'}}>
             <h3 style={{margin: '0 0 0 25px'}}>{`Analytics Dashboard for ${this.props.lots[this.props.currentLotID]['name']}`}</h3>
             <h3>{`(${this.props.lots[this.props.currentLotID]['address']})`}</h3>
           </div>
-          <div style={{padding: '0 40px 40px 40px', background: Colour.DARK_BLUE_GREY}}>
+          <div style={{padding: '0 40px 40px 40px', background: Colour.DARKER_BLUE_GREY}}>
             <div style={{display: 'flex'}}>
               <div className={"left-chart-container"} style={{flex: 1}}>
                 <div style={{margin: '20px'}}>
@@ -220,21 +218,21 @@ export default class AnalyticsDashboard extends Component {
                   />
                 </div>
                 <div className={"metrics-box"} style={{display: 'flex', height: '150px'}}>
-                  <div style={{background: Colour.BLUE_GREY, flex: 1, margin: '0 20px 20px 20px', padding: '20px'}}>
+                  <div style={{background: Colour.DARK_BLUE_GREY, flex: 1, margin: '0 20px 20px 20px', padding: '20px'}}>
                     <div style={{color: Colour.CLOUD}}>Current Lot Utilization</div>
                     <div style={{color: Colour.YELLOW, fontSize: '55px', textAlign: 'center'}}>95<FaPercent style={{fontSize: '20px', marginBottom: '10px'}}/></div>
                   </div>
-                  <div style={{background: Colour.BLUE_GREY, flex: 1, margin: '0 20px 20px 20px', padding: '20px'}}>
+                  <div style={{background: Colour.DARK_BLUE_GREY, flex: 1, margin: '0 20px 20px 20px', padding: '20px'}}>
                     <div style={{color: Colour.CLOUD}}>Avg Occupancy Duration (9am-5pm)</div>
                     <div style={{color: Colour.LIGHT_GREEN, fontSize: '55px', textAlign: 'center'}}>5 mins</div>
                   </div>
                 </div>
                 <div className={"metrics-box"} style={{display: 'flex', height: '150px'}}>
-                  <div style={{background: Colour.BLUE_GREY, flex: 1, margin: '20px 20px 0px 20px', padding: '20px'}}>
+                  <div style={{background: Colour.DARK_BLUE_GREY, flex: 1, margin: '20px 20px 0px 20px', padding: '20px'}}>
                     <div style={{color: Colour.CLOUD}}>People Exceeding Time Limit (Today)</div>
                     <div style={{color: Colour.LIGHT_RED, fontSize: '55px', textAlign: 'center'}}>{lotTimeViolaters}</div>
                   </div>
-                  <div style={{background: Colour.BLUE_GREY, flex: 1, margin: '20px 20px 0px 20px', padding: '20px'}}>
+                  <div style={{background: Colour.DARK_BLUE_GREY, flex: 1, margin: '20px 20px 0px 20px', padding: '20px'}}>
                     <div style={{color: Colour.CLOUD}}>Pods Requiring Servicing</div>
                     <div style={{color: Colour.LIGHT_GREEN, fontSize: '55px', textAlign: 'center'}}>0</div>
                   </div>

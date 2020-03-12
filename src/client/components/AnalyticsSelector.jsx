@@ -222,7 +222,7 @@ export default class AnalyticsSelector extends Component {
 
   singleCompare() {
     return(
-      <div style={{ marginBottom: '30px'}}>
+      <div style={{ marginTop: '10px', marginBottom: '30px'}}>
         <div style={{ background: Colour.BLUE_GREY, padding: '10px' }}>
           <div style={{display: 'flex'}}>
             {this.inputField(this.state.year, 'year', 'Year')}
@@ -250,7 +250,7 @@ export default class AnalyticsSelector extends Component {
 
   doubleCompare() {
     return (
-      <div style={{ marginBottom: '30px'}}>
+      <div style={{ marginTop: '10px', marginBottom: '30px'}}>
       <div style={{ background: Colour.BLUE_GREY, padding: '10px', marginBottom: '20px' }}>
           <div>Time Frame 1:</div>
           <div style={{display: 'flex'}}>

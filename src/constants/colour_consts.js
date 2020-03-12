@@ -1,7 +1,11 @@
 //https://www.materialui.co/flatuicolors
 
+//https://htmlcolors.com/hex-to-hsl
+//https://htmlcolors.com/hsl-to-hex
+
 const BLUE_GREY = "#34495e";
 const DARK_BLUE_GREY = "#2c3e50";
+const DARKER_BLUE_GREY = "#243342";
 
 const LIGHT_BLUE = "#3498db";
 const BLUE = "#2980b9";
@@ -23,6 +27,7 @@ const CLOUD = "#ecf0f1";
 module.exports = {
 	BLUE_GREY,
 	DARK_BLUE_GREY,
+	DARKER_BLUE_GREY,
 	LIGHT_BLUE,
 	BLUE,
 	LIGHT_RED,
