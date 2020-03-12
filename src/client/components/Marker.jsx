@@ -112,7 +112,7 @@ class MarkerModal extends Component {
             options={lotOccupancyOptions}
           />
         </div>
-        <div style={{margin: '0 30px 20px 30px', color: 'white'}}>
+        <div style={{margin: '0 30px 20px 30px', color: 'white', textAlign: 'left'}}>
           <p><strong>Address:   </strong>{address}</p>
           <p><strong>Notes:</strong></p>
           <Fragment>{this.showNotes()}</Fragment>
