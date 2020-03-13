@@ -4,6 +4,8 @@ const dbConfig = require('../../../config')['development']['database'];
 
 //var Event = require('../models/event');
 
+let { dbQuery } = require('./db');
+
 const pool = new Pool({
   user: dbConfig.user,
   host: dbConfig.host,
@@ -31,13 +33,9 @@ exports.listEvent = function(req, res) {
 };
 
 // ENDPOINTS NOT CALLED BY FRONTEND
-exports.insertEvent = function(params) {
-  let { deviceId, detected, time} = params;
+exports.insertEvent = async function(deviceId, detected, time) {
   let query = `INSERT INTO event (device_id, time, detected) VALUES (${deviceId}, '${time}', ${detected})`;
-  pool.query(query, (error, results) => {
-    if (error) {
-      console.error('EVENT INSERT ERR', error);
-    }
-  });
-};
+  await dbQuery(query);
+}
+
 //https://blog.logrocket.com/setting-up-a-restful-api-with-node-js-and-postgresql-d96d6fc892d8/

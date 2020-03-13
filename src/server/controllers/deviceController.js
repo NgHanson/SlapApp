@@ -41,15 +41,9 @@ exports.findOccupancyValues = async function(lotId) {
   return results;
 }
 
-exports.updateDeviceStatus = function(params) {
-  const { deviceId, detected } = params;
+exports.updateDeviceStatus = async function(deviceId, detected ) {
   let query = `UPDATE devices SET occupied = ${detected} WHERE device_id = ${deviceId}`;
-  pool.query(query, (error, results) => {
-    if (error) {
-      console.log('ERROR', error);
-    }
-  });
-
+  await dbQuery(query);
 }
 
 // //https://blog.logrocket.com/setting-up-a-restful-api-with-node-js-and-postgresql-d96d6fc892d8/

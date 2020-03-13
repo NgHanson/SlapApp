@@ -90,21 +90,30 @@ ttn.data(APP_ID, ACCESS_KEY)
         detected: detected,
       }
 
-      eventController.insertEvent(event);
-      deviceController.updateDeviceStatus({deviceId: deviceId, detected: detected});
-      deviceController.findDeviceLot(deviceId).then((data) => {
-        let lotId = data[0]['lot_id'];
-        deviceController.findOccupancyValues(lotId).then((data) => {
-          //ADD ERROR CHECKS
-          let capactiy = data[0]['capacity'];
-          let freecount = data[0]['freecount'];
-          // NOTE SENDING 2 SOCKET UPDATES IN A ROW IS SLOW - MAY NEED TO PUT INTO ONE MESSAGE
-          io.emit('DEVICE_LOT_DATA', 
-            {'DEVICE_DATA': { device_id: deviceId, active: true, occupied: detected },
-             'LOT_DATA': { lot_id: lotId, capacity: capactiy, freeCount: freecount }
+      eventController.insertEvent(deviceId, detected, timeString).then( () => {
+
+        deviceController.updateDeviceStatus(deviceId, detected).then( () => {
+
+          deviceController.findDeviceLot(deviceId).then((data) => {
+
+            let lotId = data[0]['lot_id'];
+            deviceController.findOccupancyValues(lotId).then((data) => {
+
+              //ADD ERROR CHECKS
+              let capactiy = data[0]['capacity'];
+              let freecount = data[0]['freecount'];
+              // NOTE SENDING 2 SOCKET UPDATES IN A ROW IS SLOW - MAY NEED TO PUT INTO ONE MESSAGE
+              io.emit('DEVICE_LOT_DATA', 
+                {'DEVICE_DATA': { device_id: deviceId, active: true, occupied: detected },
+                 'LOT_DATA': { lot_id: lotId, capacity: capactiy, freeCount: freecount }
+              });
+              
+            });
           });
         });
+
       });
+
     });
   })
   .catch(function (error) {
