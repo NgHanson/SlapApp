@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import * as Colour from '../../constants/colour_consts';
 import { FaParking, FaRegClock } from "react-icons/fa";
+import { MdLocalParking } from 'react-icons/md';
 
 import { Chart } from "react-google-charts";
 import { lotOccupancyGraph, lotOccupancyOptions } from '../../constants/examples.js';
@@ -48,14 +49,14 @@ class SideBar extends Component {
       if ("Free Parking" == note) {
         divs.push(
           <div style={{display: 'flex', marginRight: '16px', alignItems: 'center'}}>
-            <FaParking style={{background: Colour.GREEN, fontSize: '30px'}} />
+            <MdLocalParking style={{borderWidth: "2px", borderStyle: "solid", borderRadius: "7px", color: Colour.GREEN, fontSize: '30px'}} />
             <div style={{marginLeft: '8px', fontSize: '14px'}}>Free Parking</div>
           </div>
         );
       } else if ("Permit Only" == note) {
         divs.push(
           <div style={{display: 'flex', marginRight: '16px', alignItems: 'center'}}>
-            <FaParking style={{background: Colour.ORANGE, fontSize: '30px'}} />
+            <MdLocalParking style={{borderWidth: "2px", borderStyle: "solid", borderRadius: "7px", color: Colour.ORANGE, fontSize: '30px'}} />
             <div style={{marginLeft: '8px', fontSize: '14px'}}>Permit Only</div>
           </div>
         );
