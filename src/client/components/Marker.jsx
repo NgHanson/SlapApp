@@ -4,6 +4,7 @@ import { Chart } from "react-google-charts";
 import { lotOccupancyGraph, lotOccupancyOptions } from '../../constants/examples.js';
 import * as Colour from '../../constants/colour_consts';
 import { FaParking, FaRegClock } from "react-icons/fa";
+import { MdLocalParking } from 'react-icons/md';
 
 // MOVE THESE INTO A CSS
 const temp = {
@@ -93,14 +94,14 @@ class MarkerModal extends Component {
       if ("Free Parking" == note) {
         divs.push(
           <div style={{display: 'flex', marginRight: '16px', alignItems: 'center'}}>
-            <FaParking style={{background: Colour.GREEN, fontSize: '30px'}} />
+            <MdLocalParking style={{borderWidth: "2px", borderStyle: "solid", borderRadius: "7px", color: Colour.GREEN, fontSize: '30px'}} />
             <div style={{marginLeft: '8px', fontSize: '14px'}}>Free Parking</div>
           </div>
         );
       } else if ("Permit Only" == note) {
         divs.push(
           <div style={{display: 'flex', marginRight: '16px', alignItems: 'center'}}>
-            <FaParking style={{background: Colour.ORANGE, fontSize: '30px'}} />
+            <MdLocalParking style={{borderWidth: "2px", borderStyle: "solid", borderRadius: "7px", color: Colour.ORANGE, fontSize: '30px'}} />
             <div style={{marginLeft: '8px', fontSize: '14px'}}>Permit Only</div>
           </div>
         );
@@ -139,7 +140,7 @@ class MarkerModal extends Component {
     occupation times, for ex. generally 6am - 12am vs Fit4Less parking lot which is 24 hr
     */
     return (
-      <div style={{fontFamily: '', backgroundColor: Colour.BLUE_GREY, width:'fit-content', height: 'fit-content', border: `2px solid ${Colour.DARK_BLUE_GREY}`}} onClick={() => closeModal()}>
+      <div className="dicks" style={{fontFamily: '', backgroundColor: Colour.BLUE_GREY, width:'fit-content', height: 'fit-content', border: `2px solid ${Colour.DARK_BLUE_GREY}`}} onClick={() => closeModal()}>
         <div style={{padding: '30px 30px 30px 30px', color: Colour.CLOUD, fontSize: 'medium'}}>
           {address}
         </div> 
