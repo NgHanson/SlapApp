@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Chart } from "react-google-charts";
-import { lotOccupancyGraph, lotOccupancyOptions } from '../../constants/examples.js';
+import { demoLotGraph, demoLotOccupancyOptions, lotOccupancyGraph, lotOccupancyOptions } from '../../constants/examples.js';
 import * as Colour from '../../constants/colour_consts';
 import { FaParking, FaRegClock } from "react-icons/fa";
 import { MdLocalParking } from 'react-icons/md';
@@ -82,6 +82,20 @@ class MarkerModal extends Component {
       this.props.setMapsWrapperState({currentLotID: this.props.lot_id, viewType: 2})
   }
 
+  generateMarkerGraph(lotId) {
+    return (
+      <div className={"chart-container"} style={{padding: '0 30px'}}>
+        <Chart
+          chartType="ColumnChart"
+          width="360px"
+          height="160px"
+          data={lotId == 3 ? demoLotGraph : lotOccupancyGraph}
+          options={lotId == 3 ? demoLotOccupancyOptions : lotOccupancyOptions}
+        />
+      </div>
+    );
+  }
+
   generateNotes() {
     let notes = this.props.notes.split("\\n");
     //debugger
@@ -131,7 +145,8 @@ class MarkerModal extends Component {
       userType,
       viewType,
       address,
-      notes
+      notes,
+      lot_id
     } = this.props;
 
     // More Details button brings you to the lot view
@@ -144,15 +159,7 @@ class MarkerModal extends Component {
         <div style={{padding: '30px 30px 30px 30px', color: Colour.CLOUD, fontSize: 'medium'}}>
           {address}
         </div> 
-        <div className={"chart-container"} style={{padding: '0 30px'}}>
-          <Chart
-            chartType="ColumnChart"
-            width="360px"
-            height="160px"
-            data={lotOccupancyGraph}
-            options={lotOccupancyOptions}
-          />
-        </div>
+        {this.generateMarkerGraph(lot_id)}
         <div style={{margin: '20px 30px 20px 30px', color: 'white', textAlign: 'left'}}>
           {this.generateNotes()}
         </div>

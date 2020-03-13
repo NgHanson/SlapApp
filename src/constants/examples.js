@@ -2,6 +2,34 @@ const Colour = require('./colour_consts.js');
 
 // Live View - Lot Occcupancy ======================================================================================================
 
+const demoLotGraph = [
+	["Time", "Avg", "Current"],
+  ["10am", 0, 0],
+  ["11am", 1, 0],
+  ["12pm", 1, 0],
+  ["1pm", 2, 0],
+	["2pm", 2, 0],
+	["3pm", 2, 0],
+  ["4pm", 1, 0],
+  ["5pm", 0, 0]
+];
+
+const demoLotOccupancyOptions = {
+	chartType:"ComboChart",
+  title: "Occupancy",
+	legend: "none",
+	hAxis: { showTextEvery: 2 },
+  vAxis: { maxValue: 4 }, //this DN work?
+  isStacked: true,
+  stackSeries: true,
+  seriesType: "bars",
+  series: {
+    1:{color: Colour.LIGHT_RED, targetAxisIndex: 1, dataOpacity: 0.8},
+    0:{color: Colour.LIGHT_BLUE, targetAxisIndex: 0},
+  }
+}
+
+
 // IMPORTANT: Data is displayed back to front in a layered bar chart!
 //            (We want the averages to be in the back, not the current val)
 const lotOccupancyGraph = [
@@ -413,6 +441,8 @@ const exSingleTime = {
 
 
 module.exports = {
+	demoLotGraph,
+	demoLotOccupancyOptions,
 	lotOccupancyGraph,
 	lotOccupancyOptions,
 	exHigherTraffic9To5,

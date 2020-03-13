@@ -11,7 +11,7 @@ import { FaParking, FaRegClock } from "react-icons/fa";
 import { MdLocalParking } from 'react-icons/md';
 
 import { Chart } from "react-google-charts";
-import { lotOccupancyGraph, lotOccupancyOptions } from '../../constants/examples.js';
+import { demoLotGraph, demoLotOccupancyOptions, lotOccupancyGraph, lotOccupancyOptions } from '../../constants/examples.js';
 
 class SideBar extends Component {
   constructor(props) {
@@ -27,6 +27,20 @@ class SideBar extends Component {
     if (this.props.lots !== prevProps.lots || this.props.currentLotID !== prevProps.currentLotID && this.props.lots !== undefined && this.props.currentLotID !== undefined) {
       this.setState({lotInfo: this.props.lots[this.props.currentLotID]});
     }
+  }
+
+  generateMarkerGraph(lotId) {
+    return (
+      <div className={"chart-container"} style={{margin: '20px 0'}}>
+        <Chart
+          chartType="ColumnChart"
+          width="100%"
+          height="140px"
+          data={lotId == 3 ? demoLotGraph : lotOccupancyGraph}
+          options={lotId == 3 ? demoLotOccupancyOptions : lotOccupancyOptions}
+        />
+      </div>
+    );
   }
 
   generateLogo() {
@@ -138,15 +152,7 @@ class SideBar extends Component {
             <div style={{marginBottom: '10px'}}>
               {`Occupancy: ${this.state.lotInfo['capacity'] - this.state.lotInfo['freeCount']}/${this.state.lotInfo['capacity']}`}
             </div>
-            <div style={{margin: '20px 0'}}>
-              <Chart
-                chartType="ColumnChart"
-                width="100%"
-                height="140px"
-                data={lotOccupancyGraph}
-                options={lotOccupancyOptions}
-              />
-            </div>
+            {this.generateMarkerGraph(currentLotID)}
             {this.generateNotes(this.state.lotInfo["notes"])}
             <Button variant={"secondary"} style={{fontSize: '11pt', backgroundColor: Colour.ORANGE, borderColor: Colour.ORANGE, width: '100%'}} onClick={() => changeViewType(1)} >
               {'Back'}
